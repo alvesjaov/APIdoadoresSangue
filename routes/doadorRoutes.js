@@ -50,20 +50,28 @@ router.patch("/:id", (req, res) => {
     const { id } = req.params;
     const atualizaDoador = req.body;
 
-    doador = doador.map(d =>
-        d.id === Number(id) ? { ...d, ...atualizaDoador } : d
-    );
-
-    res.send(`Doador com ID ${id} atualizado com sucesso!`);
+    const index = doador.findIndex(d => d.id === Number(id));
+    
+    if (index === -1) {
+        res.status(404).json("Doador não encontrado");
+    } else {
+        doador[index] = { ...doador[index], ...atualizaDoador };
+        res.send(`Doador com ID ${id} atualizado com sucesso!`);
+    }
 });
 
 // Rota para deletar um doador (DELETE)
 router.delete("/:id", (req, res) => {
     const { id } = req.params;
 
-    doador = doador.filter(d => d.id !== Number(id));
-
-    res.send(`Doador com ID ${id} removido com sucesso!`);
+    const index = doador.findIndex(d => d.id === Number(id));
+    
+    if (index === -1) {
+        res.status(404).json("Doador não encontrado");
+    } else {
+        doador.splice(index, 1);
+        res.send(`Doador com ID ${id} removido com sucesso!`);
+    }
 });
 
 export default router;

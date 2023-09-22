@@ -35,20 +35,28 @@ router.patch("/:id", (req, res) => {
     const { id } = req.params;
     const atualizaHemocentro = req.body;
 
-    hemocentro = hemocentro.map(h =>
-        h.id === Number(id) ? { ...h, ...atualizaHemocentro } : h
-    );
-
-    res.send(`Hemocentro com ID ${id} atualizado com sucesso!`);
+    const index = hemocentro.findIndex(h => h.id === Number(id));
+    
+    if (index === -1) {
+        res.status(404).json("Hemocentro não encontrado");
+    } else {
+        hemocentro[index] = { ...hemocentro[index], ...atualizaHemocentro };
+        res.send(`Hemocentro com ID ${id} atualizado com sucesso!`);
+    }
 });
 
 // Rota para deletar um hemocentro (DELETE)
 router.delete("/:id", (req, res) => {
     const { id } = req.params;
 
-    hemocentro = hemocentro.filter(h => h.id !== Number(id));
-
-    res.send(`Hemocentro com ID ${id} removido com sucesso!`);
+    const index = hemocentro.findIndex(h => h.id === Number(id));
+    
+    if (index === -1) {
+        res.status(404).json("Hemocentro não encontrado");
+    } else {
+        hemocentro.splice(index, 1);
+        res.send(`Hemocentro com ID ${id} removido com sucesso!`);
+    }
 });
 
 export default router;
