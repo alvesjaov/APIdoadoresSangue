@@ -1,6 +1,6 @@
 import express from "express";
 import mongoose from "mongoose";
-import routes from "./routes.js";
+import routes from "./src/routes/routes.js";
 import dotenv from "dotenv";
 
 dotenv.config(); // Carrega as variáveis de ambiente do arquivo .env
