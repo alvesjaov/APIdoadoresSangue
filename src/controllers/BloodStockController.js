@@ -4,8 +4,12 @@ import Stock from '../models/Stock.js';
 // Função assíncrona para contar e atualizar os tipos sanguíneos
 async function countAndUpdateBloodTypes(request, response) {
     try {
-        // Conta o número de doadores para cada tipo sanguíneo
+        // Pega a data atual em formato ISO
+        const currentDate = new Date().toISOString();
+
+        // Conta o número de doadores para cada tipo sanguíneo cuja data de validade ainda não passou
         const bloodTypeCounts = await Donor.aggregate([
+            { $match: { expiryDate: { $gte: currentDate } } }, // Filtra os doadores cuja data de validade ainda não passou
             { $group: { _id: '$bloodType', count: { $sum: 1 } } }, // Agrupa os doadores por tipo sanguíneo e conta o número de doadores para cada grupo
             { $sort: { _id: 1 } } // Ordena os resultados por tipo sanguíneo em ordem ascendente
         ]);

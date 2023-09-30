@@ -10,7 +10,7 @@ function formatDate(date) {
     const year = date.getFullYear();
     
     // Retorna uma string formatada com dia, mês e ano separados por barras
-    return `${day}/${month}/${year}`;
+    return `${year}-${month}-${day}`;
 }
 
 // Exporta a função para que possa ser usada em outros arquivos JavaScript

@@ -128,4 +128,4 @@ async function deleteDonor(request, response) {
 }
 
 // Exporta as funções para serem usadas em outros arquivos
-export { getDonors, createDonor, createDonation, updateDonor, deleteDonor };
+export { createDonor, getDonors, createDonation, updateDonor, deleteDonor };
