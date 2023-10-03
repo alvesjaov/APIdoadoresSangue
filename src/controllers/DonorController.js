@@ -11,7 +11,15 @@ async function createDonor(request, response) {
     // Adiciona a data atual ao histórico de doações
     donorData.donationHistory.push(formatDate(new Date()));
     const newDonor = new Donor(donorData);
+    
     try {
+        // Verifica se o doador já existe no banco de dados
+        const existingDonor = await Donor.findOne({ Name: donorData.Name, Age: donorData.Age, bloodType: donorData.bloodType, Address: donorData.Address, Contact: donorData.Contact });
+        if (existingDonor) {
+            // Se o doador já existir, envia uma resposta de erro
+            return response.status(400).send('Um doador com os mesmos detalhes já existe.');
+        }
+        
         // Salva o novo doador no banco de dados
         await newDonor.save();
         // Envia uma resposta de sucesso
@@ -22,7 +30,6 @@ async function createDonor(request, response) {
         response.status(500).send('Ocorreu um erro ao cadastrar o doador. Por favor, tente novamente.');
     }
 }
-
 
 // Rota para obter doadores (READ)
 async function getDonors(request, response) {
