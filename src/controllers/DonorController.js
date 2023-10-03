@@ -1,5 +1,6 @@
 import Donor from '../models/Donor.js';
-import formatDate from '../utils/Date.js'
+import formatDate from '../utils/Date.js';
+import Stock from '../models/Stock.js'
 
 // Rota para cadastrar doador (CREATE)
 async function createDonor(request, response) {
@@ -126,6 +127,42 @@ async function deleteDonor(request, response) {
         response.status(500).send('Ocorreu um erro ao remover o doador. Por favor, tente novamente.');
     }
 }
+// Rota para deletar a última doação de um doador
+async function deleteLastDonation(request, response) {
+    // Extrai o ID dos parâmetros da requisição
+    const { id } = request.params;
+    try {
+        // Encontra o doador pelo ID
+        const donor = await Donor.findById(id);
+        if (!donor) {
+            // Envia uma resposta de erro se o doador não for encontrado
+            response.status(404).json(`ID ${id} não corresponde a nenhum doador`);
+        } else {
+            // Verifica se o doador tem um histórico de doações
+            if (donor.donationHistory.length > 0) {
+                // Remove a última doação do histórico de doações
+                donor.donationHistory.pop();
+                // Salva o doador atualizado no banco de dados
+                await donor.save();
+
+                // Atualiza o estoque de sangue
+                const stock = await Stock.findOne({});
+                stock[donor.bloodType]--;
+                await stock.save();
+
+                // Envia uma resposta de sucesso
+                response.send(`Última doação removida para o doador com ID ${id}!`);
+            } else {
+                // Envia uma resposta informando que o doador não tem histórico de doações
+                response.send(`O doador com ID ${id} não tem histórico de doações.`);
+            }
+        }
+    } catch (error) {
+        // Envia uma resposta de erro se algo der errado
+        console.log(error.message);
+        response.status(500).send('Ocorreu um erro ao remover a última doação. Por favor, tente novamente.');
+    }
+}
 
 // Exporta as funções para serem usadas em outros arquivos
-export { createDonor, getDonors, createDonation, updateDonor, deleteDonor };
+export { createDonor, getDonors, createDonation, updateDonor, deleteDonor, deleteLastDonation };
