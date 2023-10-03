@@ -11,5 +11,4 @@ const stockSchema = mongoose.Schema({
   'O-': { type: Number, default: 0 }
 });
 
-
 export default mongoose.model('Stock', stockSchema);

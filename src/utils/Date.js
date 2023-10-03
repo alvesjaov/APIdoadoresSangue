@@ -1,4 +1,3 @@
-// Função para formatar a data no padrão brasileiro
 function formatDate(date) {
     // Pega o dia do objeto date, converte para string e adiciona um zero à esquerda se for um único dígito
     const day = date.getDate().toString().padStart(2, '0');
@@ -9,10 +8,9 @@ function formatDate(date) {
     // Pega o ano do objeto date
     const year = date.getFullYear();
     
-    // Retorna uma string formatada com dia, mês e ano separados por barras
+    // Retorna uma string formatada com YYYY-MM-DD no formato ISO
     return `${year}-${month}-${day}`;
 }
 
 // Exporta a função para que possa ser usada em outros arquivos JavaScript
-
 export default formatDate;
