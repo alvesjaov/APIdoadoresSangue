@@ -8,12 +8,19 @@ async function countAndUpdateBloodTypes(request, response) {
         // Pega a data atual e converte para uma string no formato "AAAA-MM-DD"
         const currentDate = new Date().toISOString().split('T')[0];
 
+        // Primeiro, exclua todas as doações que já expiraram
+        await Donor.updateMany(
+            { expiryDate: { $lt: currentDate } },
+            { $pull: { donationHistory: { expiryDate: { $lt: currentDate } } } }
+        );
+        console.log('Doações expiradas removidas.', currentDate);
+
         // Realiza uma operação de agregação no modelo Donor
         const bloodTypeCounts = await Donor.aggregate([
-            // Adiciona um novo campo expiryDateWithoutTimezone que contém apenas a parte da data de expiryDate
-            { $addFields: { expiryDateWithoutTimezone: { $substr: ["$expiryDate", 0, 10] } } },
-            // Filtra os documentos onde expiryDateWithoutTimezone é maior ou igual à currentDate
-            { $match: { expiryDateWithoutTimezone: { $gte: currentDate } } },
+            // Adiciona um novo campo expiryDate que contém apenas a parte da data de expiryDate
+            { $addFields: { expiryDate: { $substr: ["$expiryDate", 0, 10] } } },
+            // Filtra os documentos onde expiryDate é maior ou igual à currentDate
+            { $match: { expiryDate: { $gte: currentDate } } },
             // Desagrupa o array donationHistory para que cada doação seja uma entrada separada
             { $unwind: '$donationHistory' },
             // Agrupa os documentos por tipo sanguíneo e conta o número de doações para cada grupo
@@ -21,6 +28,9 @@ async function countAndUpdateBloodTypes(request, response) {
             // Ordena os resultados por tipo sanguíneo em ordem ascendente
             { $sort: { _id: 1 } }
         ]);
+        console.log('Contagem de tipos sanguíneos realizada.', bloodTypeCounts);
+
+
 
         // Define todos os tipos sanguíneos possíveis
         const allBloodTypes = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'];
