@@ -20,7 +20,7 @@ async function createDonor(request, response) {
         }
 
         // Verifica se o doador já existe no banco de dados
-        const existingDonor = await Donor.findOne({ Name: donorData.Name, Age: donorData.Age, CPF: donorData.CPF, bloodType: donorData.bloodType, Address: donorData.Address, Contact: donorData.Contact });
+        const existingDonor = await Donor.findOne({CPF: donorData.CPF});
         if (existingDonor) {
             // Se o doador já existir, envia uma resposta de erro
             return response.status(400).send('Um doador com os mesmos dados já existe.');
@@ -98,7 +98,6 @@ async function createDonation(request, response) {
     }
 }
 
-
 // Rota para atualizar um doador (UPDATE)
 async function updateDonor(request, response) {
     // Extrai o ID dos parâmetros da requisição
@@ -140,6 +139,7 @@ async function deleteDonor(request, response) {
         response.status(500).send('Ocorreu um erro ao remover o doador. Por favor, tente novamente.');
     }
 }
+
 // Rota para deletar a última doação de um doador
 async function deleteLastDonation(request, response) {
     // Extrai o ID dos parâmetros da requisição
