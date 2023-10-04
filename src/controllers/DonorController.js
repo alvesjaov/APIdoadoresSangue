@@ -1,6 +1,7 @@
 import Donor from '../models/Donor.js';
 import formatDate from '../utils/Date.js';
-import Stock from '../models/Stock.js'
+import Stock from '../models/Stock.js';
+import ValidateCPF from '../utils/ValidateCPF.js';
 
 // Rota para cadastrar doador (CREATE)
 async function createDonor(request, response) {
@@ -11,15 +12,20 @@ async function createDonor(request, response) {
     // Adiciona a data atual ao histórico de doações
     donorData.donationHistory.push(formatDate(new Date()));
     const newDonor = new Donor(donorData);
-    
+
     try {
+        // Verifica se o CPF é válido
+        if (!ValidateCPF(donorData.CPF)) {
+            return response.status(400).send('O CPF fornecido não é válido.');
+        }
+
         // Verifica se o doador já existe no banco de dados
-        const existingDonor = await Donor.findOne({ Name: donorData.Name, Age: donorData.Age, bloodType: donorData.bloodType, Address: donorData.Address, Contact: donorData.Contact });
+        const existingDonor = await Donor.findOne({ Name: donorData.Name, Age: donorData.Age, CPF: donorData.CPF, bloodType: donorData.bloodType, Address: donorData.Address, Contact: donorData.Contact });
         if (existingDonor) {
             // Se o doador já existir, envia uma resposta de erro
-            return response.status(400).send('Um doador com os mesmos detalhes já existe.');
+            return response.status(400).send('Um doador com os mesmos dados já existe.');
         }
-        
+
         // Salva o novo doador no banco de dados
         await newDonor.save();
         // Envia uma resposta de sucesso
