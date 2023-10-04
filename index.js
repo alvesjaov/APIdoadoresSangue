@@ -4,7 +4,6 @@ import routes from "./src/routes/routes.js";
 import dotenv from "dotenv";
 
 dotenv.config(); // Carrega as variáveis de ambiente do arquivo .env
-
 const app = express();
 const PORT = process.env.PORT || 3000;
 const MONGODB_URI = process.env.MONGODB_URI;
