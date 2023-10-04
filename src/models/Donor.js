@@ -14,18 +14,21 @@ const donorSchema = mongoose.Schema({
 });
 
 donorSchema.pre('save', function (next) {
-  // Adiciona a data atual ao histórico de doações se houver alguma doação
+  // Se houver doações no histórico de doações
   if (this.donationHistory.length > 0) {
-    const currentDate = formatDate(new Date());
-    // Atualiza donationDate e expiryDate
-    this.donationDate = currentDate;
-    this.expiryDate = formatDate(new Date(Date.now() + 1 * 24 * 60 * 60 * 1000));
+    // Pega a data da última doação
+    const lastDonationDate = this.donationHistory[this.donationHistory.length - 1];
+    // Atualiza donationDate e expiryDate para a última doação
+    this.donationDate = lastDonationDate;
+    this.expiryDate = formatDate(new Date(new Date(lastDonationDate).getTime() + 2 * 24 * 60 * 60 * 1000));
   } else {
+    // Se não houver doações, define donationDate e expiryDate como 'Não há doações'
     this.donationDate = 'Não há doações';
     this.expiryDate = 'Não há doações';
   }
 
   next();
 });
+
 
 export default mongoose.model('Donor', donorSchema);
