@@ -3,6 +3,7 @@ import formatDate from '../utils/Date.js';
 
 const donorSchema = mongoose.Schema({
   Name: String,
+  CPF: { type: String },
   Age: Number,
   bloodType: String,
   donationHistory: [String],
