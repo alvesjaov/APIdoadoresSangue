@@ -1,4 +1,4 @@
-// Importa os modelos Donor e Stock
+
 import Donor from '../models/Donor.js';
 import Stock from '../models/Stock.js';
 
@@ -9,20 +9,20 @@ async function countAndUpdateBloodTypes(request, response) {
         const currentDate = new Date().toISOString().split('T')[0];
 
         // Primeiro, exclua todas as doações que já expiraram
+        // Isso é feito atualizando todos os documentos Donor onde a data de validade é menor que a data atual
+        // A operação $pull remove itens do array donationHistory que correspondem à condição especificada
         await Donor.updateMany(
-            { expiryDate: { $lt: currentDate } },
+            { 'donationHistory.expiryDate': { $lt: currentDate } },
             { $pull: { donationHistory: { expiryDate: { $lt: currentDate } } } }
         );
         console.log('Doações expiradas removidas.', currentDate);
 
         // Realiza uma operação de agregação no modelo Donor
         const bloodTypeCounts = await Donor.aggregate([
-            // Adiciona um novo campo expiryDate que contém apenas a parte da data de expiryDate
-            { $addFields: { expiryDate: { $substr: ["$expiryDate", 0, 10] } } },
-            // Filtra os documentos onde expiryDate é maior ou igual à currentDate
-            { $match: { expiryDate: { $gte: currentDate } } },
             // Desagrupa o array donationHistory para que cada doação seja uma entrada separada
             { $unwind: '$donationHistory' },
+            // Filtra os documentos onde a data de validade da doação é maior ou igual à data atual
+            { $match: { 'donationHistory': { $gte: currentDate } } },
             // Agrupa os documentos por tipo sanguíneo e conta o número de doações para cada grupo
             { $group: { _id: '$bloodType', count: { $sum: 1 } } },
             // Ordena os resultados por tipo sanguíneo em ordem ascendente
@@ -30,11 +30,13 @@ async function countAndUpdateBloodTypes(request, response) {
         ]);
         console.log('Contagem de tipos sanguíneos realizada.', bloodTypeCounts);
 
-
-
         // Define todos os tipos sanguíneos possíveis
         const allBloodTypes = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'];
-        const allCounts = {};
+        let allCounts = {};
+        allBloodTypes.forEach(type => {
+            allCounts[type] = 0;
+        });
+
         // Para cada tipo sanguíneo, encontra a contagem correspondente nos resultados da agregação
         allBloodTypes.forEach(type => {
             const found = bloodTypeCounts.find(count => count._id === type);
