@@ -3,25 +3,20 @@ import Stock from '../models/Stock.js';
 
 // Função para remover doações expiradas
 async function removeExpiredDonations(currentDate) {
-    // Atualiza todos os documentos Donor onde a data de validade é menor que a data atual
-    // A operação $pull remove itens do array donationHistory que correspondem à condição especificada
+    // Atualiza todos os doadores removendo as doações expiradas de seu histórico de doações
     await Donor.updateMany(
-        { 'donationHistory.expiryDate': { $lt: currentDate } },
-        { $pull: { donationHistory: { expiryDate: { $lt: currentDate } } } }
+        { donationHistory: { $elemMatch: { _id: { $exists: true }, expiryDate: { $lt: currentDate } } } },
+        { $pull: { donationHistory: { _id: { $exists: true }, expiryDate: { $lt: currentDate } } } }
     );
 }
 
 // Função para contar os tipos sanguíneos
 async function countBloodTypes(currentDate) {
-    // Realiza uma operação de agregação no modelo Donor
+    // Agrega os doadores por tipo sanguíneo e conta o número de doações não expiradas para cada tipo sanguíneo
     const bloodTypeCounts = await Donor.aggregate([
-        // Desagrupa o array donationHistory para que cada doação seja uma entrada separada
         { $unwind: '$donationHistory' },
-        // Filtra os documentos onde a data de validade da doação é maior ou igual à data atual
-        { $match: { 'donationHistory': { $gte: currentDate } } },
-        // Agrupa os documentos por tipo sanguíneo e conta o número de doações para cada grupo
+        { $match: { 'donationHistory._id': { $exists: true }, 'donationHistory.expiryDate': { $gte: currentDate } } },
         { $group: { _id: '$bloodType', count: { $sum: 1 } } },
-        // Ordena os resultados por tipo sanguíneo em ordem ascendente
         { $sort: { _id: 1 } }
     ]);
     return bloodTypeCounts;
@@ -35,6 +30,7 @@ function prepareAllCounts(bloodTypeCounts) {
         allCounts[type] = 0;
     });
 
+    // Para cada tipo sanguíneo, encontra a contagem correspondente nos resultados da agregação e a atribui ao objeto allCounts
     allBloodTypes.forEach(type => {
         const found = bloodTypeCounts.find(count => count._id === type);
         allCounts[type] = found ? found.count : 0;
@@ -43,30 +39,37 @@ function prepareAllCounts(bloodTypeCounts) {
     return allCounts;
 }
 
-// Função para atualizar o estoque com as contagens
+// Função para atualizar o estoque com as contagens de todos os tipos sanguíneos
 async function updateStock(allCounts) {
-    await Stock.updateOne({}, { $set: allCounts }, { upsert: true });
+    // Atualiza o estoque com as contagens de todos os tipos sanguíneos
+    await Stock.updateMany({}, allCounts, { upsert: true });
+
 }
 
 // Função principal para contar e atualizar os tipos sanguíneos
-async function countAndUpdateBloodTypes(request, response) {
+async function countAndUpdateBloodTypes(_, response) {
     try {
-        const currentDate = new Date().toISOString().split('T')[0];
+        const currentDate = new Date();
 
+        // Remove as doações expiradas
         await removeExpiredDonations(currentDate);
 
+        // Conta os tipos sanguíneos
         const bloodTypeCounts = await countBloodTypes(currentDate);
 
+        // Prepara a contagem de todos os tipos sanguíneos
         const allCounts = prepareAllCounts(bloodTypeCounts);
 
+        // Atualiza o estoque com as contagens de todos os tipos sanguíneos
         await updateStock(allCounts);
-
+        // Envia uma resposta com a contagem de todos os tipos sanguíneos
         response.status(200).json(allCounts);
+
     } catch (error) {
-        console.log(error.message)
-        response.status(500).send('Ocorreu um erro ao contar e atualizar os tipos sanguíneos. Por favor, tente novamente.');
+        // Em caso de erro, envia uma mensagem de erro
+        response.status(500).json({ message: `Ocorreu um erro ao contar e atualizar os tipos sanguíneos. Por favor, tente novamente. Erro: ${error.message}` });
     }
 }
 
-// Exportando a função countAndUpdateBloodTypes
-export default countAndUpdateBloodTypes;
+// Exporta a função principal
+export default countAndUpdateBloodTypes
