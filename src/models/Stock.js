@@ -9,6 +9,6 @@ const stockSchema = mongoose.Schema({
   'AB-': { type: Number, default: 0 },
   'O+': { type: Number, default: 0 },
   'O-': { type: Number, default: 0 }
-});
+}, {versionKey: false });
 
 export default mongoose.model('Stock', stockSchema);
