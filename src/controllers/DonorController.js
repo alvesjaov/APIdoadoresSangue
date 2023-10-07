@@ -1,181 +1,153 @@
 import Donor from '../models/Donor.js';
-import formatDate from '../utils/Date.js';
 import Stock from '../models/Stock.js';
-import ValidateCPF from '../utils/ValidateCPF.js';
+import { cpf } from 'cpf-cnpj-validator'; // Importando a função de validação de CPF
 
 // Rota para cadastrar doador (CREATE)
 async function createDonor(request, response) {
-    // Cria um novo doador com os dados da requisição
-    const donorData = request.body;
-    // Verifica se donationHistory existe, se não, inicializa como um array vazio
-    donorData.donationHistory = donorData.donationHistory || [];
+    // Pega os dados do doador do corpo da requisição
+    const donor = request.body;
+    // Se donationHistory não existir, inicializa como um array vazio
+    donor.donationHistory = donor.donationHistory || [];
     // Adiciona a data atual ao histórico de doações
-    donorData.donationHistory.push(formatDate(new Date()));
-    const newDonor = new Donor(donorData);
+    donor.donationHistory.push({ donationDate: new Date() });
+    const newDonor = new Donor(donor); // Cria um novo doador com os dados fornecidos
+    
+    const stock = await Stock.findOne({}); // Procura pelo estoque de sangue
+    stock[donor.bloodType]++; // Incrementa a quantidade de sangue do tipo sanguíneo do doador no estoque
+    await stock.save(); // Salva o estoque atualizado no banco de dados
 
     try {
-        // Verifica se o CPF é válido
-        if (!ValidateCPF(donorData.CPF)) {
-            return response.status(400).send('O CPF fornecido não é válido.');
+        //  Verifica se o CPF é válido
+        if (!cpf.isValid(donor.CPF)) {
+            return response.status(400).json({ message: 'O CPF fornecido não é válido.' });
         }
-
-        // Verifica se o doador já existe no banco de dados
-        const existingDonor = await Donor.findOne({CPF: donorData.CPF});
+        // Procura por um doador existente com o mesmo CPF
+        const existingDonor = await Donor.findOne({ CPF: donor.CPF });
         if (existingDonor) {
-            // Se o doador já existir, envia uma resposta de erro
-            return response.status(400).send('Um doador com os mesmos dados já existe.');
+            return response.status(400).json({ message: 'Um doador com os mesmos dados já existe.' });
         }
-
         // Salva o novo doador no banco de dados
-        await newDonor.save();
-        // Envia uma resposta de sucesso
-        response.status(201).send('Doador cadastrado com sucesso!');
+        await newDonor.save();    
+
+        response.status(201).json({ message: 'Doador cadastrado com sucesso!' });
     } catch (error) {
-        // Envia uma resposta de erro se algo der errado
-        console.log(error.message)
-        response.status(500).send('Ocorreu um erro ao cadastrar o doador. Por favor, tente novamente.');
+        response.status(500).json({ message: `Ocorreu um erro ao cadastrar o doador. Por favor, tente novamente.Erro: ${error.message}` });
     }
 }
 
 // Rota para obter doadores (READ)
 async function getDonors(request, response) {
-    // Extrai o id dos parâmetros da requisição
-    const { id } = request.params;
+    const { id } = request.params; // Pega o id dos parâmetros da requisição
 
     try {
         let donor;
         if (id) {
-            // Pesquisa por id, se fornecido
-            donor = await Donor.findById(id, { __v: 0 });
+            // Se um id foi fornecido, procura pelo doador correspondente
+            donor = await Donor.findById(id);
         } else {
             // Retorna todos os doadores se nenhum id for fornecido
-            let donors = await Donor.find({}, { __v: 0 });
-            // Verifica se a lista de doadores está vazia
+            let donors = await Donor.find({});
             if (donors.length === 0) {
-                // Se estiver vazia, retorna uma mensagem informando que nenhum doador foi encontrado
-                return response.status(404).json('Nenhum doador encontrado');
+                return response.status(404).json({ message: 'Nenhum doador encontrado' });
             }
-            // Se a lista de doadores não estiver vazia, retorna a lista de doadores
-            return response.status(200).json(donors);
+            return response.status(200).json(donors); // Retorna todos os doadores encontrados
         }
 
         if (!donor) {
-            // Envia uma resposta de erro se nenhum doador for encontrado
-            response.status(404).json(`ID ${id} não corresponde a nenhum doador`);
+            response.status(404).json({ message: `ID ${id} não corresponde a nenhum doador` });
         } else {
-            // Envia uma resposta com o doador encontrado
-            response.status(200).json(donor);
+            response.status(200).json(donor); // Retorna o doador correspondente ao id fornecido
         }
     } catch (error) {
-        // Envia uma resposta de erro se algo der errado
         console.log(error.message)
-        response.status(500).send('Ocorreu um erro ao buscar doadores. Por favor, tente novamente.');
-    }
-}
-
-// Rota para criar uma doação (CREATE)
-async function createDonation(request, response) {
-    // Extrai o ID dos parâmetros da requisição
-    const { id } = request.params;
-    try {
-        // Encontra o doador pelo ID
-        const donor = await Donor.findById(id);
-        if (!donor) {
-            // Envia uma resposta de erro se o doador não for encontrado
-            response.status(404).json(`ID ${id} não corresponde a nenhum doador`);
-        } else {
-            // Adiciona a data atual ao histórico de doações
-            donor.donationHistory.push(formatDate(new Date()));
-            // Salva o doador atualizado no banco de dados
-            await donor.save();
-            // Envia uma resposta de sucesso
-            response.send(`Nova doação registrada para o doador com ID ${id}!`);
-        }
-    } catch (error) {
-        // Envia uma resposta de erro se algo der errado
-        console.log(error.message);
-        response.status(500).send('Ocorreu um erro ao registrar a doação. Por favor, tente novamente.');
+        response.status(500).json({ message: `Ocorreu um erro ao buscar doadores. Por favor, tente novamente.Erro: ${error.message}` });
     }
 }
 
 // Rota para atualizar um doador (UPDATE)
 async function updateDonor(request, response) {
-    // Extrai o ID dos parâmetros da requisição
-    const { id } = request.params;
+    const { id } = request.params; // Pega o id dos parâmetros da requisição
     try {
-        // Atualiza o doador no banco de dados com os novos dados da requisição
+        // Atualiza o doador correspondente ao id fornecido com os novos dados fornecidos no corpo da requisição
         const updatedDonor = await Donor.findByIdAndUpdate(id, request.body, { new: true });
         if (!updatedDonor) {
-            // Envia uma resposta de erro se o doador não for encontrado
-            response.status(404).json(`ID ${id} não corresponde a nenhum doador`);
+            response.status(404).json({ message: `ID ${id} não corresponde a nenhum doador` });
         } else {
-            // Envia uma resposta de sucesso
-            response.send(`Doador com ID ${id} atualizado com sucesso!`);
+            response.json({ message: `Doador com ID ${id} atualizado com sucesso!` }); // Retorna sucesso se o doador for atualizado corretamente
         }
     } catch (error) {
-        // Envia uma resposta de erro se algo der errado
-        console.log(error.message);
-        response.status(500).send('Ocorreu um erro ao atualizar o doador. Por favor, tente novamente.');
+        response.status(500).json({ message: `Ocorreu um erro ao atualizar o doador. Por favor, tente novamente. Erro: ${error.message}` });
     }
 }
 
 // Rota para deletar um doador (DELETE)
 async function deleteDonor(request, response) {
-    // Extrai o ID dos parâmetros da requisição
-    const { id } = request.params;
+    const { id } = request.params; // Pega o id dos parâmetros da requisição
     try {
-        // Remove o doador do banco de dados pelo ID
+        // Remove o doador correspondente ao id fornecido
         const removedDonor = await Donor.findByIdAndRemove(id);
         if (!removedDonor) {
-            // Envia uma resposta de erro se o doador não for encontrado
-            response.status(404).json(`ID ${id} não corresponde a nenhum doador`);
+            response.status(404).json({ message: `ID ${id} não corresponde a nenhum doador` });
         } else {
-            // Envia uma resposta de sucesso
-            response.send(`Doador com ID ${id} removido com sucesso!`);
+            
+            response.json({ message: `Doador com ID ${id} removido com sucesso!` }); // Retorna sucesso se o doador for removido corretamente
         }
     } catch (error) {
-        // Envia uma resposta de erro se algo der errado
-        console.log(error.message);
-        response.status(500).send('Ocorreu um erro ao remover o doador. Por favor, tente novamente.');
+        response.status(500).json({ message: `Ocorreu um erro ao remover o doador. Por favor, tente novamente. Erro: ${error.message}` });
+    }
+}
+
+// Rota para criar uma doação (CREATE)
+async function createDonation(request, response) {
+    const { id } = request.params; // Pega o id dos parâmetros da requisição
+    try {
+        // Procura pelo doador correspondente ao id fornecido
+        const donor = await Donor.findById(id);
+        if (!donor) {
+            response.status(404).json({ message: `ID ${id} não corresponde a nenhum doador` });
+        } else {
+            // Adiciona a data atual ao histórico de doações do doador
+            donor.donationHistory.push({ donationDate: new Date() });
+            await donor.save(); // Salva o doador atualizado no banco de dados
+
+            const stock = await Stock.findOne({}); // Procura pelo estoque de sangue
+            stock[donor.bloodType]++; // Incrementa a quantidade de sangue do tipo sanguíneo do doador no estoque
+            await stock.save(); // Salva o estoque atualizado no banco de dados
+
+
+            response.json({ message: `Nova doação registrada para o doador com ID ${id}!` }); // Retorna sucesso se a doação for registrada corretamente
+        }
+    } catch (error) {
+        response.status(500).json({ message: `Ocorreu um erro ao registrar a doação. Por favor, tente novamente. Erro: ${error.message}` });
     }
 }
 
 // Rota para deletar a última doação de um doador
 async function deleteLastDonation(request, response) {
-    // Extrai o ID dos parâmetros da requisição
-    const { id } = request.params;
+    const { id } = request.params; // Pega o id dos parâmetros da requisição
     try {
-        // Encontra o doador pelo ID
+        // Procura pelo doador correspondente ao id fornecido
         const donor = await Donor.findById(id);
         if (!donor) {
-            // Envia uma resposta de erro se o doador não for encontrado
-            response.status(404).json(`ID ${id} não corresponde a nenhum doador`);
+            response.status(404).json({ message: `ID ${id} não corresponde a nenhum doador` });
         } else {
-            // Verifica se o doador tem um histórico de doações
             if (donor.donationHistory.length > 0) {
-                // Remove a última doação do histórico de doações
-                donor.donationHistory.pop();
-                // Salva o doador atualizado no banco de dados
-                await donor.save();
+                donor.donationHistory.pop(); // Remove a última doação do histórico de doações do doador
+                await donor.save(); // Salva o doador atualizado no banco de dados
 
-                // Atualiza o estoque de sangue
-                const stock = await Stock.findOne({});
-                stock[donor.bloodType]--;
-                await stock.save();
+                const stock = await Stock.findOne({}); // Procura pelo estoque de sangue
+                stock[donor.bloodType]--; // Decrementa a quantidade de sangue do tipo sanguíneo do doador no estoque
+                await stock.save(); // Salva o estoque atualizado no banco de dados
 
-                // Envia uma resposta de sucesso
-                response.send(`Última doação removida para o doador com ID ${id}!`);
+
+                response.json({ message: `Última doação removida para o doador com ID ${id}!` }); // Retorna sucesso se a última doação for removida corretamente
             } else {
-                // Envia uma resposta informando que o doador não tem histórico de doações
-                response.send(`O doador com ID ${id} não tem histórico de doações.`);
+                response.json({ message: `O doador com ID ${id} não tem histórico de doações.` }); // Retorna uma mensagem se o doador não tiver histórico de doações
             }
         }
     } catch (error) {
-        // Envia uma resposta de erro se algo der errado
-        console.log(error.message);
-        response.status(500).send('Ocorreu um erro ao remover a última doação. Por favor, tente novamente.');
+        response.status(500).json({ message: `Ocorreu um erro ao remover a última doação do doador com ID ${id}. Por favor, tente novamente. Erro: ${error.message}` });
     }
 }
 
-// Exporta as funções para serem usadas em outros arquivos
-export { createDonor, getDonors, createDonation, updateDonor, deleteDonor, deleteLastDonation };
+export { createDonor, getDonors, updateDonor, deleteDonor, createDonation, deleteLastDonation }; // Exporta as funções para serem usadas em outros arquivos
