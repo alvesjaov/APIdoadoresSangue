@@ -9,7 +9,7 @@ async function createDonor(request, response) {
     // Se donationHistory não existir, inicializa como um array vazio
     donor.donationHistory = donor.donationHistory || [];
     // Adiciona a data atual ao histórico de doações
-    donor.donationHistory.push({ donationDate: new Date() });
+    donor.donationHistory.push({ donationDate: new Date().toISOString().slice(0, 10) });
     const newDonor = new Donor(donor); // Cria um novo doador com os dados fornecidos
     
     const stock = await Stock.findOne({}); // Procura pelo estoque de sangue
@@ -107,7 +107,7 @@ async function createDonation(request, response) {
             response.status(404).json({ message: `ID ${id} não corresponde a nenhum doador` });
         } else {
             // Adiciona a data atual ao histórico de doações do doador
-            donor.donationHistory.push({ donationDate: new Date() });
+            donor.donationHistory.push({ donationDate: new Date().toISOString().slice(0, 10) });
             await donor.save(); // Salva o doador atualizado no banco de dados
 
             const stock = await Stock.findOne({}); // Procura pelo estoque de sangue
