@@ -49,7 +49,7 @@ async function updateStock(allCounts) {
 // Função principal para contar e atualizar os tipos sanguíneos
 async function countAndUpdateBloodTypes(_, response) {
     try {
-        const currentDate = new Date().toISOString().slice(0, 10);
+        const currentDate = new Date(); // Pega a data atual (data de hoje
 
         // Remove as doações expiradas
         await removeExpiredDonations(currentDate);
