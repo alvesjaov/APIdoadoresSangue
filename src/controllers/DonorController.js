@@ -11,11 +11,7 @@ async function createDonor(request, response) {
     // Adiciona a data atual ao histórico de doações
     donor.donationHistory.push({ donationDate: new Date().toISOString().slice(0, 10) });
     const newDonor = new Donor(donor); // Cria um novo doador com os dados fornecidos
-    
-    const stock = await Stock.findOne({}); // Procura pelo estoque de sangue
-    stock[donor.bloodType]++; // Incrementa a quantidade de sangue do tipo sanguíneo do doador no estoque
-    await stock.save(); // Salva o estoque atualizado no banco de dados
-
+  
     try {
         //  Verifica se o CPF é válido
         if (!cpf.isValid(donor.CPF)) {
@@ -109,11 +105,6 @@ async function createDonation(request, response) {
             // Adiciona a data atual ao histórico de doações do doador
             donor.donationHistory.push({ donationDate: new Date().toISOString().slice(0, 10) });
             await donor.save(); // Salva o doador atualizado no banco de dados
-
-            const stock = await Stock.findOne({}); // Procura pelo estoque de sangue
-            stock[donor.bloodType]++; // Incrementa a quantidade de sangue do tipo sanguíneo do doador no estoque
-            await stock.save(); // Salva o estoque atualizado no banco de dados
-
 
             response.json({ message: `Nova doação registrada para o doador com ID ${id}!` }); // Retorna sucesso se a doação for registrada corretamente
         }
