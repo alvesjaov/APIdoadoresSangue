@@ -69,7 +69,7 @@ donorSchema.pre('save', function (next) {
     lastDonation.donationDate = new Date();
 
     // Calcular a próxima data de doação com base no sexo do doado
-    const nextDonationDelay = this.Sex === 'M' ? 3 : 4;
+    const nextDonationDelay = this.sex === 'M' ? 3 : 4;
     lastDonation.nextDonationDate = new Date(new Date().getTime() + nextDonationDelay * 30 * 24 * 60 * 60 * 1000);
 
     // Definir a data de validade para a doação
