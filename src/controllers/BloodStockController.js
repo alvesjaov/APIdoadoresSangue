@@ -16,7 +16,7 @@ async function countBloodTypes(currentDate) {
     const bloodTypeCounts = await Donor.aggregate([
         { $unwind: '$donationHistory' },
         { $match: { 'donationHistory._id': { $exists: true }, 'donationHistory.expiryDate': { $gte: currentDate } } },
-        { $group: { _id: '$bloodType', count: { $sum: 1 } } },
+        { $group: { _id: '$donationHistory.bloodTypeResult', count: { $sum: 1 } } },
         { $sort: { _id: 1 } }
     ]);
     return bloodTypeCounts;
