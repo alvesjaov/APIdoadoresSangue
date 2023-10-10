@@ -20,6 +20,42 @@ async function createDonation(request, response) {
     }
 }
 
+// Função assíncrona para adicionar exames de sangue (UPDATE)
+async function addBloodExams(request, response) {
+    // Desestruturação do corpo da requisição para obter os resultados dos exames de sangue
+    const { bloodTypeResult, exams, examsResult } = request.body;
+
+    // Pega o ID da doação da rota
+    const { id } = request.params;
+
+    try {
+      // Procura um doador que tenha uma doação com o ID especificado
+      const donor = await Donor.findOne({ "donationHistory._id": id });
+
+      // Se o doador for encontrado, recupera a doação do histórico de doações do doador
+      const donation = donor ? donor.donationHistory.id(id) : null;
+  
+      // Se o doador ou a doação não forem encontrados, retorna uma mensagem de erro
+      if (!donor || !donation) {
+        return response.status(404).json({ message: `Doação não encontrados` });
+      }
+      
+      // Atualiza os resultados dos exames de sangue na doação
+      donation.bloodTypeResult = bloodTypeResult;
+      donation.exams = exams;
+      donation.examsResult = examsResult;
+  
+      // Salva o documento doador atualizado no banco de dados
+      await donor.save();
+  
+      // Retorna uma resposta indicando que os exames de sangue foram adicionados com sucesso
+      response.status(200).json({ message: `Tipagem sanguínea e exames adicionados com sucesso` });
+    } catch (error) {
+      // Em caso de erro, retorna uma mensagem de erro
+      response.status(500).json({ message: `Ocorreu um erro ao adicionar a tipagem sanguínea e os exames. Por favor, tente novamente. Erro: ${error.message}` });
+    }
+}
+
 // Rota para deletar a última doação de um doador (DELETE)
 async function deleteLastDonation(request, response) {
     const { id } = request.params; // Pega o id dos parâmetros da requisição
@@ -44,4 +80,4 @@ async function deleteLastDonation(request, response) {
     }
 }
 
-export { createDonation, deleteLastDonation } // Exporta as funções para serem usadas em outros arquivos
+export { createDonation, addBloodExams, deleteLastDonation } // Exporta as funções para serem usadas em outros arquivos
