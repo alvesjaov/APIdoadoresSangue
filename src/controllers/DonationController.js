@@ -10,7 +10,7 @@ async function createDonation(request, response) {
             response.status(404).json({ message: `ID ${id} não corresponde a nenhum doador` });
         } else {
             // Adiciona a data atual ao histórico de doações do doador
-            donor.donationHistory.push({ donationDate: new Date().toISOString().slice(0, 10) });
+            donor.donationHistory.push({ donationDate: new Date() });
             await donor.save(); // Salva o doador atualizado no banco de dados
 
             response.json({ message: `Nova doação registrada para o doador com ID ${id}!` }); // Retorna sucesso se a doação for registrada corretamente
@@ -23,36 +23,46 @@ async function createDonation(request, response) {
 // Função assíncrona para adicionar exames de sangue (UPDATE)
 async function addBloodExams(request, response) {
     // Desestruturação do corpo da requisição para obter os resultados dos exames de sangue
-    const { bloodTypeResult, exams, examsResult } = request.body;
+    const { bloodType, exams, examsResult } = request.body;
 
     // Pega o ID da doação da rota
     const { id } = request.params;
 
     try {
-      // Procura um doador que tenha uma doação com o ID especificado
-      const donor = await Donor.findOne({ "donationHistory._id": id });
+        // Procura um doador que tenha uma doação com o ID especificado
+        const donor = await Donor.findOne({ "donationHistory._id": id });
 
-      // Se o doador for encontrado, recupera a doação do histórico de doações do doador
-      const donation = donor ? donor.donationHistory.id(id) : null;
-  
-      // Se o doador ou a doação não forem encontrados, retorna uma mensagem de erro
-      if (!donor || !donation) {
-        return response.status(404).json({ message: `Doação não encontrados` });
-      }
-      
-      // Atualiza os resultados dos exames de sangue na doação
-      donation.bloodTypeResult = bloodTypeResult;
-      donation.exams = exams;
-      donation.examsResult = examsResult;
-  
-      // Salva o documento doador atualizado no banco de dados
-      await donor.save();
-  
-      // Retorna uma resposta indicando que os exames de sangue foram adicionados com sucesso
-      response.status(200).json({ message: `Tipagem sanguínea e exames adicionados com sucesso` });
+        // Se o doador for encontrado, recupera a doação do histórico de doações do doador
+        const donation = donor ? donor.donationHistory.id(id) : null;
+
+        // Se o doador ou a doação não forem encontrados, retorna uma mensagem de erro
+        if (!donor || !donation) {
+            return response.status(404).json({ message: `Doação não encontrada` });
+        }
+
+        // Verifica se já existe um bloodTest para a doação atual
+        if (donation.bloodTest && donation.bloodTest.length > 0) {
+            return response.status(400).json({ message: `Já existe um exame de sangue para esta doação.` });
+        }
+
+        // Cria um novo objeto bloodTest
+        const newBloodTest = {
+            bloodType: bloodType,
+            exams: exams,
+            examsResult: examsResult
+        };
+
+        // Adiciona o novo objeto bloodTest ao array bloodTest da doação
+        donation.bloodTest.push(newBloodTest);
+
+        // Salva o documento doador atualizado no banco de dados
+        await donor.save();
+
+        // Retorna uma resposta indicando que os exames de sangue foram adicionados com sucesso
+        response.status(200).json({ message: `Tipagem sanguínea e exames adicionados com sucesso` });
     } catch (error) {
-      // Em caso de erro, retorna uma mensagem de erro
-      response.status(500).json({ message: `Ocorreu um erro ao adicionar a tipagem sanguínea e os exames. Por favor, tente novamente. Erro: ${error.message}` });
+        // Em caso de erro, retorna uma mensagem de erro
+        response.status(500).json({ message: `Ocorreu um erro ao adicionar a tipagem sanguínea e os exames. Por favor, tente novamente. Erro: ${error.message}` });
     }
 }
 
