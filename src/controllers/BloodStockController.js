@@ -10,13 +10,13 @@ async function removeExpiredDonations(currentDate) {
     );
 }
 
-// Função para contar os tipos sanguíneos
 async function countBloodTypes(currentDate) {
     // Agrega os doadores por tipo sanguíneo e conta o número de doações não expiradas para cada tipo sanguíneo
     const bloodTypeCounts = await Donor.aggregate([
         { $unwind: '$donationHistory' },
-        { $match: { 'donationHistory._id': { $exists: true }, 'donationHistory.expiryDate': { $gte: currentDate } } },
-        { $group: { _id: '$donationHistory.bloodTypeResult', count: { $sum: 1 } } },
+        { $unwind: '$donationHistory.bloodTest' },
+        { $match: { 'donationHistory._id': { $exists: true }, 'donationHistory.expiryDate': { $gte: currentDate }, 'donationHistory.bloodTest._id': { $exists: true } } },
+        { $group: { _id: '$donationHistory.bloodTest.bloodType', count: { $sum: 1 } } },
         { $sort: { _id: 1 } }
     ]);
     return bloodTypeCounts;
@@ -69,5 +69,4 @@ async function countAndUpdateBloodTypes(_, response) {
     }
 }
 
-// Exporta a função principal
-export default countAndUpdateBloodTypes
+export default countAndUpdateBloodTypes // Exporta a função principal
