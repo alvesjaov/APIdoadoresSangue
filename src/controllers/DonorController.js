@@ -8,7 +8,7 @@ async function createDonor(request, response) {
     // Se donationHistory não existir, inicializa como um array vazio
     donor.donationHistory = donor.donationHistory || [];
     // Adiciona a data atual ao histórico de doações
-    donor.donationHistory.push({ donationDate: new Date().toISOString().slice(0, 10) });
+    donor.donationHistory.push({ donationDate: new Date() });
     const newDonor = new Donor(donor); // Cria um novo doador com os dados fornecidos
 
     try {
@@ -90,6 +90,5 @@ async function deleteDonor(request, response) {
         response.status(500).json({ message: `Ocorreu um erro ao remover o doador. Por favor, tente novamente. Erro: ${error.message}` });
     }
 }
-
 
 export { createDonor, getDonors, updateDonor, deleteDonor }; // Exporta as funções para serem usadas em outros arquivos
