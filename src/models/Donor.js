@@ -50,15 +50,21 @@ const donorSchema = mongoose.Schema({
     nextDonationDate: {
       type: Date,
     },
-    bloodTypeResult: {
-      type: String
-    },
-    exams: {
-      type: [String]
-    },
-    examsResult: {
-      type: String
-    }
+    bloodTest: [{
+      _id: {
+        type: mongoose.Schema.Types.ObjectId,
+        auto: true,
+      },
+      bloodType: {
+        type: String
+      },
+      exams: {
+        type: [String]
+      },
+      examsResult: {
+        type: String
+      }
+    }]
   }]
 }, { versionKey: false });
 
