@@ -1,15 +1,6 @@
 import Donor from '../models/Donor.js';
 import Stock from '../models/Stock.js';
 
-// Função para remover doações expiradas
-async function removeExpiredDonations(currentDate) {
-    // Atualiza todos os doadores removendo as doações expiradas de seu histórico de doações
-    await Donor.updateMany(
-        { donationHistory: { $elemMatch: { _id: { $exists: true }, expiryDate: { $lt: currentDate } } } },
-        { $pull: { donationHistory: { _id: { $exists: true }, expiryDate: { $lt: currentDate } } } }
-    );
-}
-
 async function countBloodTypes(currentDate) {
     // Agrega os doadores por tipo sanguíneo e conta o número de doações não expiradas para cada tipo sanguíneo
     const bloodTypeCounts = await Donor.aggregate([
