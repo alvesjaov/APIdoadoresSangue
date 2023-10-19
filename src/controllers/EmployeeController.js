@@ -105,9 +105,9 @@ async function updateEmployeePassword(request, response) {
 // Rota para deletar funcionário (DELETE)
 async function deleteEmployee(request, response) {
   try {
-    const { id } = request.params;
+    const employeeCode  = request.params.code; // Obtém o código do funcionário da URL
 
-    const removeEmployee = await Employee.findByIdAndRemove(id);// Procura pelo funcionário com o id fornecido e o remove
+    const removeEmployee = await Employee.findOneAndRemove({ employeeCode: employeeCode }); // Procura pelo funcionário com o código fornecido e o remove
 
     if (!removeEmployee) {
       return response.status(404).json({ message: 'Funcionário não encontrado.' });
@@ -118,5 +118,6 @@ async function deleteEmployee(request, response) {
     response.status(500).json({ message: `Ocorreu um erro ao deletar o funcionário. Por favor, tente novamente. Erro: ${error.message}` });
   }
 }
+
 
 export { createEmployee, readEmployee, updateEmployeePassword, deleteEmployee };
