@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import preSave from '../middleware/PreSave.js'; // Importe a função de middleware
 
 const donorSchema = mongoose.Schema({
   _id: {
@@ -68,22 +69,6 @@ const donorSchema = mongoose.Schema({
   }]
 }, { versionKey: false });
 
-
-donorSchema.pre('save', function (next) {
-  if (this.donationHistory.length > 0) {
-    const lastDonation = this.donationHistory[this.donationHistory.length - 1];
-    lastDonation.donationDate = new Date();
-
-    // Calcular a próxima data de doação com base no sexo do doado
-    const nextDonationDelay = this.sex === 'M' ? 3 : 4;
-    lastDonation.nextDonationDate = new Date(new Date().getTime() + nextDonationDelay * 30 * 24 * 60 * 60 * 1000);
-
-    // Definir a data de validade para a doação
-    lastDonation.expiryDate = new Date(new Date().getTime() + 1 * 24 * 60 * 60 * 1000);
-
-  }
-
-  next();
-});
+donorSchema.pre('save', preSave); // Use a função de middleware
 
 export default mongoose.model('Donor', donorSchema);
