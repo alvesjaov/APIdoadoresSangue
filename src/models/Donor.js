@@ -15,8 +15,8 @@ const donorSchema = mongoose.Schema({
     required: true,
     not: null
   },
-  age: {
-    type: Number,
+  birthDate: {
+    type: Date,
     required: true,
     not: null
   },
