@@ -107,17 +107,22 @@ async function deleteEmployee(request, response) {
   try {
     const employeeCode  = request.params.code; // Obtém o código do funcionário da URL
 
-    const removeEmployee = await Employee.findOneAndRemove({ employeeCode: employeeCode }); // Procura pelo funcionário com o código fornecido e o remove
+    const employee = await Employee.findOne({ employeeCode: employeeCode }); // Procura pelo funcionário com o código fornecido
 
-    if (!removeEmployee) {
+    if (!employee) {
       return response.status(404).json({ message: 'Funcionário não encontrado.' });
     }
+
+    if (employee.isAdmin) { // Verifica se o funcionário é um administrador
+      return response.status(403).json({ message: 'Não é possível deletar um administrador.' });
+    }
+
+    await Employee.findOneAndRemove({ employeeCode: employeeCode }); // Remove o funcionário
 
     return response.json({ message: 'Funcionário deletado com sucesso!' });
   } catch (error) {
     response.status(500).json({ message: `Ocorreu um erro ao deletar o funcionário. Por favor, tente novamente. Erro: ${error.message}` });
   }
 }
-
 
 export { createEmployee, readEmployee, updateEmployeePassword, deleteEmployee };
