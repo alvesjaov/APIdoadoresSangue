@@ -21,6 +21,18 @@ async function createDonor(request, response) {
         if (existingDonor) {
             return response.status(400).json({ message: 'Um doador com os mesmos dados já existe.' });
         }
+        
+        // Calcula a idade do doador
+        const birthDate = new Date(donor.birthDate);
+        const ageDifMs = Date.now() - birthDate.getTime();
+        const ageDate = new Date(ageDifMs);
+        const age = Math.abs(ageDate.getUTCFullYear() - 1970);
+
+        // Verifica se a idade está entre 18 e 69 anos
+        if (age < 18 || age > 69) {
+            return response.status(400).json({ message: 'Desculpe, apenas pessoas entre 18 e 69 anos podem doar sangue.' });
+        }
+
         // Salva o novo doador no banco de dados
         await newDonor.save();
         response.status(201).json({ message: 'Doador cadastrado com sucesso!' });
