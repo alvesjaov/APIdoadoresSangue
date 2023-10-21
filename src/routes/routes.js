@@ -18,7 +18,7 @@ routes.delete('/donors/:id/donation', deleteLastDonation); // Rota para deletar 
 
 routes.get('/stock', countAndUpdateBloodTypes); // Rota para atualizar o estoque de sangue
 
-routes.post('/employees', verifyAdmin, createEmployee); // Rota para criar um funcionário
+routes.post('/employees', createEmployee); // Rota para criar um funcionário
 routes.get('/employees/:code?', verifyAdmin, readEmployee); // Rota para ler funcionários. O código do funcionário é opcional
 routes.patch('/employees/:code/password', verifyAdmin, updateEmployeePassword); // Rota para alterar a senha de um funcionário
 routes.delete('/employees/:code', verifyAdmin, deleteEmployee); // Rota para deletar um funcionário
