@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { createDonor, getDonors, updateDonor, deleteDonor } from '../controllers/DonorController.js';
-import { createDonation, addBloodExams, deleteLastDonation } from '../controllers/DonationController.js';
+import { createDonation,readDonation, addBloodExams, deleteLastDonation } from '../controllers/DonationController.js';
 import countAndUpdateBloodTypes from '../controllers/BloodStockController.js';
 import { createEmployee, readEmployee, updateEmployeePassword, deleteEmployee } from '../controllers/EmployeeController.js'; // Importe a função createEmployee
 import verifyAdmin from '../middleware/VerifyAdmin.js';
@@ -13,6 +13,7 @@ routes.patch('/donors/:id', updateDonor); // Rota para atualizar um doador
 routes.delete('/donors/:id', deleteDonor); // Rota para deletar um doador
 
 routes.post('/donors/:id/donation', createDonation); // Rota para criar uma doação
+routes.get('/donors/donation/:id', readDonation); // Rota para ler uma doação específica
 routes.post('/donors/:id/exams', addBloodExams); // Rota para adicionar exames de sangue
 routes.delete('/donors/:id/donation', deleteLastDonation); // Rota para deletar a última doação
 

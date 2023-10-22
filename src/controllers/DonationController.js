@@ -20,6 +20,30 @@ async function createDonation(request, response) {
     }
 }
 
+// Rota para ler uma doação específica (READ)
+async function readDonation(request, response) {
+    const { id } = request.params; // Pega o id dos parâmetros da requisição
+
+    try {
+        // Procura pelo doador que tem uma doação com o id fornecido
+        const donor = await Donor.findOne({ "donationHistory._id": id });
+
+        // Se o doador for encontrado, recupera a doação do histórico de doações do doador
+        const donation = donor ? donor.donationHistory.id(id) : null;
+
+        // Se o doador ou a doação não forem encontrados, retorna uma mensagem de erro
+        if (!donor || !donation) {
+            return response.status(404).json({ message: `Doação não encontrada` });
+        }
+
+        // Retorna a doação
+        response.json(donation);
+    } catch (error) {
+        // Em caso de erro, retorna uma mensagem de erro
+        response.status(500).json({ message: `Ocorreu um erro ao ler a doação. Por favor, tente novamente. Erro: ${error.message}` });
+    }
+}
+
 // Função assíncrona para adicionar exames de sangue (UPDATE)
 async function addBloodExams(request, response) {
     // Desestruturação do corpo da requisição para obter os resultados dos exames de sangue
@@ -90,4 +114,4 @@ async function deleteLastDonation(request, response) {
     }
 }
 
-export { createDonation, addBloodExams, deleteLastDonation } // Exporta as funções para serem usadas em outros arquivos
+export { createDonation, readDonation, addBloodExams, deleteLastDonation } // Exporta as funções para serem usadas em outros arquivos
