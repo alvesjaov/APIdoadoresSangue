@@ -7,8 +7,6 @@ async function createDonor(request, response) {
     const donor = request.body;
     // Se donationHistory não existir, inicializa como um array vazio
     donor.donationHistory = donor.donationHistory || [];
-    // Adiciona a data atual ao histórico de doações
-    donor.donationHistory.push({ donationDate: new Date() });
     const newDonor = new Donor(donor); // Cria um novo doador com os dados fornecidos
 
     try {
