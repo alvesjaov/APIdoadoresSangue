@@ -2,7 +2,7 @@ import { Router } from 'express';
 import { createDonor, getDonors, updateDonor, deleteDonor } from '../controllers/DonorController.js';
 import { createDonation,readDonation, addBloodExams, deleteLastDonation } from '../controllers/DonationController.js';
 import countAndUpdateBloodTypes from '../controllers/BloodStockController.js';
-import { createEmployee, readEmployee, updateEmployeePassword, deleteEmployee } from '../controllers/EmployeeController.js'; // Importe a função createEmployee
+import { createEmployee, readEmployee, updateEmployeePassword, deleteEmployee, loginEmployee } from '../controllers/EmployeeController.js'; // Importe a função loginEmployee
 import verifyAdmin from '../middleware/VerifyAdmin.js';
 
 const routes = Router();
@@ -23,5 +23,6 @@ routes.post('/employees', verifyAdmin, createEmployee); // Rota para criar um fu
 routes.get('/employees/:code?', verifyAdmin, readEmployee); // Rota para ler funcionários. O código do funcionário é opcional
 routes.patch('/employees/:code/password', verifyAdmin, updateEmployeePassword); // Rota para alterar a senha de um funcionário
 routes.delete('/employees/:code', verifyAdmin, deleteEmployee); // Rota para deletar um funcionário
+routes.post('/login', loginEmployee); // Rota para login de um funcionário
 
 export default routes;
