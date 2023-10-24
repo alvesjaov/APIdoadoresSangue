@@ -2,6 +2,8 @@ import express from "express";
 import mongoose from "mongoose";
 import routes from "./src/routes/routes.js";
 import dotenv from "dotenv";
+import passport from "passport"; // Importa o passport
+import configurePassport from "./src/middleware/PassportConfig.js"; // Importa a função configurePassport
 
 dotenv.config(); // Carrega as variáveis de ambiente do arquivo .env
 const app = express();
@@ -17,6 +19,8 @@ async function startServer() {
     });
 
     app.use(express.json());
+    app.use(passport.initialize()); // Inicializa o Passport.js
+    await configurePassport(); // Configura a estratégia JWT
     app.use(routes);
 
     app.listen(PORT, () => {
