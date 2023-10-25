@@ -4,9 +4,9 @@ import { verifyEmployee } from '../middleware/Verify.js';
 
 const donorRoutes = Router();
 
-donorRoutes.post('', verifyEmployee, createDonor); // Rota para criar um doador
-donorRoutes.get('/:id?', verifyEmployee, getDonors); // O id é opcional
-donorRoutes.patch('/:id', verifyEmployee, updateDonor); // Rota para atualizar um doador
-donorRoutes.delete('/:id', verifyEmployee, deleteDonor); // Rota para deletar um doador
+donorRoutes.post('/donors', verifyEmployee, createDonor); // Rota para criar um doador
+donorRoutes.get('/donors/:id?', verifyEmployee, getDonors); // O id é opcional
+donorRoutes.patch('/donors/:id', verifyEmployee, updateDonor); // Rota para atualizar um doador
+donorRoutes.delete('/donors/:id', verifyEmployee, deleteDonor); // Rota para deletar um doador
 
 export default donorRoutes;

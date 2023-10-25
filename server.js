@@ -4,10 +4,10 @@ import dotenv from "dotenv";
 import passport from "passport";
 
 // Importando rotas
-import donorRoutes from './routes/donorRoutes.js';
-import donationRoutes from './routes/donationRoutes.js';
-import stockRoutes from './routes/stockRoutes.js';
-import employeeRoutes from './routes/employeeRoutes.js';
+import donorRoutes from './src/routes/donorRoutes.js';
+import donationRoutes from './src/routes/donationRoutes.js';
+import stockRoutes from './src/routes/stockRoutes.js';
+import employeeRoutes from './src/routes/employeeRoutes.js';
 
 // Importando configuração do Passport
 import configurePassport from "./src/middleware/PassportConfig.js";
@@ -32,10 +32,11 @@ async function startServer() {
     await configurePassport(); // Configura a estratégia JWT
 
     // Configurando rotas
-    app.use('/donors', donorRoutes);
-    app.use('/donations', donationRoutes);
-    app.use('/stock', stockRoutes);
-    app.use('/employees', employeeRoutes);
+
+    app.use(donorRoutes);
+    app.use(donationRoutes);
+    app.use(stockRoutes);
+    app.use(employeeRoutes);
 
     app.listen(PORT, () => {
       console.log(`Serviço rodando na porta ${PORT} e conexão com MongoDB estabelecida com sucesso.`);
