@@ -1,4 +1,3 @@
-// Importando o módulo 'passport' para autenticação
 import passport from 'passport';
 
 // Função assíncrona para verificar se o usuário é um administrador

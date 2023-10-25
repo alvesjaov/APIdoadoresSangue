@@ -1,7 +1,6 @@
-// Importando os módulos necessários
 import passport from 'passport';
 import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt';
-import Employee from '../models/Employee.js'; // Importa o modelo Employee
+import Employee from '../models/Employee.js';
 
 // Função assíncrona para configurar o passport
 async function configurePassport() {

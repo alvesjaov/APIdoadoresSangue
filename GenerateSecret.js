@@ -1,4 +1,5 @@
 // no terminal node generateSecret.js
+
 import fs from 'fs';
 import crypto from 'crypto';
 
