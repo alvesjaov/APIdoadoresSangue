@@ -2,8 +2,8 @@ import express from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import passport from 'passport';
-import { readFile } from 'fs/promises';
 import swaggerUi from 'swagger-ui-express';
+import { createRequire } from 'module';
 
 // Importando rotas
 import loginRoutes from './src/routes/loginRoutes.js';
@@ -15,30 +15,33 @@ import stockRoutes from './src/routes/stockRoutes.js';
 // Importando configuração do Passport
 import configurePassport from './src/middleware/PassportConfig.js';
 
-dotenv.config(); // Carrega as variáveis de ambiente do arquivo .env
+// Configurando dotenv
+dotenv.config();
 
+// Configurando express e variáveis de ambiente
 const app = express();
 const PORT = process.env.PORT || 3000;
 const MONGODB_URI = process.env.MONGODB_URI;
 
-// Função para obter o documento Swagger
-async function getSwaggerDocument() {
-  const data = await readFile('./swagger.json');
-  return JSON.parse(data);
-}
+// Configurando require para importação de JSON
+const require = createRequire(import.meta.url);
+const swaggerDocument = require('./swagger.json');
 
-// Conecta-se ao MongoDB e inicia o servidor Express
+// Função para iniciar o servidor
 async function startServer() {
   try {
+    // Conectando ao MongoDB
     await mongoose.connect(MONGODB_URI, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
 
+    // Configurando middleware do express e Passport
     app.use(express.json());
-    app.use(passport.initialize()); // Inicializa o Passport.js
+    app.use(passport.initialize());
 
-    await configurePassport(); // Configura a estratégia JWT
+    // Configurando estratégia JWT do Passport
+    await configurePassport();
 
     // Configurando rotas
     app.use(loginRoutes);
@@ -46,12 +49,11 @@ async function startServer() {
     app.use(donorRoutes);
     app.use(donationRoutes);
     app.use(stockRoutes);
-    
 
     // Configurando Swagger UI
-    const swaggerDocument = await getSwaggerDocument();
     app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
+    // Iniciando o servidor
     app.listen(PORT, () => {
       console.log(`Serviço rodando na porta ${PORT} e conexão com MongoDB estabelecida com sucesso.`);
     });
@@ -60,4 +62,5 @@ async function startServer() {
   }
 }
 
+// Iniciando o servidor
 startServer();
