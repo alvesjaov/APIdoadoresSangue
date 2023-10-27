@@ -23,6 +23,9 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const MONGODB_URI = process.env.MONGODB_URI;
 
+// Configurando middleware do express para servir arquivos estáticos
+app.use(express.static('.')); // serve arquivos estáticos do diretório raiz
+
 // Configurando require para importação de JSON
 const require = createRequire(import.meta.url);
 const swaggerDocument = require('./swagger.json');
