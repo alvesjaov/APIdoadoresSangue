@@ -1,0 +1,163 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "API Doadores de sangue",
+        "description": "Essa API é um sistema de gerenciamento de doações de sangue, com quatro componentes principais: Doador, Doação, Estoque de Sangue e Funcionário. Ela permite a manipulação de informações e facilita o controle e a organização do processo de doação de sangue.",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:3000",
+            "description": "Api de teste"
+        }
+    ],
+    "tags": [
+        {
+            "name": "Login",
+            "description": "Endpoints relacionados ao login"
+        },
+        {
+            "name": "Funcionário",
+            "description": "Endpoints relacionados ao funcionário"
+        },
+        {
+            "name": "Doador",
+            "description": "Endpoints relacionados ao doador"
+        },
+        {
+            "name": "Doação",
+            "description": "Endpoints relacionados a doação"
+        },
+        {
+            "name": "Estoque de Sangue",
+            "description": "Endpoints relacionados ao estoque de sangue"
+        }
+    ],
+    "paths": {
+        "/login": {
+            "post": {
+                "tags": [
+                    "Login"
+                ],
+                "summary": "Login",
+                "description": "Realiza o login do funcionário **(apenas funcionários cadastrados)**",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Login"
+                            },
+                            "examples": {
+                                "Admin": {
+                                    "value": {
+                                        "employeeCode": 877018,
+                                        "password": "1234teste"
+                                    }
+                                },
+                                "Santiago - funcionário": {
+                                    "value": {
+                                        "employeeCode": 458304,
+                                        "password": "12345678"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Login realizado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Login"
+                                },
+                                "examples": {
+                                    "ServerAnswer": {
+                                        "value": {
+                                            "message": "Login realizado com sucesso"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Erro no login",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "examples": {
+                                    "InvalidEmployeeCode": {
+                                        "value": {
+                                            "error": "O código fornecido não pertence a nenhum funcionário."
+                                        }
+                                    },
+                                    "InvalidPassword": {
+                                        "value": {
+                                            "error": "Senha inválida."
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Ocorreu um erro ao realizar o login. Por favor, tente novamente.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                },
+                                "examples": {
+                                    "ServerError": {
+                                        "value": {
+                                            "error": "Ocorreu um erro ao realizar o login. Por favor, tente novamente."
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Login": {
+                "type": "object",
+                "properties": {
+                    "employeeCode": {
+                        "type": "number"
+                    },
+                    "password": {
+                        "type": "string"
+                    }
+                }
+            },
+            "Error": {
+                "type": "object",
+                "properties": {
+                    "error": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
+            }
+        }
+    }
+}
