@@ -12,7 +12,7 @@
             "dest": "/server.js"
         },
         {
-            "src": "/swagger.json",
+            "src": "/(.*)",
             "dest": "/swagger.json"
         }
     ]
