@@ -10,6 +10,10 @@
         {
             "src": "/(.*)",
             "dest": "/server.js"
+        },
+        {
+            "src": "/api-docs",
+            "dest": "/swagger.json"
         }
     ]
 }
