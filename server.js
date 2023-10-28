@@ -6,7 +6,11 @@ import swaggerUi from 'swagger-ui-express';
 import { createRequire } from 'module';
 
 // Importando rotas
-import routes from './src/routes/indexRoutes.js';
+import loginRoutes from './src/routes/loginRoutes.js';
+import employeeRoutes from './src/routes/employeeRoutes.js';
+import donorRoutes from './src/routes/donorRoutes.js';
+import donationRoutes from './src/routes/donationRoutes.js';
+import stockRoutes from './src/routes/stockRoutes.js';
 
 // Importando configuração do Passport
 import configurePassport from './src/middleware/PassportConfig.js';
@@ -40,7 +44,11 @@ async function startServer() {
     await configurePassport();
 
     // Configurando rotas
-    routes(app);
+    app.use('/login', loginRoutes);
+    app.use('/employee', employeeRoutes);
+    app.use('/donor', donorRoutes);
+    app.use('/donation', donationRoutes);
+    app.use('/stock', stockRoutes);
 
     // Configurando Swagger UI
     app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, {
