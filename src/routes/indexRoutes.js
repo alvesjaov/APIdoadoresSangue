@@ -7,10 +7,10 @@ import donationRoutes from '../routes/donationRoutes.js';
 import stockRoutes from '../routes/stockRoutes.js';
 
 const routes = Router();
-routes.use(loginRoutes);
-routes.use(employeeRoutes);
-routes.use(donorRoutes);
-routes.use(donationRoutes);
-routes.use(stockRoutes);
+routes.use('/login', loginRoutes);
+routes.use('/employee', employeeRoutes);
+routes.use('/donor', donorRoutes);
+routes.use('/donation', donationRoutes);
+routes.use('/stock', stockRoutes);
 
 export default routes; // Exportando rotas
