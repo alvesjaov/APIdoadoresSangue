@@ -40,7 +40,7 @@ async function startServer() {
     await configurePassport();
 
     // Configurando rotas
-    app.use(routes);
+    routes(app);
 
     // Configurando Swagger UI
     app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, {

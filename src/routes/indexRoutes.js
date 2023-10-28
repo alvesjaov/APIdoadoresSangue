@@ -6,11 +6,12 @@ import donorRoutes from '../routes/donorRoutes.js';
 import donationRoutes from '../routes/donationRoutes.js';
 import stockRoutes from '../routes/stockRoutes.js';
 
-const routes = Router();
-routes.use('/login', loginRoutes);
-routes.use('/employee', employeeRoutes);
-routes.use('/donor', donorRoutes);
-routes.use('/donation', donationRoutes);
-routes.use('/stock', stockRoutes);
+const routes = (app) => {
+    app.use('/login', loginRoutes);
+    app.use('/employee', employeeRoutes);
+    app.use('/donor', donorRoutes);
+    app.use('/donation', donationRoutes);
+    app.use('/stock', stockRoutes);
+};
 
 export default routes; // Exportando rotas
