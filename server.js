@@ -44,7 +44,9 @@ async function startServer() {
     
 
     // Configurando Swagger UI
-    app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+    app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, {
+      customCssUrl: 'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.15.5/swagger-ui.min.css',
+    }));
 
     // Iniciando o servidor
     app.listen(PORT, () => {
