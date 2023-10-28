@@ -40,7 +40,7 @@ async function createDonor(request, response) {
 }
 
 // Rota para obter doadores (READ)
-async function getDonors(request, response) {
+async function getDonor(request, response) {
     const { id } = request.params; // Pega o id dos parâmetros da requisição
 
     try {
@@ -101,4 +101,4 @@ async function deleteDonor(request, response) {
     }
 }
 
-export { createDonor, getDonors, updateDonor, deleteDonor }; // Exporta as funções para serem usadas em outros arquivos
+export { createDonor, getDonor, updateDonor, deleteDonor }; // Exporta as funções para serem usadas em outros arquivos
