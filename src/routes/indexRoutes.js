@@ -6,10 +6,10 @@ import stockRoutes from './stockRoutes.js';
 import { Router } from 'express';
 
 const routes = Router();
-routes.use('/login', loginRoutes);
-routes.use('/employee', employeeRoutes);
-routes.use('/donors', donorRoutes);
-routes.use('/donation', donationRoutes);
-routes.use('/stock', stockRoutes);
+routes.use(loginRoutes);
+routes.use(employeeRoutes);
+routes.use(donorRoutes);
+routes.use(donationRoutes);
+routes.use(stockRoutes);
 
 export default routes;
