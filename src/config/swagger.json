@@ -66,14 +66,14 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "Login realizado com sucesso",
+                        "description": "OK",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/Login"
                                 },
                                 "examples": {
-                                    "ServerAnswer": {
+                                    "ServerResponse": {
                                         "value": {
                                             "message": "Login realizado com sucesso"
                                         }
@@ -83,7 +83,7 @@
                         }
                     },
                     "400": {
-                        "description": "Erro no login",
+                        "description": "Bad Request",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -110,7 +110,7 @@
                         }
                     },
                     "500": {
-                        "description": "Ocorreu um erro ao realizar o login. Por favor, tente novamente.",
+                        "description": "Internal Server Error",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -120,6 +120,317 @@
                                     "ServerError": {
                                         "value": {
                                             "error": "Ocorreu um erro ao realizar o login. Por favor, tente novamente."
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/employee": {
+            "post": {
+                "tags": [
+                    "Funcionário"
+                ],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "summary": "Cria um novo funcionário",
+                "description": "Cria um novo funcionário com os dados fornecidos. A senha deve ter pelo menos 8 caracteres. **O código do funcionário é gerado automaticamente.**",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Employee"
+                            },
+                            "examples": {
+                                "Admin": {
+                                    "value": {
+                                        "name": "Admin",
+                                        "password": "1234teste",
+                                        "isAmind": true
+                                    }
+                                },
+                                "Funcionário": {
+                                    "value": {
+                                        "name": "Santiago",
+                                        "password": "12345678"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                },
+                                "examples": {
+                                    "Unauthorized": {
+                                        "value": {
+                                            "error": "Acesso negado."
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "201": {
+                        "description": "Created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Employee"
+                                },
+                                "examples": {
+                                    "ServerResponse": {
+                                        "value": {
+                                            "message": "Funcionário registrado com sucesso"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                },
+                                "examples": {
+                                    "InvalidPassword": {
+                                        "value": {
+                                            "error": "A senha deve ter pelo menos 8 caracteres."
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                },
+                                "examples": {
+                                    "ServerError": {
+                                        "value": {
+                                            "error": "Ocorreu um erro ao registrar o funcionário. Por favor, tente novamente."
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/employees": {
+            "get": {
+                "tags": [
+                    "Funcionário"
+                ],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "summary": "Listar todos os funcionários",
+                "description": "Retorna uma lista com todos os funcionários cadastrados.",
+                "responses": {
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                },
+                                "examples": {
+                                    "Unauthorized": {
+                                        "value": {
+                                            "error": "Acesso negado."
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Employee"
+                                },
+                                "examples": {
+                                    "ServerResponse": {
+                                        "value": [
+                                            {
+                                                "_id": "6531c14e0637c533de11d475",
+                                                "name": "Admin",
+                                                "employeeCode": 877018,
+                                                "password": "$2b$10$GvFJCv3aaAjsAJxZKWb1yey4Bg2e9Ms./FjAUXOPbTd9svp3upbue",
+                                                "isAdmin": true
+                                            },
+                                            {
+                                                "_id": "65381849a9aa46ed78bf13cf",
+                                                "name": "Santiago",
+                                                "employeeCode": 458304,
+                                                "password": "$2b$10$vnzxE22oyrhoeMJEipOhhekV.RWxXHT.Rcy.aOi2aIM4YkQ7myAYa",
+                                                "isAdmin": false
+                                            },
+                                            {
+                                                "_id": "653ff16e78153105a75e40ee",
+                                                "name": "Carlos",
+                                                "employeeCode": 407755,
+                                                "password": "$2b$10$qS0BDX95zAQBGJA55AK5dOVIuMu.Z1tqYW.wNv.FF44vnbwvA0vMK",
+                                                "isAdmin": false
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                },
+                                "examples": {
+                                    "EmployeeNotFound": {
+                                        "value": {
+                                            "error": "Funcionário não encontrado."
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                },
+                                "examples": {
+                                    "ServerError": {
+                                        "value": {
+                                            "error": "Ocorreu um erro ao listar os funcionários. Por favor, tente novamente."
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/employees/{employeeCode}": {
+            "get": {
+                "tags": [
+                    "Funcionário"
+                ],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "summary": "Buscar um funcionário",
+                "description": "Retorna os dados do funcionário com o código fornecido.",
+                "parameters": [
+                    {
+                        "name": "employeeCode",
+                        "description": "Código do funcionário",
+                        "required": true,
+                        "in": "path",
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                },
+                                "examples": {
+                                    "Unauthorized": {
+                                        "value": {
+                                            "error": "Acesso negado."
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Employee"
+                                },
+                                "examples": {
+                                    "ServerResponse": {
+                                        "value": {
+                                            "_id": "65381849a9aa46ed78bf13cf",
+                                            "name": "Santiago",
+                                            "employeeCode": 458304,
+                                            "password": "$2b$10$vnzxE22oyrhoeMJEipOhhekV.RWxXHT.Rcy.aOi2aIM4YkQ7myAYa",
+                                            "isAdmin": false
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                },
+                                "examples": {
+                                    "EmployeeNotFound": {
+                                        "value": {
+                                            "error": "Funcionário não encontrado."
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                },
+                                "examples": {
+                                    "ServerError": {
+                                        "value": {
+                                            "error": "Ocorreu um erro ao buscar o funcionário. Por favor, tente novamente."
                                         }
                                     }
                                 }
@@ -140,6 +451,34 @@
                     },
                     "password": {
                         "type": "string"
+                    }
+                }
+            },
+            "Employee": {
+                "type": "object",
+                "properties": {
+                    "_id": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string",
+                        "required": true,
+                        "not": null,
+                        "unique": true
+                    },
+                    "employeeCode": {
+                        "type": "number",
+                        "required": true,
+                        "not": null
+                    },
+                    "password": {
+                        "type": "string",
+                        "required": true,
+                        "not": null
+                    },
+                    "isAdmin": {
+                        "type": "boolean",
+                        "default": false
                     }
                 }
             },
