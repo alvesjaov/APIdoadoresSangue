@@ -61,7 +61,7 @@ async function readEmployee(request, response) {
     } else {
       // Se nenhum código de funcionário foi fornecido, retorna todos os funcionários
       const employees = await Employee.find();
-      return response.json(employees);
+      return response.status(200).json(employees);
     }
   } catch (error) {
     response.status(500).json({ message: `Ocorreu um erro ao ler os dados do(s) funcionário(s). Por favor, tente novamente. Erro: ${error.message}` });
