@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import passport from 'passport';
 import swaggerUi from 'swagger-ui-express';
+import { setupSwagger } from './src/config/swaggerConfig.js';
 import { createRequire } from 'module';
 
 // Importando rotas
@@ -21,7 +22,7 @@ const MONGODB_URI = process.env.MONGODB_URI;
 
 // Configurando require para importação de JSON
 const require = createRequire(import.meta.url);
-const swaggerDocument = require('./src/config/swagger.json');
+const swaggerDocs = require('./src/config/swagger.json');
 
 // Função para iniciar o servidor
 async function startServer() {
@@ -43,8 +44,8 @@ async function startServer() {
     app.use(routes);
 
     // Configurando Swagger UI
-    app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
-
+    app.use('/api-docs', swaggerUi.serve, setupSwagger(app, swaggerDocs));
+    
     // Iniciando o servidor
     app.listen(PORT, () => {
       console.log(`Serviço rodando na porta ${PORT} e conexão com MongoDB estabelecida com sucesso.`);
