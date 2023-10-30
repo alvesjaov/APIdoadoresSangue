@@ -8,7 +8,7 @@ import { Router } from 'express';
 const routes = Router();
 routes.use('/login', loginRoutes);
 routes.use('/employee', employeeRoutes);
-routes.use('/donor', donorRoutes);
+routes.use('/donors', donorRoutes);
 routes.use('/donation', donationRoutes);
 routes.use('/stock', stockRoutes);
 
