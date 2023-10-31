@@ -24,7 +24,7 @@ async function loginEmployee(request, response) {
       // Se o código do funcionário e a senha estiverem corretos, gera um token JWT
       const token = jwt.sign({ id: existingEmployee._id, isAdmin: existingEmployee.isAdmin }, process.env.JWT_SECRET, { expiresIn: '1h' });
       // Retorna uma mensagem de sucesso e o token JWT
-      response.json({ message: 'Login realizado com sucesso!', token });
+      response.status(200).json({ message: 'Login realizado com sucesso!', token });
   
     } catch (error) {
       response.status(500).json({ error: `Ocorreu um erro ao realizar o login. Por favor, tente novamente. Erro: ${error.message}` });

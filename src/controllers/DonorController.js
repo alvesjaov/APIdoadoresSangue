@@ -12,12 +12,12 @@ async function createDonor(request, response) {
     try {
         //  Verifica se o CPF é válido
         if (!cpf.isValid(donor.CPF)) {
-            return response.status(400).json({ message: 'O CPF fornecido não é válido.' });
+            return response.status(400).json({ error: 'O CPF fornecido não é válido.' });
         }
         // Procura por um doador existente com o mesmo CPF
         const existingDonor = await Donor.findOne({ CPF: donor.CPF });
         if (existingDonor) {
-            return response.status(400).json({ message: 'Um doador com os mesmos dados já existe.' });
+            return response.status(400).json({ error: 'Um doador com os mesmos dados já existe.' });
         }
         
         // Calcula a idade do doador
@@ -28,14 +28,14 @@ async function createDonor(request, response) {
 
         // Verifica se a idade está entre 18 e 69 anos
         if (age < 18 || age > 69) {
-            return response.status(400).json({ message: 'Desculpe, apenas pessoas entre 18 e 69 anos podem doar sangue.' });
+            return response.status(400).json({ error: 'A data de nascimento deve ser anterior à data atual.' });
         }
 
         // Salva o novo doador no banco de dados
         await newDonor.save();
         response.status(201).json({ message: 'Doador cadastrado com sucesso!' });
     } catch (error) {
-        response.status(500).json({ message: `Ocorreu um erro ao cadastrar o doador. Por favor, tente novamente.Erro: ${error.message}` });
+        response.status(500).json({ error: `Ocorreu um erro ao cadastrar o doador. Por favor, tente novamente.Erro: ${error.message}` });
     }
 }
 
@@ -52,19 +52,19 @@ async function getDonor(request, response) {
             // Retorna todos os doadores se nenhum id for fornecido
             let donors = await Donor.find({});
             if (donors.length === 0) {
-                return response.status(404).json({ message: 'Nenhum doador encontrado' });
+                return response.status(404).json({ error: 'Nenhum doador encontrado' });
             }
             return response.status(200).json(donors); // Retorna todos os doadores encontrados
         }
 
         if (!donor) {
-            response.status(404).json({ message: `ID ${id} não corresponde a nenhum doador` });
+            response.status(404).json({ error: `ID ${id} não corresponde a nenhum doador` });
         } else {
             response.status(200).json(donor); // Retorna o doador correspondente ao id fornecido
         }
     } catch (error) {
         console.log(error.message)
-        response.status(500).json({ message: `Ocorreu um erro ao buscar doadores. Por favor, tente novamente.Erro: ${error.message}` });
+        response.status(500).json({ error: `Ocorreu um erro ao buscar doadores. Por favor, tente novamente.Erro: ${error.message}` });
     }
 }
 
@@ -75,12 +75,12 @@ async function updateDonor(request, response) {
         // Atualiza o doador correspondente ao id fornecido com os novos dados fornecidos no corpo da requisição
         const updatedDonor = await Donor.findByIdAndUpdate(id, request.body, { new: true });
         if (!updatedDonor) {
-            response.status(404).json({ message: `ID ${id} não corresponde a nenhum doador` });
+            response.status(404).json({ error: `ID ${id} não corresponde a nenhum doador` });
         } else {
-            response.json({ message: `Doador com ID ${id} atualizado com sucesso!` }); // Retorna sucesso se o doador for atualizado corretamente
+            response.status(200).json({ message: `Doador com ID ${id} atualizado com sucesso!` }); // Retorna sucesso se o doador for atualizado corretamente
         }
     } catch (error) {
-        response.status(500).json({ message: `Ocorreu um erro ao atualizar o doador. Por favor, tente novamente. Erro: ${error.message}` });
+        response.status(500).json({ error: `Ocorreu um erro ao atualizar o doador. Por favor, tente novamente. Erro: ${error.message}` });
     }
 }
 
@@ -91,13 +91,12 @@ async function deleteDonor(request, response) {
         // Remove o doador correspondente ao id fornecido
         const removedDonor = await Donor.findByIdAndRemove(id);
         if (!removedDonor) {
-            response.status(404).json({ message: `ID ${id} não corresponde a nenhum doador` });
+            response.status(404).json({ error: `ID ${id} não corresponde a nenhum doador` });
         } else {
-
-            response.json({ message: `Doador com ID ${id} removido com sucesso!` }); // Retorna sucesso se o doador for removido corretamente
+            response.status(200).json({ message: `Doador com ID ${id} removido com sucesso!` }); // Retorna sucesso se o doador for removido corretamente
         }
     } catch (error) {
-        response.status(500).json({ message: `Ocorreu um erro ao remover o doador. Por favor, tente novamente. Erro: ${error.message}` });
+        response.status(500).json({ error: `Ocorreu um erro ao remover o doador. Por favor, tente novamente. Erro: ${error.message}` });
     }
 }
 

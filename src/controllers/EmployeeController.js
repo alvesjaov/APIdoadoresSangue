@@ -16,7 +16,7 @@ async function createEmployee(request, response) {
 
   // Verifica se a senha tem pelo menos 8 caracteres
   if (employee.password.length < 8) {
-    return response.status(400).json({ message: 'A senha deve ter pelo menos 8 caracteres.' });
+    return response.status(400).json({ error: 'A senha deve ter pelo menos 8 caracteres.' });
   }
 
   // Gera automaticamente o employeeCode antes de salvar o funcionário
@@ -33,7 +33,7 @@ async function createEmployee(request, response) {
     const existingEmployee = await Employee.findOne({ employeeCode: newEmployee.employeeCode });
 
     if (existingEmployee) {
-      return response.status(400).json({ message: 'Já existe um funcionário com o mesmo código.' });
+      return response.status(400).json({ error: 'Já existe um funcionário com o mesmo código.' });
     }
 
     // Salva o novo funcionário no banco de dados
@@ -42,7 +42,7 @@ async function createEmployee(request, response) {
     response.status(201).json({ message: 'Funcionário registrado com sucesso!' });
 
   } catch (error) {
-    response.status(500).json({ message: `Ocorreu um erro ao registrar o funcionário. Por favor, tente novamente. Erro: ${error.message}` });
+    response.status(500).json({ error: `Ocorreu um erro ao registrar o funcionário. Por favor, tente novamente. Erro: ${error.message}` });
   }
 }
 
@@ -55,16 +55,16 @@ async function readEmployee(request, response) {
       // Se um código de funcionário foi fornecido, procura por esse funcionário
       const readEmployee = await Employee.findOne({ employeeCode: employeeCode });
       if (!readEmployee) {
-        return response.status(404).json({ message: 'Funcionário não encontrado.' });
+        return response.status(404).json({ error: 'Funcionário não encontrado.' });
       }
-      return response.json(readEmployee);
+      return response.status(200).json(readEmployee);
     } else {
       // Se nenhum código de funcionário foi fornecido, retorna todos os funcionários
       const employees = await Employee.find();
       return response.status(200).json(employees);
     }
   } catch (error) {
-    response.status(500).json({ message: `Ocorreu um erro ao ler os dados do(s) funcionário(s). Por favor, tente novamente. Erro: ${error.message}` });
+    response.status(500).json({ error: `Ocorreu um erro ao ler os dados do(s) funcionário(s). Por favor, tente novamente. Erro: ${error.message}` });
   }
 }
 
@@ -76,7 +76,7 @@ async function updateEmployeePassword(request, response) {
 
     // Verifica se a nova senha tem pelo menos 8 caracteres
     if (newPassword.length < 8) {
-      return response.status(400).json({ message: 'A senha deve ter pelo menos 8 caracteres.' });
+      return response.status(400).json({ error: 'A senha deve ter pelo menos 8 caracteres.' });
     }
 
     // Criptografa a nova senha antes de salvá-la no banco de dados
@@ -92,13 +92,13 @@ async function updateEmployeePassword(request, response) {
 
     // Se não encontrar o funcionário, retorna um erro
     if (!updateEmployee) {
-      return response.status(404).json({ message: 'Funcionário não encontrado.' });
+      return response.status(404).json({ error: 'Funcionário não encontrado.' });
     }
 
     // Se encontrar o funcionário, retorna uma mensagem de sucesso
-    return response.json({ message: 'Senha alterada com sucesso!' });
+    return response.status(200).json({ message: 'Senha alterada com sucesso!' });
   } catch (error) {
-    response.status(500).json({ message: `Ocorreu um erro ao alterar a senha do funcionário. Por favor, tente novamente. Erro: ${error.message}` });
+    response.status(500).json({ error: `Ocorreu um erro ao alterar a senha do funcionário. Por favor, tente novamente. Erro: ${error.message}` });
   }
 }
 
@@ -110,18 +110,18 @@ async function deleteEmployee(request, response) {
     const employee = await Employee.findOne({ employeeCode: employeeCode }); // Procura pelo funcionário com o código fornecido
 
     if (!employee) {
-      return response.status(404).json({ message: 'Funcionário não encontrado.' });
+      return response.status(404).json({ error: 'Funcionário não encontrado.' });
     }
 
     if (employee.isAdmin) { // Verifica se o funcionário é um administrador
-      return response.status(403).json({ message: 'Não é possível deletar um administrador.' });
+      return response.status(403).json({ error: 'Não é possível deletar um administrador.' });
     }
 
     await Employee.findOneAndRemove({ employeeCode: employeeCode }); // Remove o funcionário
 
-    return response.json({ message: 'Funcionário deletado com sucesso!' });
+    return response.status(204).json({ message: 'Funcionário deletado com sucesso!' });
   } catch (error) {
-    response.status(500).json({ message: `Ocorreu um erro ao deletar o funcionário. Por favor, tente novamente. Erro: ${error.message}` });
+    response.status(500).json({ error: `Ocorreu um erro ao deletar o funcionário. Por favor, tente novamente. Erro: ${error.message}` });
   }
 }
 
