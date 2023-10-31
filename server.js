@@ -2,6 +2,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import passport from 'passport';
+import cors from 'cors'; // Importando o pacote cors
 import swaggerUi from 'swagger-ui-express';
 import { setupSwagger } from './src/config/swaggerConfig.js';
 import { createRequire } from 'module';
@@ -35,6 +36,7 @@ async function startServer() {
 
     // Configurando middleware do express e Passport
     app.use(express.json());
+    app.use(cors()); // Habilitando o CORS
     app.use(passport.initialize());
 
     // Configurando estratégia JWT do Passport
