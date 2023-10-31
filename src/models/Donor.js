@@ -45,27 +45,30 @@ const donorSchema = mongoose.Schema({
       type: Date,
       default: Date.now
     },
+    bloodTest: [{
+      _id: {
+        type: mongoose.Schema.Types.ObjectId,
+        auto: true
+      },
+      bloodType: {
+        type: String,
+        required: true,
+      },
+      exams: {
+        type: [String],
+        required: true,
+      },
+      examsResult: {
+        type: String,
+        required: true,
+      }
+    }],
     expiryDate: {
       type: Date
     },
     nextDonationDate: {
       type: Date,
     },
-    bloodTest: [{
-      _id: {
-        type: mongoose.Schema.Types.ObjectId,
-        auto: true,
-      },
-      bloodType: {
-        type: String
-      },
-      exams: {
-        type: [String]
-      },
-      examsResult: {
-        type: String
-      }
-    }]
   }]
 }, { versionKey: false });
 
