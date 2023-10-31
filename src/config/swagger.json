@@ -9,6 +9,10 @@
         {
             "url": "http://localhost:3000",
             "description": "Api de teste"
+        },
+        {
+            "url": "https://apidoadoressangue.vercel.app/",
+            "description": "Api de produção"
         }
     ],
     "tags": [
@@ -75,7 +79,8 @@
                                 "examples": {
                                     "ServerResponse": {
                                         "value": {
-                                            "message": "Login realizado com sucesso"
+                                            "message": "Login realizado com sucesso!",
+                                            "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1MzgzMTBhNDI1N2ZjNzBiMzE3ZDcyMiIsImlzQWRtaW4iOnRydWUsImlhdCI6MTY5ODcwNTAyOSwiZXhwIjoxNjk4NzA4NjI5fQ.rIYF9asbmeb36DR-M2W--UOgwYKw6wFJPITCxuNum28"
                                         }
                                     }
                                 }
@@ -439,6 +444,364 @@
                     }
                 }
             }
+        },
+        "/employee/{employeeCode}/password": {
+            "patch": {
+                "tags": [
+                    "Funcionário"
+                ],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "summary": "Alterar senha",
+                "description": "Altera a senha do funcionário com o código fornecido.",
+                "parameters": [
+                    {
+                        "name": "employeeCode",
+                        "description": "Código do funcionário",
+                        "required": true,
+                        "in": "path",
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "password": {
+                                        "type": "string"
+                                    }
+                                }
+                            },
+                            "examples": {
+                                "Admin": {
+                                    "value": {
+                                        "password": "1234teste"
+                                    }
+                                },
+                                "Funcionário": {
+                                    "value": {
+                                        "password": "12345678"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                },
+                                "examples": {
+                                    "Unauthorized": {
+                                        "value": {
+                                            "error": "Acesso negado."
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Employee"
+                                },
+                                "examples": {
+                                    "ServerResponse": {
+                                        "value": {
+                                            "message": "Senha alterada com sucesso"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "examples": {
+                                    "InvalidPassword": {
+                                        "value": {
+                                            "error": "A senha deve ter pelo menos 8 caracteres."
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                },
+                                "examples": {
+                                    "EmployeeNotFound": {
+                                        "value": {
+                                            "error": "Funcionário não encontrado."
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                },
+                                "examples": {
+                                    "ServerError": {
+                                        "value": {
+                                            "error": "Ocorreu um erro ao alterar a senha. Por favor, tente novamente."
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/employee/{employeeCode}": {
+            "delete": {
+                "tags": [
+                    "Funcionário"
+                ],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "summary": "Deletar funcionário",
+                "description": "Deleta o funcionário com o código fornecido.",
+                "parameters": [
+                    {
+                        "name": "employeeCode",
+                        "description": "Código do funcionário",
+                        "required": true,
+                        "in": "path",
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                },
+                                "examples": {
+                                    "Unauthorized": {
+                                        "value": {
+                                            "error": "Acesso negado."
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "204": {
+                        "description": "No Content",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Employee"
+                                },
+                                "examples": {
+                                    "ServerResponse": {
+                                        "value": {
+                                            "message": "Funcionário deletado com sucesso"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                },
+                                "examples": {
+                                    "EmployeeNotFound": {
+                                        "value": {
+                                            "error": "Funcionário não encontrado."
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            },
+                            "examples": {
+                                "ServerError": {
+                                    "value": {
+                                        "error": "Ocorreu um erro ao deletar o funcionário. Por favor, tente novamente."
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/donor": {
+            "post": {
+                "tags": [
+                    "Doador"
+                ],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "summary": "Cadastrar doador",
+                "description": "Cadastra um novo doador com os dados fornecidos. **O CPF deve ser único.**",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Donor"
+                            },
+                            "examples": {
+                                "Donor": {
+                                    "value": {
+                                        "name": "Diego",
+                                        "CPF": "15314664003",
+                                        "birthDate": "2005-10-01",
+                                        "sex": "M",
+                                        "address": "Rua perpendicular, 58",
+                                        "telephone": "(00) 99887-7665"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                },
+                                "examples": {
+                                    "Unauthorized": {
+                                        "value": {
+                                            "error": "Acesso negado."
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "201": {
+                        "description": "Created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Donor"
+                                },
+                                "examples": {
+                                    "ServerResponse": {
+                                        "value": {
+                                            "message": "Doador registrado com sucesso"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                },
+                                "examples": {
+                                    "InvalidCPF": {
+                                        "value": {
+                                            "error": "O CPF fornecido não é válido."
+                                        }
+                                    },
+                                    "duplicateData": {
+                                        "value": {
+                                            "error": "Um doador com os mesmos dados já existe."
+                                        }
+                                    },
+                                    "InvalidBirthDate": {
+                                        "value": {
+                                            "error": "A data de nascimento deve ser anterior à data atual."
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                },
+                                "examples": {
+                                    "ServerError": {
+                                        "value": {
+                                            "error": "Ocorreu um erro ao cadastrar o doador. Por favor, tente novamente."
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     },
     "components": {
@@ -479,6 +842,65 @@
                     "isAdmin": {
                         "type": "boolean",
                         "default": false
+                    }
+                }
+            },
+            "Donor": {
+                "type": "object",
+                "properties": {
+                    "_id": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string",
+                        "required": true,
+                        "not": null
+                    },
+                    "CPF": {
+                        "type": "string",
+                        "required": true,
+                        "not": null
+                    },
+                    "birthDate": {
+                        "type": "string",
+                        "format": "date",
+                        "required": true,
+                        "not": null
+                    },
+                    "sex": {
+                        "type": "string",
+                        "required": true,
+                        "not": null
+                    },
+                    "address": {
+                        "type": "string",
+                        "required": true,
+                        "not": null
+                    },
+                    "telephone": {
+                        "type": "string",
+                        "required": true,
+                        "not": null
+                    },
+                    "donationHistory": {
+                        "type": "array",
+                        "items": {
+                            "_id": {
+                                "$ref": "#/components/schemas/Donor"
+                            },
+                            "donationDate": {
+                                "$ref": "#/components/schemas/Donor"
+                            },
+                            "expiryDate": {
+                                "$ref": "#/components/schemas/Donor"
+                            },
+                            "nextDonationDate": {
+                                "$ref": "#/components/schemas/Donor"
+                            },
+                            "bloodTest": {
+                                "$ref": "#/components/schemas/Donor"
+                            }
+                        }
                     }
                 }
             },
