@@ -51,16 +51,13 @@ const donorSchema = mongoose.Schema({
         auto: true
       },
       bloodType: {
-        type: String,
-        required: true,
+        type: String
       },
       exams: {
-        type: [String],
-        required: true,
+        type: [String]
       },
       examsResult: {
-        type: String,
-        required: true,
+        type: String
       }
     }],
     expiryDate: {
