@@ -19,7 +19,7 @@ async function createDonor(request, response) {
         if (existingDonor) {
             return response.status(400).json({ error: 'Um doador com os mesmos dados já existe.' });
         }
-        
+
         // Calcula a idade do doador
         const birthDate = new Date(donor.birthDate);
         const ageDifMs = Date.now() - birthDate.getTime();
@@ -63,8 +63,11 @@ async function getDonor(request, response) {
             response.status(200).json(donor); // Retorna o doador correspondente ao id fornecido
         }
     } catch (error) {
-        console.log(error.message)
-        response.status(500).json({ error: `Ocorreu um erro ao buscar doadores. Por favor, tente novamente.Erro: ${error.message}` });
+        if (id) {
+            return response.status(500).json({ error: `Ocorreu um erro ao buscar o doador. Por favor, tente novamente. Erro: ${error.message}` });
+        } else {
+            return response.status(500).json({ error: `Ocorreu um erro ao buscar doadores. Por favor, tente novamente. Erro: ${error.message}` });
+        }
     }
 }
 
@@ -93,7 +96,7 @@ async function deleteDonor(request, response) {
         if (!removedDonor) {
             response.status(404).json({ error: `ID ${id} não corresponde a nenhum doador` });
         } else {
-            response.status(200).json({ message: `Doador com ID ${id} removido com sucesso!` }); // Retorna sucesso se o doador for removido corretamente
+            response.status(200).json({ message: `Doador com ID ${id} deletado com sucesso!` }); // Retorna sucesso se o doador for removido corretamente
         }
     } catch (error) {
         response.status(500).json({ error: `Ocorreu um erro ao remover o doador. Por favor, tente novamente. Erro: ${error.message}` });

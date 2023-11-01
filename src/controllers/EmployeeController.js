@@ -48,9 +48,9 @@ async function createEmployee(request, response) {
 
 // Rota para ler funcionários (READ)
 async function readEmployee(request, response) {
-  try {
-    const employeeCode = request.params.code;
+  const employeeCode = request.params.code;
 
+  try {
     if (employeeCode) {
       // Se um código de funcionário foi fornecido, procura por esse funcionário
       const readEmployee = await Employee.findOne({ employeeCode: employeeCode });
@@ -60,11 +60,16 @@ async function readEmployee(request, response) {
       return response.status(200).json(readEmployee);
     } else {
       // Se nenhum código de funcionário foi fornecido, retorna todos os funcionários
-      const employees = await Employee.find();
-      return response.status(200).json(employees);
+      const employee = await Employee.find();
+      return response.status(200).json(employee);
     }
+    
   } catch (error) {
-    response.status(500).json({ error: `Ocorreu um erro ao ler os dados do(s) funcionário(s). Por favor, tente novamente. Erro: ${error.message}` });
+    if (employeeCode) {
+      return response.status(500).json({ error: `Ocorreu um erro ao buscar o funcionário. Por favor, tente novamente. Erro: ${error.message}` });
+    } else {
+      return response.status(500).json({ error: `Ocorreu um erro ao buscar funcionários. Por favor, tente novamente. Erro: ${error.message}` });
+    }
   }
 }
 
@@ -105,7 +110,7 @@ async function updateEmployeePassword(request, response) {
 // Rota para deletar funcionário (DELETE)
 async function deleteEmployee(request, response) {
   try {
-    const employeeCode  = request.params.code; // Obtém o código do funcionário da URL
+    const employeeCode = request.params.code; // Obtém o código do funcionário da URL
 
     const employee = await Employee.findOne({ employeeCode: employeeCode }); // Procura pelo funcionário com o código fornecido
 
@@ -119,10 +124,10 @@ async function deleteEmployee(request, response) {
 
     await Employee.findOneAndRemove({ employeeCode: employeeCode }); // Remove o funcionário
 
-    return response.status(204).json({ message: 'Funcionário deletado com sucesso!' });
+    return response.status(200).json({ message: 'Funcionário deletado com sucesso!' });
   } catch (error) {
     response.status(500).json({ error: `Ocorreu um erro ao deletar o funcionário. Por favor, tente novamente. Erro: ${error.message}` });
   }
 }
 
-export { createEmployee, readEmployee, updateEmployeePassword, deleteEmployee};
+export { createEmployee, readEmployee, updateEmployeePassword, deleteEmployee };
