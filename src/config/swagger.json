@@ -3,7 +3,11 @@
     "info": {
         "title": "API Doadores de sangue",
         "description": "Essa API é um sistema de gerenciamento de doações de sangue, com quatro componentes principais: Doador, Doação, Estoque de Sangue e Funcionário. Ela permite a manipulação de informações e facilita o controle e a organização do processo de doação de sangue.",
-        "version": "1.0.0"
+        "version": "1.4.0"
+    },
+    "externalDocs": {
+        "description": "Link para o repositório",
+        "url": "https://github.com/alvesjaov/APIdoadoresSangue"
     },
     "servers": [
         {
@@ -38,18 +42,18 @@
         }
     ],
     "paths": {
-        "/login": {
+        "/start-login": {
             "post": {
                 "tags": [
                     "Login"
                 ],
                 "summary": "Login",
-                "description": "Realiza o login do funcionário **(apenas funcionários cadastrados)**",
+                "description": "Realiza o login do funcionário.\n\n **(apenas funcionários cadastrados)**",
                 "requestBody": {
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/Login"
+                                "$ref": "#/components/schemas/Employee"
                             },
                             "examples": {
                                 "Admin": {
@@ -73,9 +77,6 @@
                         "description": "OK",
                         "content": {
                             "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Login"
-                                },
                                 "examples": {
                                     "ServerResponse": {
                                         "value": {
@@ -91,14 +92,6 @@
                         "description": "Bad Request",
                         "content": {
                             "application/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "error": {
-                                            "type": "string"
-                                        }
-                                    }
-                                },
                                 "examples": {
                                     "InvalidEmployeeCode": {
                                         "value": {
@@ -118,9 +111,6 @@
                         "description": "Internal Server Error",
                         "content": {
                             "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Error"
-                                },
                                 "examples": {
                                     "ServerError": {
                                         "value": {
@@ -134,7 +124,7 @@
                 }
             }
         },
-        "/employee": {
+        "/new-employee": {
             "post": {
                 "tags": [
                     "Funcionário"
@@ -145,7 +135,7 @@
                     }
                 ],
                 "summary": "Cria um novo funcionário",
-                "description": "Cria um novo funcionário com os dados fornecidos. A senha deve ter pelo menos 8 caracteres. **O código do funcionário é gerado automaticamente.**",
+                "description": "Cria um novo funcionário com os dados fornecidos.\n\n A senha deve ter pelo menos 8 caracteres.\n\n **O código do funcionário é gerado automaticamente.**",
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -175,9 +165,6 @@
                         "description": "Unauthorized",
                         "content": {
                             "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Error"
-                                },
                                 "examples": {
                                     "Unauthorized": {
                                         "value": {
@@ -192,9 +179,6 @@
                         "description": "Created",
                         "content": {
                             "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Employee"
-                                },
                                 "examples": {
                                     "ServerResponse": {
                                         "value": {
@@ -209,13 +193,15 @@
                         "description": "Bad Request",
                         "content": {
                             "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Error"
-                                },
                                 "examples": {
                                     "InvalidPassword": {
                                         "value": {
                                             "error": "A senha deve ter pelo menos 8 caracteres."
+                                        }
+                                    },
+                                    "duplicateData": {
+                                        "value": {
+                                            "error": "Já existe um funcionário com o mesmo código."
                                         }
                                     }
                                 }
@@ -226,9 +212,6 @@
                         "description": "Internal Server Error",
                         "content": {
                             "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Error"
-                                },
                                 "examples": {
                                     "ServerError": {
                                         "value": {
@@ -242,7 +225,7 @@
                 }
             }
         },
-        "/employees": {
+        "/see-employees": {
             "get": {
                 "tags": [
                     "Funcionário"
@@ -259,9 +242,6 @@
                         "description": "Unauthorized",
                         "content": {
                             "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Error"
-                                },
                                 "examples": {
                                     "Unauthorized": {
                                         "value": {
@@ -276,9 +256,6 @@
                         "description": "OK",
                         "content": {
                             "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Employee"
-                                },
                                 "examples": {
                                     "ServerResponse": {
                                         "value": [
@@ -313,9 +290,6 @@
                         "description": "Not Found",
                         "content": {
                             "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Error"
-                                },
                                 "examples": {
                                     "EmployeeNotFound": {
                                         "value": {
@@ -330,13 +304,10 @@
                         "description": "Internal Server Error",
                         "content": {
                             "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Error"
-                                },
                                 "examples": {
                                     "ServerError": {
                                         "value": {
-                                            "error": "Ocorreu um erro ao listar os funcionários. Por favor, tente novamente."
+                                            "error": "Ocorreu um erro ao buscar funcionários. Por favor, tente novamente."
                                         }
                                     }
                                 }
@@ -346,7 +317,7 @@
                 }
             }
         },
-        "/employees/{employeeCode}": {
+        "/see-employees/{employeeCode}": {
             "get": {
                 "tags": [
                     "Funcionário"
@@ -356,8 +327,8 @@
                         "bearerAuth": []
                     }
                 ],
-                "summary": "Buscar um funcionário",
-                "description": "Retorna os dados do funcionário com o código fornecido.",
+                "summary": "Buscar funcionário especifico",
+                "description": "Retorna os dados do funcionário cujo código foi fornecido.",
                 "parameters": [
                     {
                         "name": "employeeCode",
@@ -374,9 +345,6 @@
                         "description": "Unauthorized",
                         "content": {
                             "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Error"
-                                },
                                 "examples": {
                                     "Unauthorized": {
                                         "value": {
@@ -391,9 +359,6 @@
                         "description": "OK",
                         "content": {
                             "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Employee"
-                                },
                                 "examples": {
                                     "ServerResponse": {
                                         "value": {
@@ -412,9 +377,6 @@
                         "description": "Not Found",
                         "content": {
                             "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Error"
-                                },
                                 "examples": {
                                     "EmployeeNotFound": {
                                         "value": {
@@ -429,9 +391,6 @@
                         "description": "Internal Server Error",
                         "content": {
                             "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Error"
-                                },
                                 "examples": {
                                     "ServerError": {
                                         "value": {
@@ -445,7 +404,7 @@
                 }
             }
         },
-        "/employee/{employeeCode}/password": {
+        "/update-employee/password/{employeeCode}": {
             "patch": {
                 "tags": [
                     "Funcionário"
@@ -455,8 +414,8 @@
                         "bearerAuth": []
                     }
                 ],
-                "summary": "Alterar senha",
-                "description": "Altera a senha do funcionário com o código fornecido.",
+                "summary": "Alterar senha do funcionário",
+                "description": "Altera a senha do funcionário cujo código foi fornecido.",
                 "parameters": [
                     {
                         "name": "employeeCode",
@@ -472,12 +431,7 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "type": "object",
-                                "properties": {
-                                    "password": {
-                                        "type": "string"
-                                    }
-                                }
+                                "$ref": "#/components/schemas/Employee"
                             },
                             "examples": {
                                 "Admin": {
@@ -499,9 +453,6 @@
                         "description": "Unauthorized",
                         "content": {
                             "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Error"
-                                },
                                 "examples": {
                                     "Unauthorized": {
                                         "value": {
@@ -516,9 +467,6 @@
                         "description": "OK",
                         "content": {
                             "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Employee"
-                                },
                                 "examples": {
                                     "ServerResponse": {
                                         "value": {
@@ -533,14 +481,6 @@
                         "description": "Bad Request",
                         "content": {
                             "application/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "error": {
-                                            "type": "string"
-                                        }
-                                    }
-                                },
                                 "examples": {
                                     "InvalidPassword": {
                                         "value": {
@@ -555,9 +495,6 @@
                         "description": "Not Found",
                         "content": {
                             "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Error"
-                                },
                                 "examples": {
                                     "EmployeeNotFound": {
                                         "value": {
@@ -572,9 +509,6 @@
                         "description": "Internal Server Error",
                         "content": {
                             "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Error"
-                                },
                                 "examples": {
                                     "ServerError": {
                                         "value": {
@@ -588,7 +522,7 @@
                 }
             }
         },
-        "/employee/{employeeCode}": {
+        "/del-employee/{employeeCode}": {
             "delete": {
                 "tags": [
                     "Funcionário"
@@ -599,7 +533,7 @@
                     }
                 ],
                 "summary": "Deletar funcionário",
-                "description": "Deleta o funcionário com o código fornecido.",
+                "description": "Deleta o funcionário cujo código foi fornecido.",
                 "parameters": [
                     {
                         "name": "employeeCode",
@@ -616,9 +550,6 @@
                         "description": "Unauthorized",
                         "content": {
                             "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Error"
-                                },
                                 "examples": {
                                     "Unauthorized": {
                                         "value": {
@@ -629,13 +560,10 @@
                             }
                         }
                     },
-                    "204": {
-                        "description": "No Content",
+                    "200": {
+                        "description": "ok",
                         "content": {
                             "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Employee"
-                                },
                                 "examples": {
                                     "ServerResponse": {
                                         "value": {
@@ -646,13 +574,20 @@
                             }
                         }
                     },
+                    "403": {
+                        "description": "Forbidden",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": "Não é possível deletar um administrador."
+                                }
+                            }
+                        }
+                    },
                     "404": {
                         "description": "Not Found",
                         "content": {
                             "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Error"
-                                },
                                 "examples": {
                                     "EmployeeNotFound": {
                                         "value": {
@@ -667,19 +602,11 @@
                         "description": "Internal Server Error",
                         "content": {
                             "application/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "error": {
-                                            "type": "string"
+                                "examples": {
+                                    "ServerError": {
+                                        "value": {
+                                            "error": "Ocorreu um erro ao deletar o funcionário. Por favor, tente novamente."
                                         }
-                                    }
-                                }
-                            },
-                            "examples": {
-                                "ServerError": {
-                                    "value": {
-                                        "error": "Ocorreu um erro ao deletar o funcionário. Por favor, tente novamente."
                                     }
                                 }
                             }
@@ -688,7 +615,7 @@
                 }
             }
         },
-        "/donor": {
+        "/new-donor": {
             "post": {
                 "tags": [
                     "Doador"
@@ -699,7 +626,7 @@
                     }
                 ],
                 "summary": "Cadastrar doador",
-                "description": "Cadastra um novo doador com os dados fornecidos. **O CPF deve ser único.**",
+                "description": "Cadastra um novo doador com os dados fornecidos.\n\n **O CPF deve ser único e válido.**",
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -726,9 +653,6 @@
                         "description": "Unauthorized",
                         "content": {
                             "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Error"
-                                },
                                 "examples": {
                                     "Unauthorized": {
                                         "value": {
@@ -743,13 +667,10 @@
                         "description": "Created",
                         "content": {
                             "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Donor"
-                                },
                                 "examples": {
                                     "ServerResponse": {
                                         "value": {
-                                            "message": "Doador registrado com sucesso"
+                                            "message": "Doador cadastrado com sucesso!"
                                         }
                                     }
                                 }
@@ -760,9 +681,6 @@
                         "description": "Bad Request",
                         "content": {
                             "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Error"
-                                },
                                 "examples": {
                                     "InvalidCPF": {
                                         "value": {
@@ -787,9 +705,6 @@
                         "description": "Internal Server Error",
                         "content": {
                             "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Error"
-                                },
                                 "examples": {
                                     "ServerError": {
                                         "value": {
@@ -802,113 +717,971 @@
                     }
                 }
             }
+        },
+        "/see-donors": {
+            "get": {
+                "tags": [
+                    "Doador"
+                ],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "summary": "Listar todos os doadores",
+                "description": "Retorna uma lista com todos os doadores cadastrados.",
+                "responses": {
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "Unauthorized": {
+                                        "value": {
+                                            "error": "Acesso negado."
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "ServerResponse": {
+                                        "value": [
+                                            {
+                                                "_id": "6538859b31608e1ecd7f4ae4",
+                                                "name": "Diego",
+                                                "CPF": "15314664003",
+                                                "birthDate": "2005-10-01T00:00:00.000Z",
+                                                "sex": "M",
+                                                "address": "Rua perpendicular, 58",
+                                                "telephone": "(00) 99887-7665",
+                                                "donationHistory": [
+                                                    {
+                                                        "_id": "65413fb5ca408341b982babe",
+                                                        "donationDate": "2023-10-31T17:57:47.909Z",
+                                                        "bloodTest": [
+                                                            {
+                                                                "_id": "6541401bca408341b982bacb",
+                                                                "bloodType": "A +(Pos)",
+                                                                "exams": [
+                                                                    "Sífilis",
+                                                                    "Chagas",
+                                                                    "Hepatite B e C",
+                                                                    "HIV",
+                                                                    "HTLV I/II"
+                                                                ],
+                                                                "examsResult": "negativo"
+                                                            }
+                                                        ],
+                                                        "nextDonationDate": "2023-12-30T17:57:47.909Z",
+                                                        "expiryDate": "2023-11-01T17:57:47.909Z"
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "_id": "654020b5c311f00ad09da9ee",
+                                                "name": "Sara",
+                                                "CPF": "73234447055",
+                                                "birthDate": "2005-10-01T00:00:00.000Z",
+                                                "sex": "M",
+                                                "address": "Rua Esmeralda, 90",
+                                                "telephone": "(00) 99887-7665",
+                                                "donationHistory": [
+                                                    {
+                                                        "_id": "65413fcbca408341b982bac2",
+                                                        "donationDate": "2023-10-31T17:56:27.727Z",
+                                                        "bloodTest": [],
+                                                        "nextDonationDate": "2023-12-30T17:56:27.727Z",
+                                                        "expiryDate": "2023-11-01T17:56:27.727Z"
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "DonorNotFound": {
+                                        "value": {
+                                            "error": "Nenhum doador encontrado"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "ServerError": {
+                                        "value": {
+                                            "error": "Ocorreu um erro ao buscar doadores. Por favor, tente novamente."
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/see-donors/{_id}": {
+            "get": {
+                "tags": [
+                    "Doador"
+                ],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "summary": "Buscar doador especifico",
+                "description": "Retorna os dados do doador cujo id foi fornecido.",
+                "parameters": [
+                    {
+                        "name": "_id",
+                        "description": "Id do doador",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "Unauthorized": {
+                                        "value": {
+                                            "error": "Acesso negado."
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "ServerResponse": {
+                                        "value": {
+                                            "_id": "6538859b31608e1ecd7f4ae4",
+                                            "name": "Diego",
+                                            "CPF": "15314664003",
+                                            "birthDate": "2005-10-01T00:00:00.000Z",
+                                            "sex": "M",
+                                            "address": "Rua perpendicular, 58",
+                                            "telephone": "(00) 99887-7665",
+                                            "donationHistory": [
+                                                {
+                                                    "_id": "65413fb5ca408341b982babe",
+                                                    "donationDate": "2023-10-31T17:57:47.909Z",
+                                                    "bloodTest": [
+                                                        {
+                                                            "_id": "6541401bca408341b982bacb",
+                                                            "bloodType": "A +(Pos)",
+                                                            "exams": [
+                                                                "Sífilis",
+                                                                "Chagas",
+                                                                "Hepatite B e C",
+                                                                "HIV",
+                                                                "HTLV I/II"
+                                                            ],
+                                                            "examsResult": "negativo"
+                                                        }
+                                                    ],
+                                                    "nextDonationDate": "2023-12-30T17:57:47.909Z",
+                                                    "expiryDate": "2023-11-01T17:57:47.909Z"
+                                                }
+                                            ]
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "DonorNotFound": {
+                                        "value": {
+                                            "error": "ID 6538859b31608e1ecd7f4ae4 não corresponde a nenhum doador"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "ServerError": {
+                                        "value": {
+                                            "error": "Ocorreu um erro ao buscar o doador. Por favor, tente novamente."
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/update-donor/{_id}": {
+            "patch": {
+                "tags": [
+                    "Doador"
+                ],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "summary": "Alterar dados do doador",
+                "description": "Altera os dados do doador cujo **Id** foi fornecido.",
+                "parameters": [
+                    {
+                        "name": "_id",
+                        "description": "Id do doador",
+                        "required": true,
+                        "in": "path",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Donor"
+                            },
+                            "example": {
+                                "address": "Rua Perpendicular, 5"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "Unauthorized": {
+                                        "value": {
+                                            "error": "Acesso negado."
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "ServerResponse": {
+                                        "value": {
+                                            "message": "Doador com ID 6538859b31608e1ecd7f4ae4 atualizado com sucesso!"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "ServerResponse": {
+                                        "value": {
+                                            "error": "ID 6538859b31608e1ecd7f4ae4 não corresponde a nenhum doador"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "ServerResponse": {
+                                        "value": {
+                                            "error": "Ocorreu um erro ao atualizar o doador. Por favor, tente novamente."
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/del-donor/{_id}": {
+            "delete": {
+                "tags": [
+                    "Doador"
+                ],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "summary": "Deletar doador",
+                "description": "Deleta o doador cujo **Id** foi fornecido.",
+                "parameters": [
+                    {
+                        "name": "_id",
+                        "description": "Id do doador",
+                        "required": true,
+                        "in": "path",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "Unauthorized": {
+                                        "value": {
+                                            "error": "Acesso negado."
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "ServerResponse": {
+                                        "value": {
+                                            "message": "Doador com ID 6538859b31608e1ecd7f4ae4 deletado com sucesso!"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "ServerResponse": {
+                                        "value": {
+                                            "error": "ID 6538859b31608e1ecd7f4ae4 não corresponde a nenhum doador"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "ServerError": {
+                                        "value": {
+                                            "error": "Ocorreu um erro ao deletar o doador. Por favor, tente novamente."
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/new-donation/{_id}": {
+            "post": {
+                "tags": [
+                    "Doação"
+                ],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "summary": "Registrar doação",
+                "description": "Registra uma nova doação para o doador cujo **Id** foi fornecido.",
+                "parameters": [
+                    {
+                        "name": "_id",
+                        "description": "Id do doador",
+                        "required": true,
+                        "in": "path",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "Unauthorized": {
+                                        "value": {
+                                            "error": "Acesso negado."
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "201": {
+                        "description": "Created",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "ServerResponse": {
+                                        "value": {
+                                            "message": "Nova doação registrada para o doador com ID 6538859b31608e1ecd7f4ae4!"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "DonorNotFound": {
+                                        "value": {
+                                            "error": "ID 6538859b31608e1ecd7f4ae4 não corresponde a nenhum doador"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "ServerError": {
+                                        "value": {
+                                            "error": "Ocorreu um erro ao registrar a doação. Por favor, tente novamente."
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/see-donation/{_id}": {
+            "get": {
+                "tags": [
+                    "Doação"
+                ],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "summary": "Buscar doação especifica",
+                "description": "Retorna os dados da doação cujo id foi fornecido.",
+                "parameters": [
+                    {
+                        "name": "_id",
+                        "description": "Id da doação",
+                        "required": true,
+                        "in": "path",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "Unauthorized": {
+                                        "value": {
+                                            "error": "Acesso negado."
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "ServerResponse": {
+                                        "value": {
+                                            "_id": "65413fb5ca408341b982babe",
+                                            "donationDate": "2023-10-31T17:57:47.909Z",
+                                            "bloodTest": [
+                                                {
+                                                    "_id": "6541401bca408341b982bacb",
+                                                    "bloodType": "A +(Pos)",
+                                                    "exams": [
+                                                        "Sífilis",
+                                                        "Chagas",
+                                                        "Hepatite B e C",
+                                                        "HIV",
+                                                        "HTLV I/II"
+                                                    ],
+                                                    "examsResult": "negativo"
+                                                }
+                                            ],
+                                            "nextDonationDate": "2023-12-30T17:57:47.909Z",
+                                            "expiryDate": "2023-11-01T17:57:47.909Z"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "DonationNotFound": {
+                                        "value": {
+                                            "error": "Doação não encontrada"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "ServerError": {
+                                        "value": {
+                                            "error": "Ocorreu um erro ao buscar a doação. Por favor, tente novamente."
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/add-exams/{_id}": {
+            "post": {
+                "tags": [
+                    "Doação"
+                ],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "summary": "Registrar exames",
+                "description": "Registra os exames da doação cujo **Id** foi fornecido.",
+                "parameters": [
+                    {
+                        "name": "_id",
+                        "description": "Id da doação",
+                        "required": true,
+                        "in": "path",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Donor"
+                            },
+                            "example": {
+                                "bloodType": "A +(Pos)",
+                                "exams": [
+                                    "Sífilis",
+                                    "Chagas",
+                                    "Hepatite B e C",
+                                    "HIV",
+                                    "HTLV I/II"
+                                ],
+                                "examsResult": "negativo"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": "Acesso negado."
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "message": "Tipagem sanguínea e exames adicionados com sucesso"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": "Já existe um exame de sangue para esta doação."
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": "Doação não encontrada"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": "Ocorreu um erro ao registrar os exames. Por favor, tente novamente."
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/del-donation/{_id}": {
+            "delete": {
+                "tags": [
+                    "Doação"
+                ],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "summary": "Deletar doação",
+                "description": "Deleta a doação cujo **Id** foi fornecido.",
+                "parameters": [
+                    {
+                        "name": "_id",
+                        "description": "Id da doação",
+                        "required": true,
+                        "in": "path",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "Unauthorized": {
+                                        "value": {
+                                            "error": "Acesso negado."
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "ServerResponse": {
+                                        "value": {
+                                            "message": "Doação com ID 65413fb5ca408341b982babe deletada com sucesso!"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "ServerResponse": {
+                                        "value": {
+                                            "error": "Doação não encontrada"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "ServerError": {
+                                        "value": {
+                                            "error": "Ocorreu um erro ao deletar a doação com ID 65413fb5ca408341b982babe. Por favor, tente novamente."
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/see-stock": {
+            "get": {
+                "tags": [
+                    "Estoque de Sangue"
+                ],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "summary": "Listar estoque",
+                "description": "Retorna uma lista com o estoque atual.",
+                "responses": {
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": "Acesso negado."
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "A +(Pos)": 0,
+                                    "A -(Neg)": 0,
+                                    "B +(Pos)": 0,
+                                    "B -(Neg)": 0,
+                                    "AB +(Pos)": 0,
+                                    "AB -(Neg)": 0,
+                                    "O +(Pos)": 0,
+                                    "O -(Neg)": 0
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": "Ocorreu um erro ao buscar o estoque. Por favor, tente novamente."
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     },
     "components": {
         "schemas": {
-            "Login": {
+            "Donor": {
                 "type": "object",
                 "properties": {
-                    "employeeCode": {
-                        "type": "number"
+                    "_id": {
+                        "type": "string",
+                        "auto": true
                     },
-                    "password": {
+                    "name": {
                         "type": "string"
+                    },
+                    "CPF": {
+                        "type": "string"
+                    },
+                    "birthDate": {
+                        "type": "date"
+                    },
+                    "sex": {
+                        "type": "string"
+                    },
+                    "address": {
+                        "type": "string"
+                    },
+                    "telephone": {
+                        "type": "string"
+                    },
+                    "donationHistory": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "_id": {
+                                    "type": "string",
+                                    "auto": true
+                                },
+                                "donationDate": {
+                                    "type": "date"
+                                },
+                                "bloodTest": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "_id": {
+                                                "type": "string",
+                                                "auto": true
+                                            },
+                                            "bloodType": {
+                                                "type": "string"
+                                            },
+                                            "exams": {
+                                                "type": "array",
+                                                "items": {
+                                                    "type": [
+                                                        "string"
+                                                    ]
+                                                }
+                                            },
+                                            "examsResult": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                },
+                                "expiryDate": {
+                                    "type": "date"
+                                },
+                                "nextDonationDate": {
+                                    "type": "date"
+                                }
+                            }
+                        }
                     }
-                }
+                },
+                "required": [
+                    "name",
+                    "CPF",
+                    "birthDate",
+                    "sex",
+                    "address",
+                    "telephone"
+                ]
             },
             "Employee": {
                 "type": "object",
                 "properties": {
                     "_id": {
-                        "type": "string"
+                        "type": "string",
+                        "auto": true
                     },
                     "name": {
-                        "type": "string",
-                        "required": true,
-                        "not": null,
-                        "unique": true
+                        "type": "string"
                     },
                     "employeeCode": {
                         "type": "number",
-                        "required": true,
-                        "not": null
+                        "auto": true
                     },
                     "password": {
-                        "type": "string",
-                        "required": true,
-                        "not": null
+                        "type": "string"
                     },
                     "isAdmin": {
                         "type": "boolean",
                         "default": false
                     }
-                }
+                },
+                "required": [
+                    "name",
+                    "employeeCode",
+                    "password"
+                ]
             },
-            "Donor": {
+            "Stock": {
                 "type": "object",
                 "properties": {
-                    "_id": {
-                        "type": "string"
+                    "A +(Pos)": {
+                        "type": "Number"
                     },
-                    "name": {
-                        "type": "string",
-                        "required": true,
-                        "not": null
+                    "A -(Neg)": {
+                        "type": "Number"
                     },
-                    "CPF": {
-                        "type": "string",
-                        "required": true,
-                        "not": null
+                    "B +(Pos)": {
+                        "type": "Number"
                     },
-                    "birthDate": {
-                        "type": "string",
-                        "format": "date",
-                        "required": true,
-                        "not": null
+                    "B -(Neg)": {
+                        "type": "Number"
                     },
-                    "sex": {
-                        "type": "string",
-                        "required": true,
-                        "not": null
+                    "AB +(Pos)": {
+                        "type": "Number"
                     },
-                    "address": {
-                        "type": "string",
-                        "required": true,
-                        "not": null
+                    "AB -(Neg)": {
+                        "type": "Number"
                     },
-                    "telephone": {
-                        "type": "string",
-                        "required": true,
-                        "not": null
+                    "O +(Pos)": {
+                        "type": "Number"
                     },
-                    "donationHistory": {
-                        "type": "array",
-                        "items": {
-                            "_id": {
-                                "$ref": "#/components/schemas/Donor"
-                            },
-                            "donationDate": {
-                                "$ref": "#/components/schemas/Donor"
-                            },
-                            "expiryDate": {
-                                "$ref": "#/components/schemas/Donor"
-                            },
-                            "nextDonationDate": {
-                                "$ref": "#/components/schemas/Donor"
-                            },
-                            "bloodTest": {
-                                "$ref": "#/components/schemas/Donor"
-                            }
-                        }
-                    }
-                }
-            },
-            "Error": {
-                "type": "object",
-                "properties": {
-                    "error": {
-                        "type": "string"
+                    "O -(Neg)": {
+                        "type": "Number"
                     }
                 }
             }
