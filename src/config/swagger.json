@@ -3,7 +3,7 @@
     "info": {
         "title": "API Doadores de sangue",
         "description": "Essa API é um sistema de gerenciamento de doações de sangue, com quatro componentes principais: Doador, Doação, Estoque de Sangue e Funcionário. Ela permite a manipulação de informações e facilita o controle e a organização do processo de doação de sangue.",
-        "version": "1.4.0"
+        "version": "1.4.1"
     },
     "externalDocs": {
         "description": "Link para o repositório",
@@ -1581,7 +1581,8 @@
                                     "auto": true
                                 },
                                 "donationDate": {
-                                    "type": "date"
+                                    "type": "date",
+                                    "auto": true
                                 },
                                 "bloodTest": {
                                     "type": "array",
@@ -1610,10 +1611,12 @@
                                     }
                                 },
                                 "expiryDate": {
-                                    "type": "date"
+                                    "type": "date",
+                                    "auto": true
                                 },
                                 "nextDonationDate": {
-                                    "type": "date"
+                                    "type": "date",
+                                    "auto": true
                                 }
                             }
                         }
