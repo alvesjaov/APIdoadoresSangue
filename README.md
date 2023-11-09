@@ -33,4 +33,14 @@ Este projeto utiliza várias tecnologias e bibliotecas, incluindo:
 - jsonwebtoken: Uma implementação dos tokens JSON Web Token.
 - passport: Um middleware de autenticação para Node.js extremamente flexível e modular.
 
+## Como Instalar e Executar o Projeto
+
+Para instalar e executar este projeto localmente, você precisará seguir estas etapas:
+
+1. Clone este repositório para a sua máquina local.
+2. Navegue até a pasta do projeto no terminal.
+3. Instale as dependências do projeto com `npm install`.
+4. Inicie o servidor com `npm start`.
+5. A API agora deve estar rodando em `localhost:5000`.
+
 
