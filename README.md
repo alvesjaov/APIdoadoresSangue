@@ -21,4 +21,16 @@ A API fornece várias rotas e funcionalidades, incluindo:
 - Criação, Leitura, Atualização e Exclusão (CRUD) de Doações: Permite o gerenciamento completo das doações.
 - Autenticação e Autorização: Utiliza tokens JWT para autenticar usuários e garantir que eles tenham permissão para acessar determinados recursos.
 
+## Tecnologias Utilizadas
+
+Este projeto utiliza várias tecnologias e bibliotecas, incluindo:
+        
+- Node.js: Uma plataforma JavaScript que permite a execução de código JavaScript no lado do servidor.
+- Express.js: Um framework web para Node.js que facilita a criação de APIs web.
+- MongoDB: Um banco de dados NoSQL orientado a documentos que oferece alta performance, alta disponibilidade e fácil escalabilidade.
+- Mongoose: Uma biblioteca do MongoDB que proporciona uma solução direta baseada em esquemas para modelar os dados da sua aplicação.
+- bcrypt: Uma biblioteca para ajudar você a fazer hash das senhas.
+- jsonwebtoken: Uma implementação dos tokens JSON Web Token.
+- passport: Um middleware de autenticação para Node.js extremamente flexível e modular.
+
 
