@@ -78,4 +78,9 @@ Este projeto usa o Node.js e o npm, que são necessários para instalar e execut
 
 O script `start` inicia o servidor Express, enquanto o script `dev` inicia o servidor com o nodemon para desenvolvimento. O script `test` está atualmente configurado para retornar uma mensagem de erro, pois nenhum teste foi especificado.
 
+## Gerando uma Chave Secreta
+
+Este projeto inclui um script para gerar uma chave secreta aleatória e adicioná-la ao arquivo `.env`. Para executar este script, use o comando `node generateSecret.js` no terminal. Isso irá gerar uma nova chave secreta e adicionar ou substituir a chave `JWT_SECRET` no arquivo `.env`.
+
+Por favor, note que você precisará ter o Node.js e o npm instalados em sua máquina para executar este script.
 
