@@ -72,5 +72,10 @@ As rotas dos funcionários permitem aos usuários criar, ler, atualizar e exclui
 
 As rotas de estoque permitem aos usuários atualizar o estoque de sangue.
 
+## Configuração do Projeto
+
+Este projeto usa o Node.js e o npm, que são necessários para instalar e executar o projeto. O arquivo `package.json` contém todas as dependências necessárias para o projeto, que podem ser instaladas usando `npm install`.
+
+O script `start` inicia o servidor Express, enquanto o script `dev` inicia o servidor com o nodemon para desenvolvimento. O script `test` está atualmente configurado para retornar uma mensagem de erro, pois nenhum teste foi especificado.
 
 
