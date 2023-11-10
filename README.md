@@ -56,5 +56,21 @@ Este projeto usa as seguintes variáveis ​​de ambiente:
 
 Por favor, note que você precisará configurar essas variáveis ​​de ambiente em seu próprio ambiente antes de poder executar este projeto corretamente.
 
+## Rotas da API
+
+Este projeto inclui várias rotas da API que permitem aos usuários interagir com os recursos do sistema. Aqui estão algumas das rotas disponíveis:
+
+### Rotas dos Doadores
+
+As rotas dos doadores permitem aos usuários criar, ler, atualizar e excluir doadores. Além disso, eles podem adicionar exames de sangue a um doador ou excluir a última doação feita por um doador.
+
+### Rotas dos Funcionários
+
+As rotas dos funcionários permitem aos usuários criar, ler, atualizar e excluir funcionários. Além disso, eles podem alterar a senha de um funcionário ou fazer login como um funcionário.
+
+### Rotas de Estoque
+
+As rotas de estoque permitem aos usuários atualizar o estoque de sangue.
+
 
 
