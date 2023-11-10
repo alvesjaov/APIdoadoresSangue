@@ -41,7 +41,24 @@ Para instalar e executar este projeto localmente, você precisará seguir estas 
 2. Navegue até a pasta do projeto no terminal.
 3. Instale as dependências do projeto com `npm install`.
 4. Inicie o servidor com `npm start`.
-5. A API agora deve estar rodando em `localhost:5000`.
+
+5. Para iniciar o servidor em modo de desenvolvimento, você pode usar o comando `npm run dev` no terminal. Isso deve iniciar o servidor em `localhost:5000`, assim como o comando `npm start`, mas com a vantagem adicional de recarregar automaticamente para refletir quaisquer alterações que você faça no código.
+
+Por favor, verifique o arquivo `package.json` do seu projeto para garantir que o script `dev` esteja presente. Se não estiver, você pode precisar adicioná-lo. A entrada do script pode parecer algo assim:
+
+json
+"scripts": {
+  "start": "node server.js",
+  "dev": "nodemon server.js"
+}
+
+Neste exemplo, `nodemon` é um utilitário que monitorará quaisquer alterações no seu código e reiniciará automaticamente o servidor. Se você ainda não tem o `nodemon` instalado, você pode instalá-lo globalmente com `npm install -g nodemon`.
+
+Por favor, note que você precisa ter o `Node.js` e o `npm` instalados em sua máquina para instalar e executar este projeto. Além disso, você precisará configurar as variáveis ​​de ambiente `MONGODB_URI` e `JWT_SECRET` em seu próprio ambiente antes de poder executar este projeto corretamente.
+
+
+
+
 
 ## Contribuindo
 
@@ -72,6 +89,10 @@ As rotas dos funcionários permitem aos usuários criar, ler, atualizar e exclui
 
 As rotas de estoque permitem aos usuários atualizar o estoque de sangue.
 
+## Suporte
+
+Se você tiver alguma dúvida ou problema ao usar este projeto, sinta-se à vontade para abrir uma issue. Faremos o nosso melhor para ajudar.
+
 ## Configuração do Projeto
 
 Este projeto usa o Node.js e o npm, que são necessários para instalar e executar o projeto. O arquivo `package.json` contém todas as dependências necessárias para o projeto, que podem ser instaladas usando `npm install`.
@@ -83,4 +104,3 @@ O script `start` inicia o servidor Express, enquanto o script `dev` inicia o ser
 Este projeto inclui um script para gerar uma chave secreta aleatória e adicioná-la ao arquivo `.env`. Para executar este script, use o comando `node generateSecret.js` no terminal. Isso irá gerar uma nova chave secreta e adicionar ou substituir a chave `JWT_SECRET` no arquivo `.env`.
 
 Por favor, note que você precisará ter o Node.js e o npm instalados em sua máquina para executar este script.
-
