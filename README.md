@@ -43,4 +43,18 @@ Para instalar e executar este projeto localmente, você precisará seguir estas 
 4. Inicie o servidor com `npm start`.
 5. A API agora deve estar rodando em `localhost:5000`.
 
+## Contribuindo
+
+Contribuições para este projeto são bem-vindas! Por favor, abra uma issue ou um pull request se você tiver alguma melhoria ou correção para sugerir.
+
+## Variáveis ​​de Ambiente
+
+Este projeto usa as seguintes variáveis ​​de ambiente:
+
+- `MONGODB_URI`: A URI da sua instância MongoDB
+- `JWT_SECRET`: A chave secreta usada para assinar os tokens JWT
+
+Por favor, note que você precisará configurar essas variáveis ​​de ambiente em seu próprio ambiente antes de poder executar este projeto corretamente.
+
+
 
