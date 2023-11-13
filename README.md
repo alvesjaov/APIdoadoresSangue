@@ -1,106 +1,75 @@
+# API para gerenciamento de doadores e doações de sangue
 
-# API para Doadores de Sangue
-
-Essa API é um sistema de gerenciamento de doações de sangue, com quatro componentes principais: Doador, Doação, Estoque de Sangue e Funcionário. Ela permite a manipulação de informações e facilita o controle e a organização do processo de doação de sangue.
+[Sobre o Projeto](https://github.com/alvesjaov/APIdoadoresSangue#sobre-o-projeto) •
+[Sobre o Projeto](https://github.com/alvesjaov/APIdoadoresSangue#sobre-o-projeto) •
+[Tecnologias Empregadas](https://github.com/alvesjaov/APIdoadoresSangue#tecnologias-empregadas) •
+[Como Instalar e Executar o Projeto](https://github.com/alvesjaov/APIdoadoresSangue#como-instalar-e-executar-o-projeto) •
+[Rotas da API](https://github.com/alvesjaov/APIdoadoresSangue#rotas-da-api)
 
 ## Sobre o Projeto
 
-O objetivo deste projeto é fornecer uma solução eficiente e eficaz para gerenciar um banco de sangue. Com esta API, os usuários podem facilmente registrar novos doadores e funcionários, acompanhar as doações e manter o controle do estoque de sangue.
+Essa API é um sistema de gerenciamento de doações de sangue, com quatro componentes principais: Funcionário, Doador, Doação e Estoque de Sangue. Ela permite a manipulação de informações e facilita o controle e a organização do processo de doação de sangue.
 
-A API foi projetada com foco na facilidade de uso e na segurança dos dados. Ela utiliza autenticação e autorização para garantir que apenas usuários autorizados possam acessar e modificar os dados.
+## Tecnologias Empregadas
 
-## Recursos
+Este projeto emprega uma variedade de tecnologias e bibliotecas de ponta, incluindo:
 
-A API fornece várias rotas e funcionalidades, incluindo:
+- **Node.js**: Plataforma JavaScript que permite a execução de código JavaScript no lado do servidor, tornando o desenvolvimento de aplicações web rápido e eficiente.
+- **Express.js**: Framework web para Node.js que facilita a criação de APIs web robustas e escaláveis.
+- **MongoDB**: banco de dados NoSQL orientado a documentos que oferece alta performance, alta disponibilidade e fácil escalabilidade, tornando-o ideal para aplicações modernas.
+- **Mongoose**: Biblioteca do MongoDB que proporciona uma solução direta baseada em esquemas para modelar os dados da sua aplicação, permitindo um controle mais rigoroso dos dados.
+- **bcrypt**: Biblioteca que ajuda você a fazer hash das senhas de forma segura, protegendo as informações sensíveis dos usuários.
+- **jsonwebtoken**: Implementação dos tokens JSON Web Token, que permite a criação de tokens de acesso seguros para autenticação de usuários.
+- **passport**: Middleware de autenticação para Node.js extremamente flexível e modular, que suporta uma ampla gama de estratégias de autenticação.
+- **Nodemon**: Utilitário que monitora quaisquer mudanças no seu código e automaticamente reinicia o seu servidor, economizando tempo de desenvolvimento e aumentando a eficiência.
 
-- Registro de Doadores: Permite o registro de novos doadores no sistema.
-- Gerenciamento de Doadores: Permite a visualização, atualização e exclusão de doadores registrados.
-- Registro de Funcionários: Permite o registro de novos funcionários no sistema.
-- Gerenciamento de Funcionários: Permite a visualização, atualização e exclusão de funcionários registrados.
-- Contagem e Atualização dos Tipos Sanguíneos: Mantém o controle do estoque de sangue, contando os diferentes tipos sanguíneos disponíveis.
-- Criação, Leitura, Atualização e Exclusão (CRUD) de Doações: Permite o gerenciamento completo das doações.
-- Autenticação e Autorização: Utiliza tokens JWT para autenticar usuários e garantir que eles tenham permissão para acessar determinados recursos.
-
-## Tecnologias Utilizadas
-
-Este projeto utiliza várias tecnologias e bibliotecas, incluindo:
-        
-- Node.js: Uma plataforma JavaScript que permite a execução de código JavaScript no lado do servidor.
-- Express.js: Um framework web para Node.js que facilita a criação de APIs web.
-- MongoDB: Um banco de dados NoSQL orientado a documentos que oferece alta performance, alta disponibilidade e fácil escalabilidade.
-- Mongoose: Uma biblioteca do MongoDB que proporciona uma solução direta baseada em esquemas para modelar os dados da sua aplicação.
-- bcrypt: Uma biblioteca para ajudar você a fazer hash das senhas.
-- jsonwebtoken: Uma implementação dos tokens JSON Web Token.
-- passport: Um middleware de autenticação para Node.js extremamente flexível e modular.
+Cada uma dessas tecnologias desempenha um papel crucial na funcionalidade e eficiência deste projeto.
 
 ## Como Instalar e Executar o Projeto
 
 Para instalar e executar este projeto localmente, você precisará seguir estas etapas:
 
-1. Clone este repositório para a sua máquina local.
-2. Navegue até a pasta do projeto no terminal.
-3. Instale as dependências do projeto com `npm install`.
-4. Inicie o servidor com `npm start`.
+1. Clone este repositório para a sua máquina local:
 
-5. Para iniciar o servidor em modo de desenvolvimento, você pode usar o comando `npm run dev` no terminal. Isso deve iniciar o servidor em `localhost:5000`, assim como o comando `npm start`, mas com a vantagem adicional de recarregar automaticamente para refletir quaisquer alterações que você faça no código.
+```bash
+git clone https://github.com/alvesjaov/APIdoadoresSangue.git
+```
 
-Por favor, verifique o arquivo `package.json` do seu projeto para garantir que o script `dev` esteja presente. Se não estiver, você pode precisar adicioná-lo. A entrada do script pode parecer algo assim:
+2. Instale as dependências do projeto, no terminal digite o comando:
 
-json
-"scripts": {
-  "start": "node server.js",
-  "dev": "nodemon server.js"
-}
+```bash
+npm install
+```
 
-Neste exemplo, `nodemon` é um utilitário que monitorará quaisquer alterações no seu código e reiniciará automaticamente o servidor. Se você ainda não tem o `nodemon` instalado, você pode instalá-lo globalmente com `npm install -g nodemon`.
+3. Crie um arquivo `.env` e adicione as seguintes *Variáveis de Ambiente*
 
-Por favor, note que você precisa ter o `Node.js` e o `npm` instalados em sua máquina para instalar e executar este projeto. Além disso, você precisará configurar as variáveis ​​de ambiente `MONGODB_URI` e `JWT_SECRET` em seu próprio ambiente antes de poder executar este projeto corretamente.
+```bash
+MONGODB_URI=
+JWT_SECRET=
+```
 
+- *Observação: Você precisará de uma string de conexão mongoDB para fazer a comunicação entre o código e o banco de dados.*
 
+4. Dite o comando abaixo para gerar string na variável `JWT_SECRET` no arquivo `.env`, para o melhor funcionamento do token JWT.
 
+```bash
+node generateSecret.js
+```
 
+5. No terminal digite o comando abaixo para iniciar o servidor local:
 
-## Contribuindo
+```bash
+npm run dev
+```
 
-Contribuições para este projeto são bem-vindas! Por favor, abra uma issue ou um pull request se você tiver alguma melhoria ou correção para sugerir.
+## Documentação das Rotas da API
 
-## Variáveis ​​de Ambiente
+Este projeto inclui várias rotas que permitem aos usuários interagir com os recursos do sistema. A documentação completa das rotas está disponível [aqui](https://apidoadoressangue.vercel.app/api-docs/).
 
-Este projeto usa as seguintes variáveis ​​de ambiente:
+As rotas se dividem em:
 
-- `MONGODB_URI`: A URI da sua instância MongoDB
-- `JWT_SECRET`: A chave secreta usada para assinar os tokens JWT
-
-Por favor, note que você precisará configurar essas variáveis ​​de ambiente em seu próprio ambiente antes de poder executar este projeto corretamente.
-
-## Rotas da API
-
-Este projeto inclui várias rotas da API que permitem aos usuários interagir com os recursos do sistema. Aqui estão algumas das rotas disponíveis:
-
-### Rotas dos Doadores
-
-As rotas dos doadores permitem aos usuários criar, ler, atualizar e excluir doadores. Além disso, eles podem adicionar exames de sangue a um doador ou excluir a última doação feita por um doador.
-
-### Rotas dos Funcionários
-
-As rotas dos funcionários permitem aos usuários criar, ler, atualizar e excluir funcionários. Além disso, eles podem alterar a senha de um funcionário ou fazer login como um funcionário.
-
-### Rotas de Estoque
-
-As rotas de estoque permitem aos usuários atualizar o estoque de sangue.
-
-## Suporte
-
-Se você tiver alguma dúvida ou problema ao usar este projeto, sinta-se à vontade para abrir uma issue. Faremos o nosso melhor para ajudar.
-
-## Configuração do Projeto
-
-Este projeto usa o Node.js e o npm, que são necessários para instalar e executar o projeto. O arquivo `package.json` contém todas as dependências necessárias para o projeto, que podem ser instaladas usando `npm install`.
-
-O script `start` inicia o servidor Express, enquanto o script `dev` inicia o servidor com o nodemon para desenvolvimento. O script `test` está atualmente configurado para retornar uma mensagem de erro, pois nenhum teste foi especificado.
-
-## Gerando uma Chave Secreta
-
-Este projeto inclui um script para gerar uma chave secreta aleatória e adicioná-la ao arquivo `.env`. Para executar este script, use o comando `node generateSecret.js` no terminal. Isso irá gerar uma nova chave secreta e adicionar ou substituir a chave `JWT_SECRET` no arquivo `.env`.
-
-Por favor, note que você precisará ter o Node.js e o npm instalados em sua máquina para executar este script.
+1. **Login**: Para acessar as Rotas de Funcionários é preciso fazer login como um funcionário administrador, já as Rotas de Doadores, Doações e Estoque podem ser acessadas como um funcionário padrão.
+2. **Funcionário**: Permite a Criação; Listagem; Atualização da senha e Exclusão de funcionários.
+3. **Doador**: Permite a Criação, Listagem, Atualização de dados e Exclusão de doadores.
+4. **Doação**:  Permite a Criação, Listagem, Atualização de exames *Adicionando os Exames* e Exclusão de doações.
+5. **Estoque de Sangue**: Permite a Listagem do estoque.
