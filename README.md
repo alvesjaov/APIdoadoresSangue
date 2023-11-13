@@ -1,4 +1,4 @@
-# API para gerenciamento de doadores e doações de sangue
+# API para gerenciamento de doadores de sangue
 
 [Sobre o Projeto](https://github.com/alvesjaov/APIdoadoresSangue#sobre-o-projeto) •
 [Sobre o Projeto](https://github.com/alvesjaov/APIdoadoresSangue#sobre-o-projeto) •
