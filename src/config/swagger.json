@@ -2,8 +2,8 @@
     "openapi": "3.0.0",
     "info": {
         "title": "API Doadores de sangue",
-        "description": "Essa API é um sistema de gerenciamento de doações de sangue, com quatro componentes principais: Doador, Doação, Estoque de Sangue e Funcionário. Ela permite a manipulação de informações e facilita o controle e a organização do processo de doação de sangue.",
-        "version": "1.4.1"
+        "description": "Essa API é um sistema de gerenciamento de doações de sangue, com quatro componentes principais: Funcionário, Doador, Doação e Estoque de Sangue. Ela permite a manipulação de informações e facilita o controle e a organização do processo de doação de sangue.",
+        "version": "1.5.0"
     },
     "externalDocs": {
         "description": "Link para o repositório",
@@ -42,7 +42,7 @@
         }
     ],
     "paths": {
-        "/start-login": {
+        "/employees/login": {
             "post": {
                 "tags": [
                     "Login"
@@ -124,7 +124,7 @@
                 }
             }
         },
-        "/new-employee": {
+        "/employees/": {
             "post": {
                 "tags": [
                     "Funcionário"
@@ -223,9 +223,7 @@
                         }
                     }
                 }
-            }
-        },
-        "/see-employees": {
+            },
             "get": {
                 "tags": [
                     "Funcionário"
@@ -317,7 +315,7 @@
                 }
             }
         },
-        "/see-employees/{employeeCode}": {
+        "/employees/{employeeCode}": {
             "get": {
                 "tags": [
                     "Funcionário"
@@ -402,9 +400,7 @@
                         }
                     }
                 }
-            }
-        },
-        "/update-employee/password/{employeeCode}": {
+            },
             "patch": {
                 "tags": [
                     "Funcionário"
@@ -520,9 +516,7 @@
                         }
                     }
                 }
-            }
-        },
-        "/del-employee/{employeeCode}": {
+            },
             "delete": {
                 "tags": [
                     "Funcionário"
@@ -614,8 +608,8 @@
                     }
                 }
             }
-        },
-        "/new-donor": {
+        },       
+        "/donors/": {
             "post": {
                 "tags": [
                     "Doador"
@@ -716,9 +710,7 @@
                         }
                     }
                 }
-            }
-        },
-        "/see-donors": {
+            },
             "get": {
                 "tags": [
                     "Doador"
@@ -838,7 +830,7 @@
                 }
             }
         },
-        "/see-donors/{_id}": {
+        "/donors/{_id}": {
             "get": {
                 "tags": [
                     "Doador"
@@ -947,9 +939,7 @@
                         }
                     }
                 }
-            }
-        },
-        "/update-donor/{_id}": {
+            },
             "patch": {
                 "tags": [
                     "Doador"
@@ -1042,9 +1032,7 @@
                         }
                     }
                 }
-            }
-        },
-        "/del-donor/{_id}": {
+            },
             "delete": {
                 "tags": [
                     "Doador"
@@ -1127,7 +1115,7 @@
                 }
             }
         },
-        "/new-donation/{_id}": {
+        "/donations/{_id}": {
             "post": {
                 "tags": [
                     "Doação"
@@ -1208,9 +1196,7 @@
                         }
                     }
                 }
-            }
-        },
-        "/see-donation/{_id}": {
+            },
             "get": {
                 "tags": [
                     "Doação"
@@ -1308,10 +1294,8 @@
                         }
                     }
                 }
-            }
-        },
-        "/add-exams/{_id}": {
-            "post": {
+            },
+            "patch": {
                 "tags": [
                     "Doação"
                 ],
@@ -1405,9 +1389,7 @@
                         }
                     }
                 }
-            }
-        },
-        "/del-donation/{_id}": {
+            },
             "delete": {
                 "tags": [
                     "Doação"
@@ -1490,7 +1472,7 @@
                 }
             }
         },
-        "/see-stock": {
+        "/stock": {
             "get": {
                 "tags": [
                     "Estoque de Sangue"
