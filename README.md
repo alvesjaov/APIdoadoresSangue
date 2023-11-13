@@ -1,11 +1,5 @@
 # API para gerenciamento de doadores de sangue
 
-
-[Sobre o Projeto](https://github.com/alvesjaov/APIdoadoresSangue#sobre-o-projeto) •
-[Tecnologias Empregadas](https://github.com/alvesjaov/APIdoadoresSangue#tecnologias-empregadas) •
-[Como Instalar e Executar o Projeto](https://github.com/alvesjaov/APIdoadoresSangue#como-instalar-e-executar-o-projeto) •
-[Documentação das Rotas da API](https://github.com/alvesjaov/APIdoadoresSangue#documenta%C3%A7%C3%A3o-das-rotas-da-api)
-
 ## Sobre o Projeto
 
 Essa API é um sistema de gerenciamento de doações de sangue, com quatro componentes principais: Funcionário, Doador, Doação e Estoque de Sangue. Ela permite a manipulação de informações e facilita o controle e a organização do processo de doação de sangue.
@@ -50,7 +44,7 @@ JWT_SECRET=
 
 - *Observação: Você precisará de uma string de conexão mongoDB para fazer a comunicação entre o código e o banco de dados.*
 
-4. Dite o comando abaixo para gerar string na variável `JWT_SECRET` no arquivo `.env`, para o melhor funcionamento do token JWT.
+4. Dite o comando abaixo para gerar uma string na variável `JWT_SECRET` no arquivo `.env`, para o melhor funcionamento do token JWT.
 
 ```bash
 node generateSecret.js
