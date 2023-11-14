@@ -9,15 +9,15 @@ async function loginEmployee(request, response) {
 
   try {
     // Procura por um funcionário existente com o mesmo código de funcionário
-    const existingEmployee = await Employee.findOne({ employeeCode: employeeCode });
+    const employee = await Employee.findOne({ employeeCode: employeeCode });
 
     // Se o funcionário não existir, retorna um erro
-    if (!existingEmployee) {
+    if (!employee) {
       return response.status(400).json({ error: 'O código fornecido não pertence a nenhum funcionário.' });
     }
 
     // Verifica se a senha fornecida corresponde à senha do funcionário existente
-    const isPasswordValid = await bcrypt.compare(password, existingEmployee.password);
+    const isPasswordValid = await bcrypt.compare(password, employee.password);
 
     // Se a senha não for válida, retorna um erro
     if (!isPasswordValid) {
@@ -26,14 +26,14 @@ async function loginEmployee(request, response) {
 
     // Se o código do funcionário e a senha estiverem corretos, gera um token JWT
     const token = jwt.sign({
-      id: existingEmployee._id, isAdmin: existingEmployee.isAdmin
+      id: employee._id, isAdmin: employee.isAdmin
     },
       process.env.JWT_SECRET, {
       expiresIn: '1h',
     });
-  
+
     // Filtra os tokens do funcionário para remover os tokens expirados
-    let oldTokens = existingEmployee.tokens || [];
+    let oldTokens = employee.tokens || [];
 
     // Se houver tokens expirados, remove-os
     if (oldTokens.length) {
@@ -47,12 +47,12 @@ async function loginEmployee(request, response) {
     }
 
     // Atualiza o documento do funcionário com o novo token
-    await Employee.findByIdAndUpdate(existingEmployee._id, {
+    await Employee.findByIdAndUpdate(employee._id, {
       tokens: [...oldTokens, { token, signedAt: Date.now().toString() }],
     })
 
     // Retorna uma mensagem de sucesso e o token JWT
-    response.status(200).json({ Funcionário: employeeCode, message: 'Login realizado com sucesso!', token });
+    response.status(200).json({ Funcionário: { Nome: employee.name, Código: employee.employeeCode }, message: 'Login realizado com sucesso!', token });
 
   } catch (error) {
     // Se ocorrer um erro, retorna uma mensagem de erro
@@ -98,7 +98,7 @@ async function logoutEmployee(request, response) {
       await Employee.findByIdAndUpdate(employeeId, { tokens: newTokens });
 
       // Retorna uma mensagem de sucesso
-      return response.status(200).json({ message: 'Logout realizado com sucesso!' });
+      return response.status(200).json({ Funcionário: { Nome: employee.name, Código: employee.employeeCode }, message: 'Logout realizado com sucesso!' });
     }
     // Se o cabeçalho de autorização não estiver presente, retorna um erro
     response.status(401).json({ error: 'Cabeçalho de autorização não encontrado.' });
