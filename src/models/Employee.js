@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 const employeeSchema = mongoose.Schema({
     _id: {
         type: mongoose.Schema.Types.ObjectId,
-        auto: false
+        auto: true
     },
     name: {
         type: String,
