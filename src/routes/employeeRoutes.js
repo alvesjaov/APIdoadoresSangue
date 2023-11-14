@@ -1,12 +1,13 @@
 import { Router } from 'express';
 import { createEmployee, readEmployee, updateEmployeePassword, deleteEmployee } from '../controllers/EmployeeController.js';
 import { verifyAdmin } from '../middleware/Verify.js';
+import { checkBlacklistedToken } from '../middleware/BlacklistToken.js';
 
 const employeeRoutes = Router();
 
-employeeRoutes.post('/employees/', verifyAdmin, createEmployee); // Rota para criar um funcionário
-employeeRoutes.get('/employees/:code?', verifyAdmin, readEmployee); // Rota para ler funcionários. O código do funcionário é opcional
-employeeRoutes.patch('/employees/:code', verifyAdmin, updateEmployeePassword); // Rota para alterar a senha de um funcionário
-employeeRoutes.delete('/employees/:code', verifyAdmin, deleteEmployee); // Rota para deletar um funcionário
+employeeRoutes.post('/employees/', verifyAdmin, checkBlacklistedToken, createEmployee); // Rota para criar um funcionário
+employeeRoutes.get('/employees/:code?', verifyAdmin, checkBlacklistedToken, readEmployee); // Rota para ler funcionários. O código do funcionário é opcional
+employeeRoutes.patch('/employees/:code', verifyAdmin, checkBlacklistedToken, updateEmployeePassword); // Rota para alterar a senha de um funcionário
+employeeRoutes.delete('/employees/:code', verifyAdmin, checkBlacklistedToken, deleteEmployee); // Rota para deletar um funcionário
 
 export default employeeRoutes;
