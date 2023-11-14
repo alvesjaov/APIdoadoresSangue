@@ -29,26 +29,27 @@ async function loginEmployee(request, response) {
       id: employee._id, isAdmin: employee.isAdmin
     },
       process.env.JWT_SECRET, {
-      expiresIn: '1h',
+      expiresIn: '1d',
     });
 
-    // Filtra os tokens do funcionário para remover os tokens expirados
-    let oldTokens = employee.tokens || [];
+    // Obtém os tokens antigos do funcionário
+    let oldToken = employee.tokens = [];// Inicializa a variável com um array vazio 
 
-    // Se houver tokens expirados, remove-os
-    if (oldTokens.length) {
-      oldTokens = oldTokens.filter((t) => { // Filtra os tokens do funcionário para remover os tokens expirados
-        // Calcula a diferença de tempo entre o momento atual e o momento em que o token foi assinado
-        const timeDiff = Date.now - parseInt(t.signedAt) / 1000
-        if (timeDiff < 3600) {
-          return t
+    // Se o funcionário já tiver tokens antigos, filtra os tokens para remover os tokens expirados
+    if (oldToken.length) {
+      oldToken = oldToken.filter((t) => { // Filtra os tokens do funcionário para remover os tokens expirados
+        try {
+          jwt.verify(t.token, process.env.JWT_SECRET); // Verifica se o token é válido
+          return true;
+        } catch (err) {
+          return null; // Se o token for inválido, retorna null
         }
       })
     }
 
     // Atualiza o documento do funcionário com o novo token
     await Employee.findByIdAndUpdate(employee._id, {
-      tokens: [...oldTokens, { token, signedAt: Date.now().toString() }],
+      tokens: [...oldToken, { token, signedAt: new Date().toISOString() }],
     })
 
     // Retorna uma mensagem de sucesso e o token JWT
