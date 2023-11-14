@@ -25,6 +25,10 @@
             "description": "Endpoints relacionados ao login"
         },
         {
+            "name": "Logout",
+            "description": "Endpoints relacionados ao logout"
+        },
+        {
             "name": "Funcionário",
             "description": "Endpoints relacionados ao funcionário"
         },
@@ -124,6 +128,79 @@
                 }
             }
         },
+        "/employees/logout":{
+            "post": {
+                "tags": [
+                    "Logout"
+                ],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "summary": "Logout",
+                "description": "Realiza o logout do funcionário.\n\n **(apenas funcionários logados)**",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "ServerResponse": {
+                                        "value": {
+                                            "message": "Logout realizado com sucesso!"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "Unauthorized": {
+                                        "value": {
+                                            "error": "Acesso negado."
+                                        }
+                                    },
+                                    "InvalidToken": {
+                                        "value": {
+                                            "error": "Token inválido ou expirado."
+                                        }
+                                    },
+                                    "EmployeeNotFound": {
+                                        "value": {
+                                            "error": "Funcionário não encontrado"
+                                        }
+                                    },
+                                    "HeaderNotFound": {
+                                        "value": {
+                                            "error": "Cabeçalho de autorização não encontrado."
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "ServerError": {
+                                        "value": {
+                                            "error": "Ocorreu um erro ao realizar o logout. Por favor, tente novamente."
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/employees/": {
             "post": {
                 "tags": [
@@ -147,7 +224,7 @@
                                     "value": {
                                         "name": "Admin",
                                         "password": "1234teste",
-                                        "isAmind": true
+                                        "isAdmin": true
                                     }
                                 },
                                 "Funcionário": {
