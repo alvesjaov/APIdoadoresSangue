@@ -13,6 +13,7 @@ function generateRandomEmployeeCode(length) {
 // Rota para registrar um funcionário (CREATE)
 async function createEmployee(request, response) {
   const employee = request.body; // Obtém os dados do funcionário do corpo da requisição
+  const passwordUnlocked = employee.password; // Obtém a senha do funcionário
 
   // Verifica se a senha tem pelo menos 8 caracteres
   if (employee.password.length < 8) {
@@ -39,7 +40,7 @@ async function createEmployee(request, response) {
     // Salva o novo funcionário no banco de dados
     await newEmployee.save();
 
-    response.status(201).json({ message: 'Funcionário registrado com sucesso!' });
+    response.status(201).json({ Funcionário: { Nome: employee.name, Código: employee.employeeCode, Senha: passwordUnlocked }, message: 'Funcionário registrado com sucesso!' });
 
   } catch (error) {
     response.status(500).json({ error: `Ocorreu um erro ao registrar o funcionário. Por favor, tente novamente. Erro: ${error.message}` });
