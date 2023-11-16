@@ -56,7 +56,8 @@ async function countAndUpdateBloodTypes(_, response) {
 
     } catch (error) {
         // Em caso de erro, envia uma mensagem de erro
-        response.status(500).json({ message: `Ocorreu um erro ao contar e atualizar os tipos sanguíneos. Por favor, tente novamente. Erro: ${error.message}` });
+        console.error(error.message);
+        response.status(500).json({ message: "Ocorreu um erro ao contar e atualizar os tipos sanguíneos. Por favor, tente novamente." });
     }
 }
 

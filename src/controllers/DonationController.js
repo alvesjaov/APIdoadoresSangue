@@ -16,7 +16,9 @@ async function createDonation(request, response) {
             response.status(201).json({ message: `Nova doação registrada para o doador com ID ${id}!` }); // Retorna sucesso se a doação for registrada corretamente
         }
     } catch (error) {
-        response.status(500).json({ error: `Ocorreu um erro ao registrar a doação. Por favor, tente novamente. Erro: ${error.message}` });
+        // Em caso de erro, retorna uma mensagem de erro
+        console.error(error);
+        response.status(500).json({ error: "Ocorreu um erro ao registrar a doação. Por favor, tente novamente." });
     }
 }
 
@@ -40,7 +42,8 @@ async function readDonation(request, response) {
         response.status(200).json(donation);
     } catch (error) {
         // Em caso de erro, retorna uma mensagem de erro
-        response.status(500).json({ error: `Ocorreu um erro ao buscar a doação. Por favor, tente novamente Erro: ${error.message}` });
+        console.error(error.message);
+        response.status(500).json({ error: "Ocorreu um erro ao buscar a doação. Por favor, tente novamente" });
     }
 }
 
@@ -86,7 +89,8 @@ async function addBloodExams(request, response) {
         response.status(200).json({ message: `Tipagem sanguínea e exames adicionados com sucesso` });
     } catch (error) {
         // Em caso de erro, retorna uma mensagem de erro
-        response.status(500).json({ error: `Ocorreu um erro ao adicionar a tipagem sanguínea e os exames. Por favor, tente novamente. Erro: ${error.message}` });
+        console.error(error.message);
+        response.status(500).json({ error: "Ocorreu um erro ao adicionar a tipagem sanguínea e os exames. Por favor, tente novamente." });
     }
 }
 
@@ -116,7 +120,8 @@ async function deleteDonation(request, response) {
         response.status(200).json({ message: `Doação com ID ${id} deletada com sucesso!` });
     } catch (error) {
         // Em caso de erro, retorna uma mensagem de erro
-        response.status(500).json({ error: `Ocorreu um erro ao deletar a doação com ID ${id}. Por favor, tente novamente. Erro: ${error.message}` });
+        console.error(error.message);
+        response.status(500).json({ error: `Ocorreu um erro ao deletar a doação com ID ${id}. Por favor, tente novamente.` });
     }
 }
 

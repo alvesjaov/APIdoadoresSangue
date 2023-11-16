@@ -43,7 +43,9 @@ async function createEmployee(request, response) {
     response.status(201).json({ Funcionário: { Nome: employee.name, Código: employee.employeeCode, Senha: passwordUnlocked }, message: 'Funcionário registrado com sucesso!' });
 
   } catch (error) {
-    response.status(500).json({ error: `Ocorreu um erro ao registrar o funcionário. Por favor, tente novamente. Erro: ${error.message}` });
+    // Se ocorrer um erro, retorna uma mensagem de erro
+    console.error(error.message);
+    response.status(500).json({ error: "Ocorreu um erro ao registrar o funcionário. Por favor, tente novamente." });
   }
 }
 
@@ -64,12 +66,15 @@ async function readEmployee(request, response) {
       const employee = await Employee.find();
       return response.status(200).json(employee);
     }
-    
+
   } catch (error) {
     if (employeeCode) {
-      return response.status(500).json({ error: `Ocorreu um erro ao buscar o funcionário. Por favor, tente novamente. Erro: ${error.message}` });
+      // Se ocorrer um erro, retorna uma mensagem de erro
+      console.error(error.message);
+      return response.status(500).json({ error: "Ocorreu um erro ao buscar o funcionário. Por favor, tente novamente." });
     } else {
-      return response.status(500).json({ error: `Ocorreu um erro ao buscar funcionários. Por favor, tente novamente. Erro: ${error.message}` });
+      console.error(error.message);
+      return response.status(500).json({ error: "Ocorreu um erro ao buscar funcionários. Por favor, tente novamente." });
     }
   }
 }
@@ -104,7 +109,9 @@ async function updateEmployeePassword(request, response) {
     // Se encontrar o funcionário, retorna uma mensagem de sucesso
     return response.status(200).json({ message: 'Senha alterada com sucesso!' });
   } catch (error) {
-    response.status(500).json({ error: `Ocorreu um erro ao alterar a senha do funcionário. Por favor, tente novamente. Erro: ${error.message}` });
+    // Se ocorrer um erro, retorna uma mensagem de erro
+    console.error(error.message);
+    response.status(500).json({ error: "Ocorreu um erro ao alterar a senha do funcionário. Por favor, tente novamente." });
   }
 }
 
@@ -127,7 +134,9 @@ async function deleteEmployee(request, response) {
 
     return response.status(200).json({ message: 'Funcionário deletado com sucesso!' });
   } catch (error) {
-    response.status(500).json({ error: `Ocorreu um erro ao deletar o funcionário. Por favor, tente novamente. Erro: ${error.message}` });
+    // Se ocorrer um erro, retorna uma mensagem de erro
+    console.error(error.message);
+    response.status(500).json({ error: "Ocorreu um erro ao deletar o funcionário. Por favor, tente novamente." });
   }
 }
 

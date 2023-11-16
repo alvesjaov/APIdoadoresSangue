@@ -57,7 +57,8 @@ async function loginEmployee(request, response) {
 
   } catch (error) {
     // Se ocorrer um erro, retorna uma mensagem de erro
-    response.status(500).json({ error: `Ocorreu um erro ao realizar o login. Por favor, tente novamente. Erro: ${error.message}` });
+    console.error(error.message);
+    response.status(500).json({ error: "Ocorreu um erro ao realizar o login. Por favor, tente novamente." });
   }
 }
 
@@ -105,7 +106,7 @@ async function logoutEmployee(request, response) {
     response.status(401).json({ error: 'Cabeçalho de autorização não encontrado.' });
   } catch (error) {
     // Se ocorrer um erro, retorna uma mensagem de erro
-    console.error(error);
+    console.error(error.message);
     return response.status(500).json({ error: 'Ocorreu um erro interno do servidor.' });
   }
 }
