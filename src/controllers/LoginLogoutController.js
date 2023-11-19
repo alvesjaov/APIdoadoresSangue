@@ -1,7 +1,7 @@
 import Employee from '../models/Employee.js'; // Importa o modelo de funcionário
 import bcrypt from 'bcrypt';// Importa a biblioteca bcryptjs para criptografar senhas
 import jwt from 'jsonwebtoken'; // Importa a biblioteca jsonwebtoken para geração de tokens JWT
-import { addToBlacklist } from '../middleware/BlacklistToken.js'; // Importa a função para adicionar um token à lista negra
+import { addToBlacklist } from '../middleware/manageBlacklist.js'; // Importa a função para adicionar um token à lista negra
 
 // Rota para login de um funcionário
 async function loginEmployee(request, response) {
@@ -11,17 +11,9 @@ async function loginEmployee(request, response) {
     // Procura por um funcionário existente com o mesmo código de funcionário
     const employee = await Employee.findOne({ employeeCode: employeeCode });
 
-    // Se o funcionário não existir, retorna um erro
-    if (!employee) {
-      return response.status(400).json({ error: 'O código fornecido não pertence a nenhum funcionário.' });
-    }
-
-    // Verifica se a senha fornecida corresponde à senha do funcionário existente
-    const isPasswordValid = await bcrypt.compare(password, employee.password);
-
-    // Se a senha não for válida, retorna um erro
-    if (!isPasswordValid) {
-      return response.status(400).json({ error: 'Senha inválida.' });
+    // Se o funcionário não existir ou a senha não for válida, retorna um erro
+    if (!employee || !(await bcrypt.compare(password, employee.password))) {
+      return response.status(400).json({ error: 'Código ou senha inválido. Por favor, tente novamente.' });
     }
 
     // Se o código do funcionário e a senha estiverem corretos, gera um token JWT
@@ -29,27 +21,12 @@ async function loginEmployee(request, response) {
       id: employee._id, isAdmin: employee.isAdmin
     },
       process.env.JWT_SECRET, {
-      expiresIn: '1d',
+      expiresIn: '1h',
     });
-
-    // Obtém os tokens antigos do funcionário
-    let oldToken = employee.tokens = [];// Inicializa a variável com um array vazio 
-
-    // Se o funcionário já tiver tokens antigos, filtra os tokens para remover os tokens expirados
-    if (oldToken.length) {
-      oldToken = oldToken.filter((t) => { // Filtra os tokens do funcionário para remover os tokens expirados
-        try {
-          jwt.verify(t.token, process.env.JWT_SECRET); // Verifica se o token é válido
-          return true;
-        } catch (err) {
-          return null; // Se o token for inválido, retorna null
-        }
-      })
-    }
 
     // Atualiza o documento do funcionário com o novo token
     await Employee.findByIdAndUpdate(employee._id, {
-      tokens: [...oldToken, { token, signedAt: new Date().toISOString() }],
+      tokens: [{ token, signedAt: new Date().toISOString() }],
     })
 
     // Retorna uma mensagem de sucesso e o token JWT
