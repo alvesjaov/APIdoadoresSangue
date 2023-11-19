@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import preSave from '../middleware/preSave.js';
+import PreSave from '../middleware/PreSave.js'
 
 const donorSchema = mongoose.Schema({
   _id: {
@@ -69,6 +69,6 @@ const donorSchema = mongoose.Schema({
   }]
 }, { versionKey: false });
 
-donorSchema.pre('save', preSave); // Use a função de middleware
+donorSchema.pre('save', PreSave); // Use a função de middleware
 
 export default mongoose.model('Donor', donorSchema);

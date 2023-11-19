@@ -11,10 +11,10 @@ import { createRequire } from 'module';
 import routes from './src/routes/indexRoutes.js';
 
 // Importando configuração do Passport
-import configurePassport from './src/middleware/passportConfig.js';
+import configurePassport from './src/middleware/ConfigPassport.js';
 
 // Importando a função cleanExpiredTokens
-import cleanExpiredTokens from './src/middleware/tokenExpired.js';
+import cleanExpiredTokens from './src/middleware/CleanExpiredTokens.js';
 
 // Configurando dotenv
 dotenv.config();

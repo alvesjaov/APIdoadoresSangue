@@ -1,7 +1,7 @@
 import Employee from '../models/Employee.js'; // Importa o modelo de funcionário
 import bcrypt from 'bcrypt';// Importa a biblioteca bcryptjs para criptografar senhas
 import jwt from 'jsonwebtoken'; // Importa a biblioteca jsonwebtoken para geração de tokens JWT
-import { addToBlacklist } from '../middleware/manageBlacklist.js'; // Importa a função para adicionar um token à lista negra
+import { addToBlacklist } from '../middleware/Blacklist.js'; // Importa a função para adicionar um token à lista negra
 
 // Rota para login de um funcionário
 async function loginEmployee(request, response) {

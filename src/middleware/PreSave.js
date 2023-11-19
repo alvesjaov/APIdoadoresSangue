@@ -1,4 +1,5 @@
-async function preSave(next) {
+// Função para atualizar a data de doação do doador antes de salvar o documento no banco de dados
+async function PreSave(next) {
   if (this.donationHistory.length > 0) {//
     const lastDonation = this.donationHistory[this.donationHistory.length - 1];
     lastDonation.donationDate = new Date();
@@ -14,4 +15,4 @@ async function preSave(next) {
   next();
 }
 
-export default preSave; // Exporte a função preSave como padrão
+export default PreSave; // Exporte a função PreSave como padrão

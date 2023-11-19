@@ -1,6 +1,6 @@
 import Employee from '../models/Employee.js';
 import jwt from 'jsonwebtoken';
-import { addToBlacklist } from './manageBlacklist.js';
+import { addToBlacklist } from './Blacklist.js';
 
 async function cleanExpiredTokens() {
   // Obtém todos os funcionários
