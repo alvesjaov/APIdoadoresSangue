@@ -11,7 +11,10 @@ import { createRequire } from 'module';
 import routes from './src/routes/indexRoutes.js';
 
 // Importando configuração do Passport
-import configurePassport from './src/middleware/PassportConfig.js';
+import configurePassport from './src/middleware/passportConfig.js';
+
+// Importando a função cleanExpiredTokens
+import cleanExpiredTokens from './src/middleware/tokenExpired.js';
 
 // Configurando dotenv
 dotenv.config();
@@ -52,6 +55,10 @@ async function startServer() {
     app.listen(PORT, () => {
       console.log(`Serviço rodando na porta ${PORT} e conexão com MongoDB estabelecida com sucesso.`);
     });
+
+    // Inicia a limpeza de tokens expirados
+    cleanExpiredTokens();
+
   } catch (error) {
     console.error('Erro na conexão com MongoDB:', error.message);
   }
