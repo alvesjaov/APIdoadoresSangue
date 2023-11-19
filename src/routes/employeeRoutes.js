@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { createEmployee, readEmployee, updateEmployeePassword, deleteEmployee } from '../controllers/EmployeeController.js';
-import { verifyAdmin } from '../middleware/Verify.js';
-import { checkBlacklistedToken } from '../middleware/BlacklistToken.js';
+import { verifyAdmin } from '../middleware/verify.js';
+import { checkBlacklistedToken } from '../middleware/manageBlacklist.js';
 
 const employeeRoutes = Router();
 

@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { createDonation, readDonation, addBloodExams, deleteDonation } from '../controllers/DonationController.js';
-import { verifyEmployee } from '../middleware/Verify.js';
-import { checkBlacklistedToken } from '../middleware/BlacklistToken.js';
+import { verifyEmployee } from '../middleware/verify.js';
+import { checkBlacklistedToken } from '../middleware/manageBlacklist.js';
 
 
 const donationRoutes = Router();
