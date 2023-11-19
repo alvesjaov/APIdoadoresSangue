@@ -97,14 +97,9 @@
                         "content": {
                             "application/json": {
                                 "examples": {
-                                    "InvalidEmployeeCode": {
+                                    "invalidCodeOrPassword": {
                                         "value": {
-                                            "error": "O código fornecido não pertence a nenhum funcionário."
-                                        }
-                                    },
-                                    "InvalidPassword": {
-                                        "value": {
-                                            "error": "Senha inválida."
+                                            "error": "Código ou senha inválido. Por favor, tente novamente."
                                         }
                                     }
                                 }
