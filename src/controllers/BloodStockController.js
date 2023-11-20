@@ -15,7 +15,7 @@ async function countBloodTypes(currentDate) {
 
 // Função para preparar a contagem de todos os tipos sanguíneos
 function prepareAllCounts(bloodTypeCounts) {
-    const allBloodTypes = ['A +(Pos)', 'A -(Neg)', 'B +(Pos)', 'B -(Neg)', 'AB +(Pos)', 'AB -(Neg)', 'O +(Pos)', 'O -(Neg)'];
+    const allBloodTypes = ['A+ (Pos)', 'A- (Neg)', 'B+ (Pos)', 'B- (Neg)', 'AB+ (Pos)', 'AB- (Neg)', 'O+ (Pos)', 'O- (Neg)'];
     let allCounts = {};
     allBloodTypes.forEach(type => {
         allCounts[type] = 0;
