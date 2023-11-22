@@ -30,11 +30,11 @@ async function createEmployee(request, response) {
   const newEmployee = new Employee(employee); // Cria um novo funcionário com os dados fornecidos
 
   try {
-    // Procura por um funcionário existente com o mesmo código de funcionário
-    const existingEmployee = await Employee.findOne({ employeeCode: newEmployee.employeeCode });
+    // Procura por um funcionário existente com o mesmo nome
+    const existingEmployee = await Employee.findOne({ name: newEmployee.name });
 
     if (existingEmployee) {
-      return response.status(400).json({ error: 'Já existe um funcionário com o mesmo código.' });
+      return response.status(400).json({ error: 'Já existe um funcionário com o mesmo nome.' });
     }
 
     // Salva o novo funcionário no banco de dados
