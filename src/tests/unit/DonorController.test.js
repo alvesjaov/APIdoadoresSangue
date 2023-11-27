@@ -1,0 +1,130 @@
+import Donor from '../../models/Donor.js';
+import {
+    createDonor,
+    getDonor,
+    updateDonor,
+    deleteDonor,
+} from '../../controllers/donorController.js'; // Importa as funções que serão testadas
+
+
+jest.mock('../../models/Donor.js'); // Mock do modelo Donor
+
+describe('Donor Controller', () => {
+    describe('createDonor', () => {
+        it('should create a new donor', async () => {
+            const request = {
+                body: {
+                    CPF: '419.688.540-37'
+                },
+            };
+            const response = {
+                status: jest.fn().mockReturnThis(),
+                json: jest.fn(),
+            };
+
+            // Mocking the save function of Donor model
+            Donor.prototype.save = jest.fn();
+
+            await createDonor(request, response);
+
+            expect(response.status).toHaveBeenCalledWith(201);
+            expect(response.json).toHaveBeenCalledWith({ message: 'Doador cadastrado com sucesso!' });
+        });
+
+        it('should return an error if the CPF is valid', async () => {
+            const request = {
+              body: {
+                // Simulate valid CPF
+                CPF: '1234567',
+                // Insert other necessary data for a valid donor
+              },
+            };
+            const response = {
+              status: jest.fn().mockReturnThis(),
+              json: jest.fn(),
+            };
+        
+            await createDonor(request, response);
+        
+            expect(response.status).toHaveBeenCalledWith(400);
+            expect(response.json).toHaveBeenCalledWith({ error: 'O CPF fornecido não é válido.' });
+          });
+        
+    });
+
+    describe('getDonor', () => {
+        it('should get a donor by ID', async () => {
+            const request = {
+                params: {
+                    id: 'valid_id',
+                },
+            };
+            const response = {
+                status: jest.fn().mockReturnThis(),
+                json: jest.fn(),
+            };
+
+            // Mocking the findById function of Donor model
+            Donor.findById = jest.fn().mockResolvedValue({ name: 'John Doe' });
+
+            await getDonor(request, response);
+
+            expect(response.status).toHaveBeenCalledWith(200);
+            expect(response.json).toHaveBeenCalledWith({ name: 'John Doe' });
+        });
+
+        // Add more tests for scenarios like fetching all donors, donor not found, etc.
+    });
+
+    describe('updateDonor', () => {
+        it('should update a donor by ID', async () => {
+            const request = {
+                params: {
+                    id: 'valid_id',
+                },
+                body: {
+                    // Simulate updated data
+                    // Insert test data here
+                },
+            };
+            const response = {
+                status: jest.fn().mockReturnThis(),
+                json: jest.fn(),
+            };
+
+            // Mocking the findByIdAndUpdate function of Donor model
+            Donor.findByIdAndUpdate = jest.fn().mockResolvedValue({ /* Updated donor object */ });
+
+            await updateDonor(request, response);
+
+            expect(response.status).toHaveBeenCalledWith(200);
+            expect(response.json).toHaveBeenCalledWith({ message: 'Doador com ID valid_id atualizado com sucesso!' });
+        });
+
+        // Add more tests for scenarios like donor not found, error cases, etc.
+    });
+
+    describe('deleteDonor', () => {
+        it('should delete a donor by ID', async () => {
+            const request = {
+                params: {
+                    id: 'valid_id',
+                },
+            };
+            const response = {
+                status: jest.fn().mockReturnThis(),
+                json: jest.fn(),
+            };
+
+            // Mocking the findByIdAndRemove function of Donor model
+            Donor.findByIdAndRemove = jest.fn().mockResolvedValue({ /* Removed donor object */ });
+
+            await deleteDonor(request, response);
+
+            expect(response.status).toHaveBeenCalledWith(200);
+            expect(response.json).toHaveBeenCalledWith({ message: 'Doador com ID valid_id deletado com sucesso!' });
+        });
+
+        // Add more tests for scenarios like donor not found, error cases, etc.
+    });
+});
