@@ -123,7 +123,7 @@
                 }
             }
         },
-        "/employees/logout":{
+        "/employees/logout": {
             "post": {
                 "tags": [
                     "Logout"
@@ -233,6 +233,20 @@
                     }
                 },
                 "responses": {
+                    "201": {
+                        "description": "Created",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "ServerResponse": {
+                                        "value": {
+                                            "message": "Funcionário registrado com sucesso"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
                     "401": {
                         "description": "Unauthorized",
                         "content": {
@@ -242,19 +256,20 @@
                                         "value": {
                                             "error": "Acesso negado."
                                         }
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "201": {
-                        "description": "Created",
-                        "content": {
-                            "application/json": {
-                                "examples": {
-                                    "ServerResponse": {
+                                    },
+                                    "InvalidToken": {
                                         "value": {
-                                            "message": "Funcionário registrado com sucesso"
+                                            "error": "Token inválido ou expirado."
+                                        }
+                                    },
+                                    "EmployeeNotFound": {
+                                        "value": {
+                                            "error": "Funcionário não encontrado"
+                                        }
+                                    },
+                                    "HeaderNotFound": {
+                                        "value": {
+                                            "error": "Cabeçalho de autorização não encontrado."
                                         }
                                     }
                                 }
@@ -308,20 +323,6 @@
                 "summary": "Listar todos os funcionários",
                 "description": "Retorna uma lista com todos os funcionários cadastrados.",
                 "responses": {
-                    "401": {
-                        "description": "Unauthorized",
-                        "content": {
-                            "application/json": {
-                                "examples": {
-                                    "Unauthorized": {
-                                        "value": {
-                                            "error": "Acesso negado."
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    },
                     "200": {
                         "description": "OK",
                         "content": {
@@ -351,6 +352,35 @@
                                                 "isAdmin": false
                                             }
                                         ]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "Unauthorized": {
+                                        "value": {
+                                            "error": "Acesso negado."
+                                        }
+                                    },
+                                    "InvalidToken": {
+                                        "value": {
+                                            "error": "Token inválido ou expirado."
+                                        }
+                                    },
+                                    "EmployeeNotFound": {
+                                        "value": {
+                                            "error": "Funcionário não encontrado"
+                                        }
+                                    },
+                                    "HeaderNotFound": {
+                                        "value": {
+                                            "error": "Cabeçalho de autorização não encontrado."
+                                        }
                                     }
                                 }
                             }
@@ -387,6 +417,110 @@
                 }
             }
         },
+        "/employees/{name}": {
+            "get": {
+                "tags": [
+                    "Funcionário"
+                ],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "summary": "Buscar funcionário especifico",
+                "description": "Retorna os dados do funcionário cujo nome foi fornecido.",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "description": "Nome do funcionário",
+                        "required": true,
+                        "in": "path",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "ServerResponse": {
+                                        "value": [
+                                            {
+                                                "_id": "6531c14e0637c533de11d475",
+                                                "name": "Admin",
+                                                "employeeCode": 877018,
+                                                "password": "$2b$10$GvFJCv3aaAjsAJxZKWb1yey4Bg2e9Ms./FjAUXOPbTd9svp3upbue",
+                                                "isAdmin": true
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "Unauthorized": {
+                                        "value": {
+                                            "error": "Acesso negado."
+                                        }
+                                    },
+                                    "InvalidToken": {
+                                        "value": {
+                                            "error": "Token inválido ou expirado."
+                                        }
+                                    },
+                                    "EmployeeNotFound": {
+                                        "value": {
+                                            "error": "Funcionário não encontrado"
+                                        }
+                                    },
+                                    "HeaderNotFound": {
+                                        "value": {
+                                            "error": "Cabeçalho de autorização não encontrado."
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "EmployeeNotFound": {
+                                        "value": {
+                                            "error": "Funcionário não encontrado."
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "ServerError": {
+                                        "value": {
+                                            "error": "Ocorreu um erro ao buscar o funcionário, tente novamente."
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/employees/{employeeCode}": {
             "get": {
                 "tags": [
@@ -411,20 +545,6 @@
                     }
                 ],
                 "responses": {
-                    "401": {
-                        "description": "Unauthorized",
-                        "content": {
-                            "application/json": {
-                                "examples": {
-                                    "Unauthorized": {
-                                        "value": {
-                                            "error": "Acesso negado."
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    },
                     "200": {
                         "description": "OK",
                         "content": {
@@ -437,6 +557,35 @@
                                             "employeeCode": 458304,
                                             "password": "$2b$10$vnzxE22oyrhoeMJEipOhhekV.RWxXHT.Rcy.aOi2aIM4YkQ7myAYa",
                                             "isAdmin": false
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "Unauthorized": {
+                                        "value": {
+                                            "error": "Acesso negado."
+                                        }
+                                    },
+                                    "InvalidToken": {
+                                        "value": {
+                                            "error": "Token inválido ou expirado."
+                                        }
+                                    },
+                                    "EmployeeNotFound": {
+                                        "value": {
+                                            "error": "Funcionário não encontrado"
+                                        }
+                                    },
+                                    "HeaderNotFound": {
+                                        "value": {
+                                            "error": "Cabeçalho de autorização não encontrado."
                                         }
                                     }
                                 }
@@ -517,6 +666,20 @@
                     }
                 },
                 "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "ServerResponse": {
+                                        "value": {
+                                            "message": "Senha alterada com sucesso"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
                     "401": {
                         "description": "Unauthorized",
                         "content": {
@@ -526,19 +689,20 @@
                                         "value": {
                                             "error": "Acesso negado."
                                         }
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "200": {
-                        "description": "OK",
-                        "content": {
-                            "application/json": {
-                                "examples": {
-                                    "ServerResponse": {
+                                    },
+                                    "InvalidToken": {
                                         "value": {
-                                            "message": "Senha alterada com sucesso"
+                                            "error": "Token inválido ou expirado."
+                                        }
+                                    },
+                                    "EmployeeNotFound": {
+                                        "value": {
+                                            "error": "Funcionário não encontrado"
+                                        }
+                                    },
+                                    "HeaderNotFound": {
+                                        "value": {
+                                            "error": "Cabeçalho de autorização não encontrado."
                                         }
                                     }
                                 }
@@ -612,6 +776,20 @@
                     }
                 ],
                 "responses": {
+                    "200": {
+                        "description": "ok",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "ServerResponse": {
+                                        "value": {
+                                            "message": "Funcionário deletado com sucesso"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
                     "401": {
                         "description": "Unauthorized",
                         "content": {
@@ -621,19 +799,20 @@
                                         "value": {
                                             "error": "Acesso negado."
                                         }
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "200": {
-                        "description": "ok",
-                        "content": {
-                            "application/json": {
-                                "examples": {
-                                    "ServerResponse": {
+                                    },
+                                    "InvalidToken": {
                                         "value": {
-                                            "message": "Funcionário deletado com sucesso"
+                                            "error": "Token inválido ou expirado."
+                                        }
+                                    },
+                                    "EmployeeNotFound": {
+                                        "value": {
+                                            "error": "Funcionário não encontrado"
+                                        }
+                                    },
+                                    "HeaderNotFound": {
+                                        "value": {
+                                            "error": "Cabeçalho de autorização não encontrado."
                                         }
                                     }
                                 }
@@ -680,7 +859,7 @@
                     }
                 }
             }
-        },       
+        },
         "/donors/": {
             "post": {
                 "tags": [
@@ -715,6 +894,20 @@
                     }
                 },
                 "responses": {
+                    "201": {
+                        "description": "Created",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "ServerResponse": {
+                                        "value": {
+                                            "message": "Doador cadastrado com sucesso!"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
                     "401": {
                         "description": "Unauthorized",
                         "content": {
@@ -724,19 +917,20 @@
                                         "value": {
                                             "error": "Acesso negado."
                                         }
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "201": {
-                        "description": "Created",
-                        "content": {
-                            "application/json": {
-                                "examples": {
-                                    "ServerResponse": {
+                                    },
+                                    "InvalidToken": {
                                         "value": {
-                                            "message": "Doador cadastrado com sucesso!"
+                                            "error": "Token inválido ou expirado."
+                                        }
+                                    },
+                                    "EmployeeNotFound": {
+                                        "value": {
+                                            "error": "Funcionário não encontrado"
+                                        }
+                                    },
+                                    "HeaderNotFound": {
+                                        "value": {
+                                            "error": "Cabeçalho de autorização não encontrado."
                                         }
                                     }
                                 }
@@ -795,20 +989,6 @@
                 "summary": "Listar todos os doadores",
                 "description": "Retorna uma lista com todos os doadores cadastrados.",
                 "responses": {
-                    "401": {
-                        "description": "Unauthorized",
-                        "content": {
-                            "application/json": {
-                                "examples": {
-                                    "Unauthorized": {
-                                        "value": {
-                                            "error": "Acesso negado."
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    },
                     "200": {
                         "description": "OK",
                         "content": {
@@ -871,6 +1051,35 @@
                             }
                         }
                     },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "Unauthorized": {
+                                        "value": {
+                                            "error": "Acesso negado."
+                                        }
+                                    },
+                                    "InvalidToken": {
+                                        "value": {
+                                            "error": "Token inválido ou expirado."
+                                        }
+                                    },
+                                    "EmployeeNotFound": {
+                                        "value": {
+                                            "error": "Funcionário não encontrado"
+                                        }
+                                    },
+                                    "HeaderNotFound": {
+                                        "value": {
+                                            "error": "Cabeçalho de autorização não encontrado."
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
                     "404": {
                         "description": "Not Found",
                         "content": {
@@ -902,7 +1111,7 @@
                 }
             }
         },
-        "/donors/{_id}": {
+        "/donors/{name}": {
             "get": {
                 "tags": [
                     "Doador"
@@ -913,33 +1122,19 @@
                     }
                 ],
                 "summary": "Buscar doador especifico",
-                "description": "Retorna os dados do doador cujo id foi fornecido.",
+                "description": "Retorna os dados do doador cujo nome foi fornecido.",
                 "parameters": [
                     {
-                        "name": "_id",
-                        "description": "Id do doador",
-                        "in": "path",
+                        "name": "name",
+                        "description": "Nome do doador",
                         "required": true,
+                        "in": "path",
                         "schema": {
                             "type": "string"
                         }
                     }
                 ],
                 "responses": {
-                    "401": {
-                        "description": "Unauthorized",
-                        "content": {
-                            "application/json": {
-                                "examples": {
-                                    "Unauthorized": {
-                                        "value": {
-                                            "error": "Acesso negado."
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    },
                     "200": {
                         "description": "OK",
                         "content": {
@@ -982,6 +1177,35 @@
                             }
                         }
                     },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "Unauthorized": {
+                                        "value": {
+                                            "error": "Acesso negado."
+                                        }
+                                    },
+                                    "InvalidToken": {
+                                        "value": {
+                                            "error": "Token inválido ou expirado."
+                                        }
+                                    },
+                                    "EmployeeNotFound": {
+                                        "value": {
+                                            "error": "Funcionário não encontrado"
+                                        }
+                                    },
+                                    "HeaderNotFound": {
+                                        "value": {
+                                            "error": "Cabeçalho de autorização não encontrado."
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
                     "404": {
                         "description": "Not Found",
                         "content": {
@@ -989,7 +1213,133 @@
                                 "examples": {
                                     "DonorNotFound": {
                                         "value": {
-                                            "error": "ID 6538859b31608e1ecd7f4ae4 não corresponde a nenhum doador"
+                                            "error": "Nenhum doador encontrado"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "ServerError": {
+                                        "value": {
+                                            "error": "Ocorreu um erro ao buscar o doador, tente novamente."
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/donors/{_id}": {
+            "get": {
+                "tags": [
+                    "Doador"
+                ],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "summary": "Buscar doador especifico",
+                "description": "Retorna os dados do doador cujo id foi fornecido.",
+                "parameters": [
+                    {
+                        "name": "_id",
+                        "description": "Id do doador",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "ServerResponse": {
+                                        "value": {
+                                            "_id": "6538859b31608e1ecd7f4ae4",
+                                            "name": "Diego",
+                                            "CPF": "15314664003",
+                                            "birthDate": "2005-10-01T00:00:00.000Z",
+                                            "sex": "M",
+                                            "address": "Rua perpendicular, 58",
+                                            "telephone": "(00) 99887-7665",
+                                            "donationHistory": [
+                                                {
+                                                    "_id": "65413fb5ca408341b982babe",
+                                                    "donationDate": "2023-10-31T17:57:47.909Z",
+                                                    "bloodTest": [
+                                                        {
+                                                            "_id": "6541401bca408341b982bacb",
+                                                            "bloodType": "A +(Pos)",
+                                                            "exams": [
+                                                                "Sífilis",
+                                                                "Chagas",
+                                                                "Hepatite B e C",
+                                                                "HIV",
+                                                                "HTLV I/II"
+                                                            ],
+                                                            "examsResult": "negativo"
+                                                        }
+                                                    ],
+                                                    "nextDonationDate": "2023-12-30T17:57:47.909Z",
+                                                    "expiryDate": "2023-11-01T17:57:47.909Z"
+                                                }
+                                            ]
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "Unauthorized": {
+                                        "value": {
+                                            "error": "Acesso negado."
+                                        }
+                                    },
+                                    "InvalidToken": {
+                                        "value": {
+                                            "error": "Token inválido ou expirado."
+                                        }
+                                    },
+                                    "EmployeeNotFound": {
+                                        "value": {
+                                            "error": "Funcionário não encontrado"
+                                        }
+                                    },
+                                    "HeaderNotFound": {
+                                        "value": {
+                                            "error": "Cabeçalho de autorização não encontrado."
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "DonorNotFound": {
+                                        "value": {
+                                            "error": "Nenhum doador encontrado"
                                         }
                                     }
                                 }
@@ -1047,6 +1397,20 @@
                     }
                 },
                 "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "ServerResponse": {
+                                        "value": {
+                                            "message": "Doador com ID 6538859b31608e1ecd7f4ae4 atualizado com sucesso!"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
                     "401": {
                         "description": "Unauthorized",
                         "content": {
@@ -1056,19 +1420,20 @@
                                         "value": {
                                             "error": "Acesso negado."
                                         }
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "200": {
-                        "description": "OK",
-                        "content": {
-                            "application/json": {
-                                "examples": {
-                                    "ServerResponse": {
+                                    },
+                                    "InvalidToken": {
                                         "value": {
-                                            "message": "Doador com ID 6538859b31608e1ecd7f4ae4 atualizado com sucesso!"
+                                            "error": "Token inválido ou expirado."
+                                        }
+                                    },
+                                    "EmployeeNotFound": {
+                                        "value": {
+                                            "error": "Funcionário não encontrado"
+                                        }
+                                    },
+                                    "HeaderNotFound": {
+                                        "value": {
+                                            "error": "Cabeçalho de autorização não encontrado."
                                         }
                                     }
                                 }
@@ -1128,6 +1493,20 @@
                     }
                 ],
                 "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "ServerResponse": {
+                                        "value": {
+                                            "message": "Doador com ID 6538859b31608e1ecd7f4ae4 deletado com sucesso!"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
                     "401": {
                         "description": "Unauthorized",
                         "content": {
@@ -1137,19 +1516,20 @@
                                         "value": {
                                             "error": "Acesso negado."
                                         }
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "200": {
-                        "description": "OK",
-                        "content": {
-                            "application/json": {
-                                "examples": {
-                                    "ServerResponse": {
+                                    },
+                                    "InvalidToken": {
                                         "value": {
-                                            "message": "Doador com ID 6538859b31608e1ecd7f4ae4 deletado com sucesso!"
+                                            "error": "Token inválido ou expirado."
+                                        }
+                                    },
+                                    "EmployeeNotFound": {
+                                        "value": {
+                                            "error": "Funcionário não encontrado"
+                                        }
+                                    },
+                                    "HeaderNotFound": {
+                                        "value": {
+                                            "error": "Cabeçalho de autorização não encontrado."
                                         }
                                     }
                                 }
@@ -1211,6 +1591,20 @@
                     }
                 ],
                 "responses": {
+                    "201": {
+                        "description": "Created",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "ServerResponse": {
+                                        "value": {
+                                            "message": "Nova doação registrada para o doador com ID 6538859b31608e1ecd7f4ae4!"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
                     "401": {
                         "description": "Unauthorized",
                         "content": {
@@ -1220,19 +1614,20 @@
                                         "value": {
                                             "error": "Acesso negado."
                                         }
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "201": {
-                        "description": "Created",
-                        "content": {
-                            "application/json": {
-                                "examples": {
-                                    "ServerResponse": {
+                                    },
+                                    "InvalidToken": {
                                         "value": {
-                                            "message": "Nova doação registrada para o doador com ID 6538859b31608e1ecd7f4ae4!"
+                                            "error": "Token inválido ou expirado."
+                                        }
+                                    },
+                                    "EmployeeNotFound": {
+                                        "value": {
+                                            "error": "Funcionário não encontrado"
+                                        }
+                                    },
+                                    "HeaderNotFound": {
+                                        "value": {
+                                            "error": "Cabeçalho de autorização não encontrado."
                                         }
                                     }
                                 }
@@ -1292,20 +1687,6 @@
                     }
                 ],
                 "responses": {
-                    "401": {
-                        "description": "Unauthorized",
-                        "content": {
-                            "application/json": {
-                                "examples": {
-                                    "Unauthorized": {
-                                        "value": {
-                                            "error": "Acesso negado."
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    },
                     "200": {
                         "description": "OK",
                         "content": {
@@ -1331,6 +1712,35 @@
                                             ],
                                             "nextDonationDate": "2023-12-30T17:57:47.909Z",
                                             "expiryDate": "2023-11-01T17:57:47.909Z"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "Unauthorized": {
+                                        "value": {
+                                            "error": "Acesso negado."
+                                        }
+                                    },
+                                    "InvalidToken": {
+                                        "value": {
+                                            "error": "Token inválido ou expirado."
+                                        }
+                                    },
+                                    "EmployeeNotFound": {
+                                        "value": {
+                                            "error": "Funcionário não encontrado"
+                                        }
+                                    },
+                                    "HeaderNotFound": {
+                                        "value": {
+                                            "error": "Cabeçalho de autorização não encontrado."
                                         }
                                     }
                                 }
@@ -1410,22 +1820,41 @@
                     }
                 },
                 "responses": {
-                    "401": {
-                        "description": "Unauthorized",
-                        "content": {
-                            "application/json": {
-                                "example": {
-                                    "error": "Acesso negado."
-                                }
-                            }
-                        }
-                    },
                     "200": {
                         "description": "OK",
                         "content": {
                             "application/json": {
                                 "example": {
                                     "message": "Tipagem sanguínea e exames adicionados com sucesso"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "Unauthorized": {
+                                        "value": {
+                                            "error": "Acesso negado."
+                                        }
+                                    },
+                                    "InvalidToken": {
+                                        "value": {
+                                            "error": "Token inválido ou expirado."
+                                        }
+                                    },
+                                    "EmployeeNotFound": {
+                                        "value": {
+                                            "error": "Funcionário não encontrado"
+                                        }
+                                    },
+                                    "HeaderNotFound": {
+                                        "value": {
+                                            "error": "Cabeçalho de autorização não encontrado."
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -1485,6 +1914,20 @@
                     }
                 ],
                 "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "ServerResponse": {
+                                        "value": {
+                                            "message": "Doação com ID 65413fb5ca408341b982babe deletada com sucesso!"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
                     "401": {
                         "description": "Unauthorized",
                         "content": {
@@ -1494,19 +1937,20 @@
                                         "value": {
                                             "error": "Acesso negado."
                                         }
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "200": {
-                        "description": "OK",
-                        "content": {
-                            "application/json": {
-                                "examples": {
-                                    "ServerResponse": {
+                                    },
+                                    "InvalidToken": {
                                         "value": {
-                                            "message": "Doação com ID 65413fb5ca408341b982babe deletada com sucesso!"
+                                            "error": "Token inválido ou expirado."
+                                        }
+                                    },
+                                    "EmployeeNotFound": {
+                                        "value": {
+                                            "error": "Funcionário não encontrado"
+                                        }
+                                    },
+                                    "HeaderNotFound": {
+                                        "value": {
+                                            "error": "Cabeçalho de autorização não encontrado."
                                         }
                                     }
                                 }
@@ -1557,16 +2001,6 @@
                 "summary": "Listar estoque",
                 "description": "Retorna uma lista com o estoque atual.",
                 "responses": {
-                    "401": {
-                        "description": "Unauthorized",
-                        "content": {
-                            "application/json": {
-                                "example": {
-                                    "error": "Acesso negado."
-                                }
-                            }
-                        }
-                    },
                     "200": {
                         "description": "OK",
                         "content": {
@@ -1580,6 +2014,35 @@
                                     "AB -(Neg)": 0,
                                     "O +(Pos)": 0,
                                     "O -(Neg)": 0
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "Unauthorized": {
+                                        "value": {
+                                            "error": "Acesso negado."
+                                        }
+                                    },
+                                    "InvalidToken": {
+                                        "value": {
+                                            "error": "Token inválido ou expirado."
+                                        }
+                                    },
+                                    "EmployeeNotFound": {
+                                        "value": {
+                                            "error": "Funcionário não encontrado"
+                                        }
+                                    },
+                                    "HeaderNotFound": {
+                                        "value": {
+                                            "error": "Cabeçalho de autorização não encontrado."
+                                        }
+                                    }
                                 }
                             }
                         }
