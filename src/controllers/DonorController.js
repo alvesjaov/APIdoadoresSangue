@@ -1,4 +1,5 @@
 import Donor from '../models/Donor.js';
+import mongoose from 'mongoose'; // Importando o mongoose para verificar se um id é válido
 import { cpf } from 'cpf-cnpj-validator'; // Importando a função de validação de CPF
 
 // Rota para cadastrar doador (CREATE)
@@ -41,39 +42,51 @@ async function createDonor(request, response) {
     }
 }
 
+// Função auxiliar para buscar doador por ID ou nome
+async function findDonorByIdOrName(idOrName) {
+    if (mongoose.Types.ObjectId.isValid(idOrName)) {
+        return await Donor.findOne({ _id: idOrName });
+    } else {
+        // Use uma expressão regular para permitir a busca pela letra inicial do nome
+        // A opção 'i' torna a busca insensível a maiúsculas e minúsculas
+        return await Donor.find({ name: { $regex: '^' + idOrName, $options: 'i' } });
+    }
+}
+
+
+// Função auxiliar para buscar todos os doadores
+async function findAllDonors() {
+    return await Donor.find({});
+}
+
 // Rota para obter doadores (READ)
 async function getDonor(request, response) {
     const { id } = request.params; // Pega o id dos parâmetros da requisição
+    const { name } = request.query; // Pega o nome dos parâmetros da requisição
 
     try {
-        let donor;
-        if (id) {
-            // Se um id foi fornecido, procura pelo doador correspondente
-            donor = await Donor.findById(id);
+        let donorOrName = id || name;
+        let donors;
+
+        if (donorOrName) {
+            // Se um id ou nome for fornecido, procura por um doador com esse id ou nome
+            donors = await findDonorByIdOrName(donorOrName);
         } else {
-            // Retorna todos os doadores se nenhum id for fornecido
-            let donors = await Donor.find({});
-            if (donors.length === 0) {
-                return response.status(404).json({ error: 'Nenhum doador encontrado' });
-            }
-            return response.status(200).json(donors); // Retorna todos os doadores encontrados
+            // Se nenhum id ou nome for fornecido, retorna todos os doadores
+            donors = await findAllDonors();
         }
 
-        if (!donor) {
-            response.status(404).json({ error: `ID ${id} não corresponde a nenhum doador` });
-        } else {
-            response.status(200).json(donor); // Retorna o doador correspondente ao id fornecido
+        if (!donors || donors.length === 0) {
+            return response.status(404).json({ error: 'Nenhum doador encontrado' });
         }
+
+        return response.status(200).json(donors); // Retorna os doadores encontrados
     } catch (error) {
-        if (id) {
-            console.log(error.message);
-            return response.status(500).json({ error: "Ocorreu um erro ao buscar o doador, tente novamente." });
-        } else {
-            console.log(error.message);
-            return response.status(500).json({ error: "Ocorreu um erro ao buscar doadores, tente novamente." });
-        }
+        console.log(error.message);
+        response.status(500).json({ error: "Ocorreu um erro ao buscar doadores, tente novamente." });
     }
 }
+
 
 // Rota para atualizar um doador (UPDATE)
 async function updateDonor(request, response) {
