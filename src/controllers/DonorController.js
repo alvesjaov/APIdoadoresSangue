@@ -53,12 +53,6 @@ async function findDonorByIdOrName(idOrName) {
     }
 }
 
-
-// Função auxiliar para buscar todos os doadores
-async function findAllDonors() {
-    return await Donor.find({});
-}
-
 // Rota para obter doadores (READ)
 async function getDonor(request, response) {
     const { id } = request.params; // Pega o id dos parâmetros da requisição
@@ -73,7 +67,7 @@ async function getDonor(request, response) {
             donors = await findDonorByIdOrName(donorOrName);
         } else {
             // Se nenhum id ou nome for fornecido, retorna todos os doadores
-            donors = await findAllDonors();
+            donors = await Donor.find();
         }
 
         if (!donors || donors.length === 0) {
@@ -86,7 +80,6 @@ async function getDonor(request, response) {
         response.status(500).json({ error: "Ocorreu um erro ao buscar doadores, tente novamente." });
     }
 }
-
 
 // Rota para atualizar um doador (UPDATE)
 async function updateDonor(request, response) {
