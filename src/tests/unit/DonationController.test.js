@@ -92,7 +92,7 @@ describe('createDonation', () => {
         expect(Donor.findById).toHaveBeenCalledWith(mockId);
         expect(mockResponse.status).toHaveBeenCalledWith(500);
         expect(mockResponse.json).toHaveBeenCalledWith({
-            error: `Ocorreu um erro ao registrar a doação. Por favor, tente novamente.`,
+            error: `Ocorreu um erro ao registrar a doação, tente novamente.`,
         });
 
     });
@@ -229,7 +229,7 @@ describe('deleteDonation', () => {
         expect(Donor.findOne).toHaveBeenCalledWith({ "donationHistory._id": mockDonationId });
         expect(mockResponse.status).toHaveBeenCalledWith(500);
         expect(mockResponse.json).toHaveBeenCalledWith({
-            error: `Ocorreu um erro ao deletar a doação com ID ${mockDonationId}. Por favor, tente novamente.`,
+            error: `Ocorreu um erro ao deletar a doação com ID ${mockDonationId}, tente novamente.`,
         });
     });
 });

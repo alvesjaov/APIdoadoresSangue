@@ -99,7 +99,7 @@
                                 "examples": {
                                     "invalidCodeOrPassword": {
                                         "value": {
-                                            "error": "Código ou senha inválido. Por favor, tente novamente."
+                                            "error": "Código ou senha inválido, tente novamente."
                                         }
                                     }
                                 }
@@ -113,7 +113,7 @@
                                 "examples": {
                                     "ServerError": {
                                         "value": {
-                                            "error": "Ocorreu um erro ao realizar o login. Por favor, tente novamente."
+                                            "error": "Ocorreu um erro ao realizar o login, tente novamente."
                                         }
                                     }
                                 }
@@ -186,7 +186,7 @@
                                 "examples": {
                                     "ServerError": {
                                         "value": {
-                                            "error": "Ocorreu um erro ao realizar o logout. Por favor, tente novamente."
+                                            "error": "Ocorreu um erro ao realizar o logout, tente novamente."
                                         }
                                     }
                                 }
@@ -287,7 +287,7 @@
                                 "examples": {
                                     "ServerError": {
                                         "value": {
-                                            "error": "Ocorreu um erro ao registrar o funcionário. Por favor, tente novamente."
+                                            "error": "Ocorreu um erro ao registrar o funcionário, tente novamente."
                                         }
                                     }
                                 }
@@ -377,7 +377,7 @@
                                 "examples": {
                                     "ServerError": {
                                         "value": {
-                                            "error": "Ocorreu um erro ao buscar funcionários. Por favor, tente novamente."
+                                            "error": "Ocorreu um erro ao buscar funcionários, tente novamente."
                                         }
                                     }
                                 }
@@ -464,7 +464,7 @@
                                 "examples": {
                                     "ServerError": {
                                         "value": {
-                                            "error": "Ocorreu um erro ao buscar o funcionário. Por favor, tente novamente."
+                                            "error": "Ocorreu um erro ao buscar o funcionário, tente novamente."
                                         }
                                     }
                                 }
@@ -580,7 +580,7 @@
                                 "examples": {
                                     "ServerError": {
                                         "value": {
-                                            "error": "Ocorreu um erro ao alterar a senha. Por favor, tente novamente."
+                                            "error": "Ocorreu um erro ao alterar a senha, tente novamente."
                                         }
                                     }
                                 }
@@ -671,7 +671,7 @@
                                 "examples": {
                                     "ServerError": {
                                         "value": {
-                                            "error": "Ocorreu um erro ao deletar o funcionário. Por favor, tente novamente."
+                                            "error": "Ocorreu um erro ao deletar o funcionário, tente novamente."
                                         }
                                     }
                                 }
@@ -774,7 +774,7 @@
                                 "examples": {
                                     "ServerError": {
                                         "value": {
-                                            "error": "Ocorreu um erro ao cadastrar o doador. Por favor, tente novamente."
+                                            "error": "Ocorreu um erro ao cadastrar o doador, tente novamente."
                                         }
                                     }
                                 }
@@ -892,7 +892,7 @@
                                 "examples": {
                                     "ServerError": {
                                         "value": {
-                                            "error": "Ocorreu um erro ao buscar doadores. Por favor, tente novamente."
+                                            "error": "Ocorreu um erro ao buscar doadores, tente novamente."
                                         }
                                     }
                                 }
@@ -1003,7 +1003,7 @@
                                 "examples": {
                                     "ServerError": {
                                         "value": {
-                                            "error": "Ocorreu um erro ao buscar o doador. Por favor, tente novamente."
+                                            "error": "Ocorreu um erro ao buscar o doador, tente novamente."
                                         }
                                     }
                                 }
@@ -1096,7 +1096,7 @@
                                 "examples": {
                                     "ServerResponse": {
                                         "value": {
-                                            "error": "Ocorreu um erro ao atualizar o doador. Por favor, tente novamente."
+                                            "error": "Ocorreu um erro ao atualizar o doador, tente novamente."
                                         }
                                     }
                                 }
@@ -1177,7 +1177,7 @@
                                 "examples": {
                                     "ServerError": {
                                         "value": {
-                                            "error": "Ocorreu um erro ao deletar o doador. Por favor, tente novamente."
+                                            "error": "Ocorreu um erro ao deletar o doador, tente novamente."
                                         }
                                     }
                                 }
@@ -1260,7 +1260,7 @@
                                 "examples": {
                                     "ServerError": {
                                         "value": {
-                                            "error": "Ocorreu um erro ao registrar a doação. Por favor, tente novamente."
+                                            "error": "Ocorreu um erro ao registrar a doação, tente novamente."
                                         }
                                     }
                                 }
@@ -1358,7 +1358,7 @@
                                 "examples": {
                                     "ServerError": {
                                         "value": {
-                                            "error": "Ocorreu um erro ao buscar a doação. Por favor, tente novamente."
+                                            "error": "Ocorreu um erro ao buscar a doação, tente novamente."
                                         }
                                     }
                                 }
@@ -1455,7 +1455,7 @@
                         "content": {
                             "application/json": {
                                 "example": {
-                                    "error": "Ocorreu um erro ao registrar os exames. Por favor, tente novamente."
+                                    "error": "Ocorreu um erro ao registrar os exames, tente novamente."
                                 }
                             }
                         }
@@ -1534,7 +1534,7 @@
                                 "examples": {
                                     "ServerError": {
                                         "value": {
-                                            "error": "Ocorreu um erro ao deletar a doação com ID 65413fb5ca408341b982babe. Por favor, tente novamente."
+                                            "error": "Ocorreu um erro ao deletar a doação com ID 65413fb5ca408341b982babe, tente novamente."
                                         }
                                     }
                                 }
@@ -1589,7 +1589,7 @@
                         "content": {
                             "application/json": {
                                 "example": {
-                                    "error": "Ocorreu um erro ao buscar o estoque. Por favor, tente novamente."
+                                    "error": "Ocorreu um erro ao buscar o estoque, tente novamente."
                                 }
                             }
                         }

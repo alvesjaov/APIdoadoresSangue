@@ -60,7 +60,7 @@ async function startServer() {
     cleanExpiredTokens();
 
   } catch (error) {
-    console.error('Erro na conexão com MongoDB:', error.message);
+    console.log('Erro na conexão com MongoDB:', error.message);
   }
 }
 

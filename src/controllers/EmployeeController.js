@@ -44,8 +44,8 @@ async function createEmployee(request, response) {
 
   } catch (error) {
     // Se ocorrer um erro, retorna uma mensagem de erro
-    console.error(error.message);
-    response.status(500).json({ error: "Ocorreu um erro ao registrar o funcionário. Por favor, tente novamente." });
+    console.log(error.message);
+    response.status(500).json({ error: "Ocorreu um erro ao registrar o funcionário, tente novamente." });
   }
 }
 
@@ -70,11 +70,11 @@ async function readEmployee(request, response) {
   } catch (error) {
     if (employeeCode) {
       // Se ocorrer um erro, retorna uma mensagem de erro
-      console.error(error.message);
-      return response.status(500).json({ error: "Ocorreu um erro ao buscar o funcionário. Por favor, tente novamente." });
+      console.log(error.message);
+      return response.status(500).json({ error: "Ocorreu um erro ao buscar o funcionário, tente novamente." });
     } else {
-      console.error(error.message);
-      return response.status(500).json({ error: "Ocorreu um erro ao buscar funcionários. Por favor, tente novamente." });
+      console.log(error.message);
+      return response.status(500).json({ error: "Ocorreu um erro ao buscar funcionários, tente novamente." });
     }
   }
 }
@@ -110,8 +110,8 @@ async function updateEmployeePassword(request, response) {
     return response.status(200).json({ message: 'Senha alterada com sucesso!' });
   } catch (error) {
     // Se ocorrer um erro, retorna uma mensagem de erro
-    console.error(error.message);
-    response.status(500).json({ error: "Ocorreu um erro ao alterar a senha do funcionário. Por favor, tente novamente." });
+    console.log(error.message);
+    response.status(500).json({ error: "Ocorreu um erro ao alterar a senha do funcionário, tente novamente." });
   }
 }
 
@@ -135,8 +135,8 @@ async function deleteEmployee(request, response) {
     return response.status(200).json({ message: 'Funcionário deletado com sucesso!' });
   } catch (error) {
     // Se ocorrer um erro, retorna uma mensagem de erro
-    console.error(error.message);
-    response.status(500).json({ error: "Ocorreu um erro ao deletar o funcionário. Por favor, tente novamente." });
+    console.log(error.message);
+    response.status(500).json({ error: "Ocorreu um erro ao deletar o funcionário, tente novamente." });
   }
 }
 

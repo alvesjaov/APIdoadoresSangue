@@ -13,7 +13,7 @@ async function loginEmployee(request, response) {
 
     // Se o funcionário não existir ou a senha não for válida, retorna um erro
     if (!employee || !(await bcrypt.compare(password, employee.password))) {
-      return response.status(400).json({ error: 'Código ou senha inválido. Por favor, tente novamente.' });
+      return response.status(400).json({ error: 'Código ou senha inválido, tente novamente.' });
     }
 
     // Se o código do funcionário e a senha estiverem corretos, gera um token JWT
@@ -34,8 +34,8 @@ async function loginEmployee(request, response) {
 
   } catch (error) {
     // Se ocorrer um erro, retorna uma mensagem de erro
-    console.error(error.message);
-    response.status(500).json({ error: "Ocorreu um erro ao realizar o login. Por favor, tente novamente." });
+    console.log(error.message);
+    response.status(500).json({ error: "Ocorreu um erro ao realizar o login, tente novamente." });
   }
 }
 
@@ -83,7 +83,7 @@ async function logoutEmployee(request, response) {
     response.status(401).json({ error: 'Cabeçalho de autorização não encontrado.' });
   } catch (error) {
     // Se ocorrer um erro, retorna uma mensagem de erro
-    console.error(error.message);
+    console.log(error.message);
     return response.status(500).json({ error: 'Ocorreu um erro interno do servidor.' });
   }
 }

@@ -36,8 +36,8 @@ async function createDonor(request, response) {
         response.status(201).json({ message: 'Doador cadastrado com sucesso!' });
     } catch (error) {
         // Em caso de erro, retorna uma mensagem de erro
-        console.error(error.message);
-        response.status(500).json({ error: "Ocorreu um erro ao cadastrar o doador. Por favor, tente novamente." });
+        console.log(error.message);
+        response.status(500).json({ error: "Ocorreu um erro ao cadastrar o doador, tente novamente." });
     }
 }
 
@@ -66,11 +66,11 @@ async function getDonor(request, response) {
         }
     } catch (error) {
         if (id) {
-            console.error(error.message);
-            return response.status(500).json({ error: "Ocorreu um erro ao buscar o doador. Por favor, tente novamente." });
+            console.log(error.message);
+            return response.status(500).json({ error: "Ocorreu um erro ao buscar o doador, tente novamente." });
         } else {
-            console.error(error.message);
-            return response.status(500).json({ error: "Ocorreu um erro ao buscar doadores. Por favor, tente novamente." });
+            console.log(error.message);
+            return response.status(500).json({ error: "Ocorreu um erro ao buscar doadores, tente novamente." });
         }
     }
 }
@@ -87,8 +87,8 @@ async function updateDonor(request, response) {
             response.status(200).json({ message: `Doador com ID ${id} atualizado com sucesso!` }); // Retorna sucesso se o doador for atualizado corretamente
         }
     } catch (error) {
-        console.error(error.message);
-        response.status(500).json({ error: "Ocorreu um erro ao atualizar o doador. Por favor, tente novamente." });
+        console.log(error.message);
+        response.status(500).json({ error: "Ocorreu um erro ao atualizar o doador, tente novamente." });
     }
 }
 
@@ -105,8 +105,8 @@ async function deleteDonor(request, response) {
         }
     } catch (error) {
         // Em caso de erro, retorna uma mensagem de erro
-        console.error(error.message);
-        response.status(500).json({ error: "Ocorreu um erro ao remover o doador. Por favor, tente novamente." });
+        console.log(error.message);
+        response.status(500).json({ error: "Ocorreu um erro ao remover o doador, tente novamente." });
     }
 }
 
