@@ -631,8 +631,8 @@
                         "bearerAuth": []
                     }
                 ],
-                "summary": "Alterar senha do funcionário",
-                "description": "Altera a senha do funcionário cujo código foi fornecido.",
+                "summary": "Atualiza nome e/ou senha",
+                "description": "Atualiza nome e/ou senha do funcionário cujo código foi fornecido.",
                 "parameters": [
                     {
                         "name": "employeeCode",
@@ -673,7 +673,7 @@
                                 "examples": {
                                     "ServerResponse": {
                                         "value": {
-                                            "message": "Senha alterada com sucesso"
+                                            "message": "Dados do funcionário atualizados com sucesso!"
                                         }
                                     }
                                 }
