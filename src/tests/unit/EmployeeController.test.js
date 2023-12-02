@@ -3,7 +3,7 @@ import bcrypt from 'bcrypt';
 import {
   createEmployee,
   readEmployee,
-  updateEmployeePassword,
+  updateEmployee,
   deleteEmployee,
 } from '../../controllers/EmployeeController.js';
 
@@ -86,7 +86,7 @@ describe('Employee Controller', () => {
     // Add more tests for scenarios like fetching all employees, employee not found, etc.
   });
 
-  describe('updateEmployeePassword', () => {
+  describe('updateEmployee', () => {
     it('should update an employee password by employeeCode', async () => {
       const request = {
         params: {
@@ -106,7 +106,7 @@ describe('Employee Controller', () => {
 
       Employee.findOneAndUpdate = jest.fn().mockResolvedValue({ /* Updated employee object */ });
 
-      await updateEmployeePassword(request, response);
+      await updateEmployee(request, response);
 
       expect(response.status).toHaveBeenCalledWith(200);
       expect(response.json).toHaveBeenCalledWith({ message: 'Senha alterada com sucesso!' });
