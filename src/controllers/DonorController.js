@@ -1,5 +1,5 @@
 import Donor from '../models/Donor.js';
-import mongoose from 'mongoose'; // Importando o mongoose para verificar se um id é válido
+import { findDonorByIdOrName } from '../utils/FindDonor.js';
 import { cpf } from 'cpf-cnpj-validator'; // Importando a função de validação de CPF
 
 // Rota para cadastrar doador (CREATE)
@@ -39,17 +39,6 @@ async function createDonor(request, response) {
         // Em caso de erro, retorna uma mensagem de erro
         console.log(error.message);
         response.status(500).json({ error: "Ocorreu um erro ao cadastrar o doador, tente novamente." });
-    }
-}
-
-// Função auxiliar para buscar doador por ID ou nome
-async function findDonorByIdOrName(idOrName) {
-    if (mongoose.Types.ObjectId.isValid(idOrName)) {
-        return await Donor.findOne({ _id: idOrName });
-    } else {
-        // Use uma expressão regular para permitir a busca pela letra inicial do nome
-        // A opção 'i' torna a busca insensível a maiúsculas e minúsculas
-        return await Donor.find({ name: { $regex: '^' + idOrName, $options: 'i' } });
     }
 }
 
