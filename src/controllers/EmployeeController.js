@@ -1,15 +1,7 @@
 import Employee from '../models/Employee.js'; // Importa o modelo Employee
-import mongoose from 'mongoose'; // Importa o mongoose para verificar se um id é válido
+import { findEmployeeByCodeOrName } from '../utils/FindEmployee.js'; // Importa a função auxiliar para buscar funcionário por código ou nome
+import { generateRandomEmployeeCode } from '../utils/GenerateEmployeeCode.js'; // Importa a função auxiliar para gerar um código numérico aleatório para o funcionário
 import bcrypt from 'bcrypt'; // Importa a biblioteca bcrypt para criptografia de senhas
-
-// Função para gerar um código numérico aleatório para o funcionário
-function generateRandomEmployeeCode(length) {
-  let result = '';
-  for (let i = 0; i < length; i++) {
-    result += Math.floor(Math.random() * 10).toString(); // Gera um dígito aleatório de 0 a 9
-  }
-  return Number(result); // Converte o resultado para um número e retorna
-}
 
 // Rota para registrar um funcionário (CREATE)
 async function createEmployee(request, response) {
@@ -50,43 +42,32 @@ async function createEmployee(request, response) {
   }
 }
 
-// Função auxiliar para buscar funcionário por código ou nome
-async function findEmployeeByCodeOrName(codeOrName) {
-  if (mongoose.Types.ObjectId.isValid(codeOrName)) {
-      return await Employee.findOne({ employeeCode: codeOrName });
-  } else {
-      // Use uma expressão regular para permitir a busca pelo nome
-      // A opção 'i' torna a busca insensível a maiúsculas e minúsculas
-      return await Employee.find({ name: { $regex: '^' + codeOrName, $options: 'i' } });
-  }
-}
-
 // Rota para ler funcionários (READ)
 async function readEmployee(request, response) {
-const employeeCode = request.params.code;
-const employeeName = request.query.name;
+  const employeeCode = request.params.code;
+  const employeeName = request.query.name;
 
-try {
-  let employeeOrName = employeeCode || employeeName;
-  let employees;
+  try {
+    let employeeOrName = employeeCode || employeeName;
+    let employees;
 
-  if (employeeOrName) {
-    // Se um código de funcionário ou nome foi fornecido, procura por esse funcionário
-    employees = await findEmployeeByCodeOrName(employeeOrName);
-  } else {
-    // Se nenhum código de funcionário ou nome foi fornecido, retorna todos os funcionários
-    employees = await Employee.find();
+    if (employeeOrName) {
+      // Se um código de funcionário ou nome foi fornecido, procura por esse funcionário
+      employees = await findEmployeeByCodeOrName(employeeOrName);
+    } else {
+      // Se nenhum código de funcionário ou nome foi fornecido, retorna todos os funcionários
+      employees = await Employee.find();
+    }
+
+    if (!employees || employees.length === 0) {
+      return response.status(404).json({ error: 'Funcionário não encontrado.' });
+    }
+
+    return response.status(200).json(employees);
+  } catch (error) {
+    console.log(error.message);
+    return response.status(500).json({ error: "Ocorreu um erro ao buscar funcionários, tente novamente." });
   }
-
-  if (!employees || employees.length === 0) {
-    return response.status(404).json({ error: 'Funcionário não encontrado.' });
-  }
-
-  return response.status(200).json(employees);
-} catch (error) {
-  console.log(error.message);
-  return response.status(500).json({ error: "Ocorreu um erro ao buscar funcionários, tente novamente." });
-}
 }
 
 // Rota para alterar a senha do funcionário (PATCH)
