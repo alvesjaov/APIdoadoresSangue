@@ -70,25 +70,29 @@ async function readEmployee(request, response) {
   }
 }
 
-// Rota para alterar a senha do funcionário (PATCH)
-async function updateEmployeePassword(request, response) {
+// Rota para alterar o nome ou a senha do funcionário (PATCH)
+async function updateEmployee(request, response) {
   try {
     const employeeCode = request.params.code; // Obtém o código do funcionário da URL
+    const newName = request.body.name; // Obtém o novo nome do corpo da requisição
     const newPassword = request.body.password; // Obtém a nova senha do corpo da requisição
 
     // Verifica se a nova senha tem pelo menos 8 caracteres
-    if (newPassword.length < 8) {
+    if (newPassword && newPassword.length < 8) {
       return response.status(400).json({ error: 'A senha deve ter pelo menos 8 caracteres.' });
     }
 
     // Criptografa a nova senha antes de salvá-la no banco de dados
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(newPassword, salt);
+    let hashedPassword = null;
+    if (newPassword) {
+      const salt = await bcrypt.genSalt(10);
+      hashedPassword = await bcrypt.hash(newPassword, salt);
+    }
 
-    // Procura pelo funcionário com o código fornecido e atualiza sua senha
+    // Procura pelo funcionário com o código fornecido e atualiza seu nome e/ou senha
     const updateEmployee = await Employee.findOneAndUpdate(
       { employeeCode: employeeCode },
-      { password: hashedPassword },
+      { ...(newName && { name: newName }), ...(hashedPassword && { password: hashedPassword }) },
       { new: true }
     );
 
@@ -98,11 +102,11 @@ async function updateEmployeePassword(request, response) {
     }
 
     // Se encontrar o funcionário, retorna uma mensagem de sucesso
-    return response.status(200).json({ message: 'Senha alterada com sucesso!' });
+    return response.status(200).json({ message: 'Dados do funcionário atualizados com sucesso!' });
   } catch (error) {
     // Se ocorrer um erro, retorna uma mensagem de erro
     console.log(error.message);
-    response.status(500).json({ error: "Ocorreu um erro ao alterar a senha do funcionário, tente novamente." });
+    response.status(500).json({ error: "Ocorreu um erro ao alterar os dados do funcionário, tente novamente." });
   }
 }
 
@@ -131,4 +135,4 @@ async function deleteEmployee(request, response) {
   }
 }
 
-export { createEmployee, readEmployee, updateEmployeePassword, deleteEmployee };
+export { createEmployee, readEmployee, updateEmployee, deleteEmployee };
