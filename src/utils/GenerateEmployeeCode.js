@@ -6,12 +6,13 @@ async function generateRandomEmployeeCode(length) {
     let employee = null;
 
     do {
+        result = '';
         for (let i = 0; i < length; i++) {
             result += Math.floor(Math.random() * 10).toString(); // Gera um dígito aleatório de 0 a 9
         }
 
         employee = await Employee.findOne({ employeeCode: Number(result) }); // Procura por um funcionário com o código gerado
-    } while (employee); // Repete até que um código único seja encontrado
+    } while (employee || result.length < length); // Repete até que um código único de exatamente 'length' dígitos seja encontrado
 
     return Number(result); // Converte o resultado para um número e retorna
 }
