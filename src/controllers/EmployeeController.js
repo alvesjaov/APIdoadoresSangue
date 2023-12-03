@@ -14,8 +14,8 @@ async function createEmployee(request, response) {
   }
 
   // Gera automaticamente o employeeCode antes de salvar o funcionário
-  employee.employeeCode = generateRandomEmployeeCode(6);
-
+  employee.employeeCode = await generateRandomEmployeeCode(6);
+  
   // Criptografa a senha antes de salvá-la no banco de dados
   const salt = await bcrypt.genSalt(10);
   employee.password = await bcrypt.hash(employee.password, salt);
