@@ -3,21 +3,18 @@ import Donor from '../models/Donor.js';
 
 // Função auxiliar para buscar doador por ID ou nome
 async function findDonorByIdOrName(idOrName) {
-    let donor;
-    if (mongoose.Types.ObjectId.isValid(idOrName)) {
-        donor = await Donor.findOne({ _id: idOrName });
-        if (!donor) {
-            throw new Error('ID não corresponde a nenhum doador');
+    try {
+        if (mongoose.Types.ObjectId.isValid(idOrName)) {
+            return await Donor.findOne({ _id: idOrName });
+        } else {
+            const regexString = `^${idOrName}`;
+            const regex = new RegExp(regexString, 'i');
+            return await Donor.find({ name: regex });
         }
-    } else {
-        // Use uma expressão regular para permitir a busca pela letra inicial do nome
-        // A opção 'i' torna a busca insensível a maiúsculas e minúsculas
-        donor = await Donor.find({ name: { $regex: '^' + idOrName, $options: 'i' } });
-        if (!donor) {
-            throw new Error('Nome não corresponde a nenhum doador');
-        }
+    } catch (error) {
+        console.error(error.message);
+        throw new Error('Erro ao buscar doador. Tente novamente.');
     }
-    return donor;
 }
 
 export { findDonorByIdOrName };
