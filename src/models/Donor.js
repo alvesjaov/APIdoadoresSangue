@@ -66,6 +66,10 @@ const donorSchema = mongoose.Schema({
     nextDonationDate: {
       type: Date,
     },
+    isDonor: {
+      type: Boolean,
+      default: true
+    }
   }]
 }, { versionKey: false });
 
