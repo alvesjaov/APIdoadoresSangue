@@ -36,6 +36,10 @@ const donorSchema = mongoose.Schema({
     required: true,
     not: null
   },
+  isDonor: {
+    type: Boolean,
+    default: true
+  },
   donationHistory: [{
     _id: {
       type: mongoose.Schema.Types.ObjectId,
@@ -66,10 +70,6 @@ const donorSchema = mongoose.Schema({
     nextDonationDate: {
       type: Date,
     },
-    isDonor: {
-      type: Boolean,
-      default: true
-    }
   }]
 }, { versionKey: false });
 
