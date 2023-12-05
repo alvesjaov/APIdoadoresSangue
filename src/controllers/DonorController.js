@@ -75,7 +75,7 @@ async function updateDonor(request, response) {
     const { id } = request.params; // Pega o id dos parâmetros da requisição
     try {
         // Atualiza o doador correspondente ao id fornecido com os novos dados fornecidos no corpo da requisição
-        const updatedDonor = await Donor.findByIdAndUpdate(id, request.body, { new: true });
+        const updatedDonor = await Donor.findByIdAndUpdate(id, { $set: request.body }, { new: true });
         if (!updatedDonor) {
             response.status(404).json({ error: `ID ${id} não corresponde a nenhum doador` });
         } else {
@@ -86,6 +86,7 @@ async function updateDonor(request, response) {
         response.status(500).json({ error: "Ocorreu um erro ao atualizar o doador, tente novamente." });
     }
 }
+
 
 // Rota para deletar um doador (DELETE)
 async function deleteDonor(request, response) {
