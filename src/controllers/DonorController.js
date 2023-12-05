@@ -18,7 +18,7 @@ async function createDonor(request, response) {
         // Procura por um doador existente com o mesmo CPF
         const existingDonor = await Donor.findOne({ CPF: donor.CPF });
         if (existingDonor) {
-            return response.status(400).json({ error: 'Um doador com os mesmos dados já existe.' });
+            return response.status(400).json({ error: 'Existe um doador com o mesmo CPF cadastrado.' });
         }
 
         // Calcula a idade do doador
