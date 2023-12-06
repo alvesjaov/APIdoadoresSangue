@@ -15,7 +15,7 @@ async function countBloodTypes(currentDate) {
 
 // Função para preparar a contagem de todos os tipos sanguíneos
 function prepareAllCounts(bloodTypeCounts) {
-    const allBloodTypes = ['A+ (Pos)', 'A- (Neg)', 'B+ (Pos)', 'B- (Neg)', 'AB+ (Pos)', 'AB- (Neg)', 'O+ (Pos)', 'O- (Neg)'];
+    const allBloodTypes = ['A +(Pos)', 'A -(Neg)', 'B +(Pos)', 'B -(Neg)', 'AB +(Pos)', 'AB -(Neg)', 'O +(Pos)', 'O -(Neg)'];
     let allCounts = {};
     allBloodTypes.forEach(type => {
         allCounts[type] = 0;
@@ -56,8 +56,8 @@ async function countAndUpdateBloodTypes(_, response) {
 
     } catch (error) {
         // Em caso de erro, envia uma mensagem de erro
-        console.log(error.message);
-        response.status(500).json({ message: "Ocorreu um erro ao contar e atualizar os tipos sanguíneos, tente novamente." });
+        console.error(error.message);
+        response.status(500).json({ message: "Ocorreu um erro ao contar e atualizar os tipos sanguíneos. Por favor, tente novamente." });
     }
 }
 
