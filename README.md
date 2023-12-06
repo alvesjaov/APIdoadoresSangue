@@ -43,6 +43,9 @@ JWT_SECRET=
 ```
 
 - *Observação: Você precisará de uma string de conexão mongoDB para fazer a comunicação entre o código e o banco de dados.*
+```bash
+mongodb+srv://<username>:<password>@cluster0.2ipfpim.mongodb.net/?retryWrites=true&w=majority
+```
 
 4. Dite o comando abaixo para gerar uma string na variável `JWT_SECRET` no arquivo `.env`, para o melhor funcionamento do token JWT.
 
