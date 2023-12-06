@@ -44,6 +44,36 @@ async function readDonation(request, response) {
     }
 }
 
+// função para retorna doações que
+async function readAllDonations(request, response) {
+    try {
+        // Encontra todos os doadores que possuem histórico de doações
+        const donorsWithDonations = await Donor.find({ donationHistory: { $exists: true, $ne: [] } }, { _id: 1, name: 1, donationHistory: 1 });
+
+        // Filtra as doações onde o campo bloodTest é um array vazio
+        const donationsWithEmptyBloodTest = donorsWithDonations.reduce((donations, donor) => {
+            const donationsWithEmptyTest = donor.donationHistory.filter(donation => {
+                return Array.isArray(donation.bloodTest) && donation.bloodTest.length === 0;
+            });
+            if (donationsWithEmptyTest.length > 0) {
+                donations.push({ donorId: donor._id, donorName: donor.name, donations: donationsWithEmptyTest });
+            }
+            return donations;
+        }, []);
+
+        // Verifica se há doações com bloodTest vazio
+        if (donationsWithEmptyBloodTest.length === 0) {
+            return response.status(404).json({ error: `Nenhuma doação com bloodTest vazio encontrada` });
+        }
+
+        // Retorna as doações com bloodTest vazio e os IDs e nomes dos doadores
+        response.status(200).json(donationsWithEmptyBloodTest);
+    } catch (error) {
+        // Em caso de erro, retorna uma mensagem de erro
+        response.status(500).json({ error: "Ocorreu um erro ao buscar doações com bloodTest vazio. Por favor, tente novamente" });
+    }
+}
+
 // Função assíncrona para adicionar exames de sangue (UPDATE)
 async function addBloodExams(request, response) {
     // Desestruturação do corpo da requisição para obter os resultados dos exames de sangue
@@ -122,4 +152,4 @@ async function deleteDonation(request, response) {
     }
 }
 
-export { createDonation, readDonation, addBloodExams, deleteDonation } // Exporta as funções para serem usadas em outros arquivos
+export { createDonation, readDonation, addBloodExams, deleteDonation ,readAllDonations} // Exporta as funções para serem usadas em outros arquivos
