@@ -62,8 +62,28 @@ Este projeto inclui várias rotas que permitem aos usuários interagir com os re
 
 As rotas se dividem em:
 
-1. **Login**: Para acessar as Rotas de Funcionários é preciso fazer login como um funcionário administrador, já as Rotas de Doadores, Doações e Estoque podem ser acessadas como um funcionário padrão.
-2. **Funcionário**: Permite a Criação; Listagem; Atualização da senha e Exclusão de funcionários.
-3. **Doador**: Permite a Criação, Listagem, Atualização de dados e Exclusão de doadores.
-4. **Doação**:  Permite a Criação, Listagem, Atualização de exames *Adicionando os Exames* e Exclusão de doações.
-5. **Estoque de Sangue**: Permite a Listagem do estoque.
+1. **Login**: Esta rota é usada para autenticar um funcionário no sistema. Existem dois tipos de funcionários: administradores e padrão. Os administradores têm acesso a todas as rotas, enquanto os funcionários padrão só podem acessar as rotas de Doadores, Doações e Estoque.
+
+2. **Funcionário**: Estas rotas permitem a manipulação de informações dos funcionários. As operações disponíveis são:
+    - **Criação**: Permite adicionar um novo funcionário ao sistema.
+    - **Listagem**: Permite visualizar todos os funcionários registrados no sistema.
+    - **Atualização da senha**: Permite que um funcionário altere sua senha.
+    - **Exclusão**: Permite remover um funcionário do sistema.
+
+3. **Doador**: Estas rotas permitem a manipulação de informações dos doadores. As operações disponíveis são:
+    - **Criação**: Permite adicionar um novo doador ao sistema.
+    - **Listagem**: Permite visualizar todos os doadores registrados no sistema.
+    - **Atualização de dados**: Permite que um doador atualize suas informações.
+    - **Exclusão**: Permite remover um doador do sistema.
+
+4. **Doação**: Estas rotas permitem a manipulação de informações das doações. As operações disponíveis são:
+    - **Criação**: Permite registrar uma nova doação no sistema.
+    - **Listagem**: Permite visualizar todas as doações registradas no sistema.
+    - **Atualização de exames**: Permite adicionar os resultados dos exames a uma doação existente.
+    - **Exclusão**: Permite remover uma doação do sistema.
+
+5. **Estoque de Sangue**: Esta rota permite a visualização do estoque de sangue atual.
+
+Além disso, a documentação fornecida contém informações detalhadas sobre a estrutura dos dados esperados e retornados em cada rota, os parâmetros necessários, as possíveis respostas e os códigos de status HTTP correspondentes.
+
+Cada rota requer diferentes permissões de acesso, onde algumas estão disponíveis apenas para funcionários administradores (após login), enquanto outras podem ser acessadas por funcionários padrão após a autenticação. Este controle de acesso é gerenciado pelo sistema de autenticação JWT.
