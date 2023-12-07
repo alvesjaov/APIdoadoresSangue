@@ -1,14 +1,9 @@
 // Importe as funções que você deseja testar
 // import { verifyAdmin, verifyEmployee } from '../../middleware/VerifyEmployees';
-import Employee from '../models/Employee.js';
+import Employee from '../../models/Employee.js';
 import jwt from 'jsonwebtoken';
-import { addToBlacklist } from './Blacklist.js';
+import { addToBlacklist } from '../../middleware/Blacklist.js';
 import mongoose from 'mongoose';
-
-
-
-//const { mockRequest, mockResponse } = require('jest-mock-req-res');
-
 
 // Sua função cleanExpiredTokens
 async function cleanExpiredTokens() {
@@ -28,17 +23,16 @@ async function cleanExpiredTokens() {
 }
 
 // Mock da função addToBlacklist
-function addToBlacklist(token) {
+function addToBlacklists(token) {
   // Implemente a lógica para adicionar o token à lista negra
 }
 
-// Testes
 describe('Teste da função cleanExpiredTokens', () => {
   it('deve remover os tokens expirados e adicioná-los à lista negra', async () => {
     // Cria um mock do modelo Employee
     const employees = [
-      { _id: mongoose.Types.ObjectId(), tokens: [{ token: 'validToken' }, { token: 'expiredToken' }] },
-      { _id: mongoose.Types.ObjectId(), tokens: [{ token: 'validToken' }] },
+      { _id: new mongoose.Types.ObjectId(), tokens: [{ token: 'validToken' }, { token: 'expiredToken' }] },
+      { _id: new mongoose.Types.ObjectId(), tokens: [{ token: 'validToken' }] },
     ];
     jest.spyOn(Employee, 'find').mockReturnValue({
       cursor: function* () {
