@@ -44,12 +44,18 @@ async function readDonation(request, response) {
     }
 }
 
-// função para retorna doações que
+// Modifique a função readAllDonations para aceitar parâmetros de paginação
 async function readAllDonations(request, response) {
-    try {
-        // Encontra todos os doadores que possuem histórico de doações
-        const donorsWithDonations = await Donor.find({ donationHistory: { $exists: true, $ne: [] } }, { _id: 1, name: 1, donationHistory: 1 });
 
+    const page = parseInt(request.query.page) || 1; // Pega o número da página da query, padrão é 1
+    const limit = 5; // Define o limite de itens por página
+    const skip = (page - 1) * limit; // Calcula o número de itens a serem pulados
+
+    try {
+        // Encontra todos os doadores que possuem histórico de doações com paginação
+        const donorsWithDonations = await Donor.find({ donationHistory: { $exists: true, $ne: [] } }, { _id: 1, name: 1, donationHistory: 1 })
+            .skip(skip)
+            .limit(limit);
         // Filtra as doações onde o campo bloodTest é um array vazio
         const donationsWithEmptyBloodTest = donorsWithDonations.reduce((donations, donor) => {
             const donationsWithEmptyTest = donor.donationHistory.filter(donation => {
@@ -153,4 +159,4 @@ async function deleteDonation(request, response) {
     }
 }
 
-export { createDonation, readDonation, addBloodExams, deleteDonation ,readAllDonations} // Exporta as funções para serem usadas em outros arquivos
+export { createDonation, readDonation, addBloodExams, deleteDonation, readAllDonations } // Exporta as funções para serem usadas em outros arquivos
