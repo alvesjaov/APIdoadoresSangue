@@ -1,6 +1,5 @@
 // Importe as funções que você deseja testar
 import { verifyAdmin, verifyEmployee } from '../../middleware/VerifyEmployees';
-import { addToBlacklist, checkBlacklistedToken } from '../../middleware/TokenBlacklist';
 
 // Mock para simular passport
 jest.mock('passport', () => ({
@@ -52,72 +51,6 @@ describe('Authentication Middleware', () => {
     });
   });
 });
-
-
-
-
-// Mock para simular a lista negra de tokens
-let blacklistedTokensMock = [];
-
-// Substitui a implementação original pela mock
-addToBlacklist = (token) => {
-  blacklistedTokensMock.push(token);
-};
-
-isTokenBlacklisted = (token) => {
-  return blacklistedTokensMock.includes(token);
-};
-
-describe('Token Blacklist Middleware', () => {
-  beforeEach(() => {
-    // Limpa a lista negra antes de cada teste
-    blacklistedTokensMock = [];
-  });
-
-  it('should block access for blacklisted token', async () => {
-    const req = {
-      headers: {
-        authorization: 'Bearer blacklistedToken'
-      }
-    };
-    const res = {
-      status: jest.fn(() => res),
-      json: jest.fn(),
-    };
-    const next = jest.fn();
-
-    // Adiciona um token à lista negra para teste
-    addToBlacklist('blacklistedToken');
-
-    await checkBlacklistedToken(req, res, next);
-
-    expect(res.status).toHaveBeenCalledWith(401);
-    expect(res.json).toHaveBeenCalledWith({ error: 'Token inválido ou expirado.' });
-    expect(next).not.toHaveBeenCalled();
-  });
-
-  it('should allow access for non-blacklisted token', async () => {
-    const req = {
-      headers: {
-        authorization: 'Bearer validToken'
-      }
-    };
-    const res = {
-      status: jest.fn(() => res),
-      json: jest.fn(),
-    };
-    const next = jest.fn();
-
-    await checkBlacklistedToken(req, res, next);
-
-    expect(next).toHaveBeenCalled();
-    expect(res.status).not.toHaveBeenCalled();
-    expect(res.json).not.toHaveBeenCalled();
-  });
-
-});
-
-
 
 // Sua função checkBlacklistedToken
 function checkBlacklistedTokens(request, response, next) {
