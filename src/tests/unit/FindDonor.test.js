@@ -120,7 +120,7 @@ describe('Token Blacklist Middleware', () => {
 
 
 // Sua função checkBlacklistedToken
-function checkBlacklistedToken(request, response, next) {
+function checkBlacklistedTokens(request, response, next) {
   const token = request.headers.authorization.split(' ')[1];
   if (isTokenBlacklisted(token)) {
     return response.status(401).json({ error: 'Token inválido ou expirado.' });
@@ -134,7 +134,7 @@ function isTokenBlacklisted(token) {
 }
 
 // Rota para teste
-app.get('/test', checkBlacklistedToken, function (req, res) {
+app.get('/test', checkBlacklistedTokens, function (req, res) {
   res.status(200).json({ message: 'Sucesso!' });
 });
 
