@@ -46,24 +46,27 @@ async function createEmployee(request, response) {
 async function readEmployee(request, response) {
   const employeeCode = request.params.code;
   const employeeName = request.query.name;
+  const page = parseInt(request.query.page) || 1; // Pega o número da página da query, padrão é 1
+  const limit = 5; // Define o limite de itens por página
+  const skip = (page - 1) * limit; // Calcula o número de itens a serem pulados
 
   try {
     let employeeOrName = employeeCode || employeeName;
     let employees;
 
     if (employeeOrName) {
-      // Se um código de funcionário ou nome foi fornecido, procura por esse funcionário
-      employees = await findEmployeeByCodeOrName(employeeOrName);
+      // Se um código de funcionário ou nome foi fornecido, procura por esse funcionário com paginação
+      employees = await findEmployeeByCodeOrName(employeeOrName).skip(skip).limit(limit);
     } else {
-      // Se nenhum código de funcionário ou nome foi fornecido, retorna todos os funcionários
-      employees = await Employee.find();
+      // Se nenhum código de funcionário ou nome foi fornecido, retorna todos os funcionários com paginação
+      employees = await Employee.find().skip(skip).limit(limit);
     }
 
     if (!employees || employees.length === 0) {
       return response.status(404).json({ error: 'Funcionário não encontrado.' });
     }
 
-    return response.status(200).json(employees);
+    return response.status(200).json(employees); // Retorna os funcionários encontrados
   } catch (error) {
     console.log(error.message);
     return response.status(500).json({ error: "Ocorreu um erro ao buscar funcionários, tente novamente." });
