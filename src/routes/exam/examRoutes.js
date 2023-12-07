@@ -5,7 +5,7 @@ import { checkBlacklistedToken } from '../../middleware/Blacklist.js';
 
 const examRoutes = Router();
 
-examRoutes.post('/donations/:id/exams', verifyAdmin, verifyEmployee, checkBlacklistedToken, addBloodTest); // Rota para adicionar exames de sangue
-examRoutes.get('/donations/exams', verifyAdmin, verifyEmployee, checkBlacklistedToken, readDonationsWithEmptyBloodTest); //rota para retornar todas doações
+examRoutes.post('/exams/:id', verifyAdmin, verifyEmployee, checkBlacklistedToken, addBloodTest); // Rota para adicionar exames de sangue
+examRoutes.get('/exams', verifyAdmin, verifyEmployee, checkBlacklistedToken, readDonationsWithEmptyBloodTest); //rota para retornar todas doações
 
 export default examRoutes;
