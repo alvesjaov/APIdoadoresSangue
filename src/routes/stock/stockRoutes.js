@@ -1,7 +1,7 @@
 import { Router } from 'express';
-import countAndUpdateBloodTypes from '../controllers/BloodStockController.js';
-import { verifyAdmin, verifyEmployee } from '../middleware/VerifyEmployees.js';
-import { checkBlacklistedToken } from '../middleware/Blacklist.js';
+import countAndUpdateBloodTypes from '../../controllers/BloodStockController.js';
+import { verifyAdmin, verifyEmployee } from '../../middleware/VerifyEmployees.js';
+import { checkBlacklistedToken } from '../../middleware/Blacklist.js';
 
 const stockRoutes = Router();
 
