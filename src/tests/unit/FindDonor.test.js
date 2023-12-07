@@ -1,5 +1,6 @@
 // Importe as funções que você deseja testar
 import { verifyAdmin, verifyEmployee } from '../../middleware/VerifyEmployees';
+import { addToBlacklist, checkBlacklistedToken } from '../../middleware/TokenBlacklist';
 
 // Mock para simular passport
 jest.mock('passport', () => ({
@@ -54,7 +55,6 @@ describe('Authentication Middleware', () => {
 
 
 
-import { addToBlacklist, checkBlacklistedToken } from '../../middleware/TokenBlacklist';
 
 // Mock para simular a lista negra de tokens
 let blacklistedTokensMock = [];
@@ -115,6 +115,5 @@ describe('Token Blacklist Middleware', () => {
     expect(res.json).not.toHaveBeenCalled();
   });
 
-  // Adicione mais testes para cenários diferentes conforme necessário
 });
 
