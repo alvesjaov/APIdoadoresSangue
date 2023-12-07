@@ -117,3 +117,44 @@ describe('Token Blacklist Middleware', () => {
 
 });
 
+
+
+// Sua função checkBlacklistedToken
+function checkBlacklistedToken(request, response, next) {
+  const token = request.headers.authorization.split(' ')[1];
+  if (isTokenBlacklisted(token)) {
+    return response.status(401).json({ error: 'Token inválido ou expirado.' });
+  }
+  next();
+}
+
+// Mock da função isTokenBlacklisted
+function isTokenBlacklisted(token) {
+  // Implemente a lógica para verificar se o token está na lista negra
+}
+
+// Rota para teste
+app.get('/test', checkBlacklistedToken, function (req, res) {
+  res.status(200).json({ message: 'Sucesso!' });
+});
+
+// Testes
+describe('Teste da função checkBlacklistedToken', () => {
+  it('deve retornar 401 se o token estiver na lista negra', async () => {
+    const response = await request(app)
+      .get('/test')
+      .set('Authorization', 'Bearer blacklistedToken');
+
+    expect(response.statusCode).toBe(401);
+    expect(response.body).toEqual({ error: 'Token inválido ou expirado.' });
+  });
+
+  it('deve chamar o próximo middleware se o token não estiver na lista negra', async () => {
+    const response = await request(app)
+      .get('/test')
+      .set('Authorization', 'Bearer validToken');
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body).toEqual({ message: 'Sucesso!' });
+  });
+});
