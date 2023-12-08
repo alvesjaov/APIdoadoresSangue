@@ -96,37 +96,6 @@ describe('createDonation', () => {
     });
 });
 describe('readDonation', () => {
-    // it('should return a specific donation for a user', async () => {
-    //     const mockDonationId = '6538354ed65b09f2dc1de42a'; // ID simulado para uma doação específica
-    //     const mockDonation = {
-    //         _id: mockDonationId,
-    //         // Outras propriedades da doação simulada...
-    //     };
-    
-    //     const mockDoador = {
-    //         _id: 'idDoDoador',
-    //         donationHistory: [mockDonation], // Simula um doador com histórico de doações
-    //     };
-    
-    //     // Configurando o mock para retornar o doador simulado ao chamar Donor.findOne
-    //     const findOneMock = jest.spyOn(Donor, 'findOne');
-    //     findOneMock.mockResolvedValue(mockDoador);
-    
-    //     const mockRequest = { params: { id: mockDonationId } };
-    //     const mockResponse = {
-    //         status: jest.fn().mockReturnThis(),
-    //         json: jest.fn(),
-    //     };
-    
-    //     // Chama a função readDonation
-    //     await readDonation(mockRequest, mockResponse);
-    
-    //     // Assertions
-    //     expect(findOneMock).toHaveBeenCalledWith({ "donationHistory._id": mockDonationId });
-    //     expect(mockResponse.status).toHaveBeenCalledWith(200);
-    //     expect(mockResponse.json).toHaveBeenCalledWith(mockDonation);
-    // });
-    
     it('should return error message if donation is not found', async () => {
         // Simulando o retorno de um doador inexistente
         const findOneMock = jest.spyOn(Donor, 'findOne');

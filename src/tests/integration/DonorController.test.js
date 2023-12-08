@@ -15,7 +15,8 @@ describe('Donor Controller', () => {
         it('should create a new donor', async () => {
             const request = {
                 body: {
-                    CPF: '419.688.540-37'
+                    CPF: '419.688.540-37',
+                    email:'teste@example.com'
                 },
             };
             const response = {
@@ -37,7 +38,6 @@ describe('Donor Controller', () => {
               body: {
                 // Simulate valid CPF
                 CPF: '1234567',
-                // Insert other necessary data for a valid donor
               },
             };
             const response = {
@@ -55,7 +55,7 @@ describe('Donor Controller', () => {
 
     describe('getDonor', () => {
         it('should find a donor by ID', async () => {
-            const mockId = 'validId';
+            const mockId = '34456';
             const mockDonor = { _id: mockId, name: 'John Doe' };
             const mockRequest = { params: { id: mockId }, query: {} };
             const mockResponse = {
@@ -89,7 +89,7 @@ describe('Donor Controller', () => {
             };
 
             // Mocking the findByIdAndUpdate function of Donor model
-            Donor.findByIdAndUpdate = jest.fn().mockResolvedValue({ /* Updated donor object */ });
+            Donor.findByIdAndUpdate = jest.fn().mockResolvedValue({});
 
             await updateDonor(request, response);
 
@@ -101,9 +101,10 @@ describe('Donor Controller', () => {
 
     describe('deleteDonor', () => {
         it('should delete a donor by ID', async () => {
+            const doadorId = 223456
             const request = {
                 params: {
-                    id: 'valid_id',
+                    id: doadorId,
                 },
             };
             const response = {
@@ -116,7 +117,7 @@ describe('Donor Controller', () => {
             await deleteDonor(request, response);
 
             expect(response.status).toHaveBeenCalledWith(200);
-            expect(response.json).toHaveBeenCalledWith({ message: 'Doador com ID valid_id deletado com sucesso!' });
+            expect(response.json).toHaveBeenCalledWith({ message: `Doador com ID ${doadorId} deletado com sucesso!` });
         });
     });
 });
