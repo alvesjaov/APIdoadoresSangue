@@ -65,12 +65,15 @@ Este projeto inclui várias rotas que permitem aos usuários interagir com os re
 
 As rotas se dividem em:
 
-1. **Login**: Esta rota é usada para autenticar um funcionário no sistema. Existem dois tipos de funcionários: administradores e padrão. Os administradores têm acesso a todas as rotas, enquanto os funcionários padrão só podem acessar as rotas de Doadores, Doações e Estoque.
+### 1. **Login**
+Esta rota é usada para autenticar um funcionário no sistema. Existem dois tipos de funcionários: administradores e padrão. Os administradores têm acesso a todas as rotas, enquanto os funcionários padrão só podem acessar as rotas de Doadores, Doações e Estoque.
 
+### 2. **Logout**
+Esta rota é usada para desautenticar um funcionário do sistema. Quando um funcionário realiza o logout, o token de autenticação atual é invalidado, impedindo que seja usado para futuras solicitações. Esta rota é acessível para todos os funcionários autenticados, sejam eles administradores ou padrão. Após o logout, o funcionário precisará fornecer suas credenciais novamente para acessar as rotas protegidas.
 
-### 2. Funcionário
+### 3. Funcionário
 
-#### `POST /employees/`
+#### `POST /employees`
 - **Descrição:** Cria um novo funcionário no sistema.
 - **Permissões:** Apenas administradores.
 - **Parâmetros:** Requer dados do funcionário, como nome de usuário, senha, etc.
@@ -99,9 +102,9 @@ As rotas se dividem em:
 - **Parâmetros:** Requer o código do funcionário a ser removido.
 - **Respostas:** Retorna uma mensagem indicando sucesso na remoção do funcionário.
 
-### 3. Doador
+### 4. Doador
 
-#### `POST /donors/`
+#### `POST /donors`
 - **Descrição:** Registra um novo doador no sistema.
 - **Permissões:** Funcionários autenticados.
 - **Parâmetros:** Requer informações do doador, como nome, tipo sanguíneo, etc.
@@ -130,7 +133,7 @@ As rotas se dividem em:
 - **Parâmetros:** Requer o ID do doador a ser removido.
 - **Respostas:** Retorna uma mensagem indicando sucesso na remoção do doador.
 
-### 4. Doação
+### 5. Doação
 
 #### `POST /donations/{_id}`
 - **Descrição:** Registra uma nova doação no sistema.
@@ -150,7 +153,7 @@ As rotas se dividem em:
 - **Parâmetros:** Requer o ID da doação a ser removida.
 - **Respostas:** Retorna uma mensagem indicando sucesso na remoção da doação.
 
-### 5. Adicionar Exame
+### 6. Adicionar Exame
 
 #### `POST /exams/{_id}`
 - **Descrição:** Registra os resultados de exames relacionados às doações.
@@ -158,7 +161,14 @@ As rotas se dividem em:
 - **Parâmetros:** Requer o ID da doação associada aos resultados dos exames.
 - **Respostas:** Retorna confirmação da adição dos resultados dos exames.
 
-### 6. Estoque de Sangue
+#### `GET /exams`
+
+- **Descrição**: Retorna todas as doações que ainda não têm resultados de exames associados.
+- **Permissões**: Funcionários autenticados.
+- **Respostas**: Retorna uma lista de doações pendentes de exames.
+
+
+### 7. Estoque de Sangue
 
 #### `GET /stock`
 - **Descrição:** Visualiza o estoque de sangue atual.
