@@ -1,7 +1,7 @@
 import { Router } from 'express';
-import { createDonor, getDonor, updateDonor, deleteDonor } from '../controllers/DonorController.js';
-import { verifyAdmin, verifyEmployee } from '../middleware/VerifyEmployees.js';
-import { checkBlacklistedToken } from '../middleware/Blacklist.js';
+import { createDonor, getDonor, updateDonor, deleteDonor } from '../../controllers/DonorController.js';
+import { verifyAdmin, verifyEmployee } from '../../middleware/VerifyEmployees.js';
+import { checkBlacklistedToken } from '../../middleware/Blacklist.js';
 
 const donorRoutes = Router();
 

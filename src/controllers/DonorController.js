@@ -46,6 +46,9 @@ async function createDonor(request, response) {
 async function getDonor(request, response) {
     const { id } = request.params; // Pega o id dos parâmetros da requisição
     const { name } = request.query; // Pega o nome dos parâmetros da requisição
+    const page = parseInt(request.query.page) || 1; // Pega o número da página da query, padrão é 1
+    const limit = 5; // Define o limite de itens por página
+    const skip = (page - 1) * limit; // Calcula o número de itens a serem pulados
 
     try {
         let donorOrName = id || name;
@@ -53,15 +56,15 @@ async function getDonor(request, response) {
 
         if (donorOrName) {
             // Se um id ou nome for fornecido, procura por um doador com esse id ou nome
-            donors = await findDonorByIdOrName(donorOrName);
+            donors = await findDonorByIdOrName(donorOrName)
         } else {
-            // Se nenhum id ou nome for fornecido, retorna todos os doadores
-            donors = await Donor.find();
+            // Se nenhum id ou nome for fornecido, retorna todos os doadores com paginação
+            donors = await Donor.find().skip(skip).limit(limit);
         }
-
+        // Verifica se não há mais doadores nesta página
         if (!donors || donors.length === 0) {
-            return response.status(404).json({ error: 'Nenhum doador encontrado' });
-        }
+            return response.status(404).json({ page: page, error: "Nenhum doador encontrado"});
+          }          
 
         return response.status(200).json(donors); // Retorna os doadores encontrados
     } catch (error) {
@@ -86,7 +89,6 @@ async function updateDonor(request, response) {
         response.status(500).json({ error: "Ocorreu um erro ao atualizar o doador, tente novamente." });
     }
 }
-
 
 // Rota para deletar um doador (DELETE)
 async function deleteDonor(request, response) {
