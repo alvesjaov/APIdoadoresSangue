@@ -67,31 +67,104 @@ As rotas se dividem em:
 
 1. **Login**: Esta rota é usada para autenticar um funcionário no sistema. Existem dois tipos de funcionários: administradores e padrão. Os administradores têm acesso a todas as rotas, enquanto os funcionários padrão só podem acessar as rotas de Doadores, Doações e Estoque.
 
-2. **Funcionário**: Estas rotas permitem a manipulação de informações dos funcionários. As operações disponíveis são:
-    - **Criação**: Permite adicionar um novo funcionário ao sistema.
-    - **Listagem**: Permite visualizar todos os funcionários registrados no sistema.
-    - **Atualização da senha**: Permite que um funcionário altere sua senha.
-    - **Exclusão**: Permite remover um funcionário do sistema.
 
-3. **Doador**: Estas rotas permitem a manipulação de informações dos doadores. As operações disponíveis são:
-    - **Criação**: Permite adicionar um novo doador ao sistema.
-    - **Listagem**: Permite visualizar todos os doadores registrados no sistema.
-    - **Atualização de dados**: Permite que um doador atualize suas informações.
-    - **Exclusão**: Permite remover um doador do sistema.
+### 2. Funcionário
 
-4. **Doação**: Estas rotas permitem a manipulação de informações das doações. As operações disponíveis são:
-    - **Criação**: Permite registrar uma nova doação no sistema.
-    - **Listagem**: Permite visualizar todas as doações registradas no sistema.
-    - **Atualização de exames**: Permite adicionar os resultados dos exames a uma doação existente.
-    - **Exclusão**: Permite remover uma doação do sistema.
+#### `POST /employees/`
+- **Descrição:** Cria um novo funcionário no sistema.
+- **Permissões:** Apenas administradores.
+- **Parâmetros:** Requer dados do funcionário, como nome de usuário, senha, etc.
+- **Respostas:** Retorna os detalhes do funcionário recém-criado.
 
-5. **Adicionar Exame**
-**Descrição:** Esta página permite aos usuários registrar os resultados dos exames relacionados às doações de sangue.
+#### `GET /employees/`
+- **Descrição:** Lista todos os funcionários registrados no sistema.
+- **Permissões:** Apenas administradores.
+- **Respostas:** Retorna uma lista de funcionários.
 
-**Funcionalidades:**
-- Associar os resultados dos exames a uma doação existente no sistema.
+#### `GET /employees/{name}`
+- **Descrição:** Busca um funcionário específico pelo nome.
+- **Permissões:** Apenas administradores.
+- **Parâmetros:** Requer o nome do funcionário.
+- **Respostas:** Retorna os detalhes do funcionário correspondente.
 
-6. **Estoque de Sangue**: Esta rota permite a visualização do estoque de sangue atual.
+#### `PATCH /employees/{employeeCode}`
+- **Descrição:** Atualiza o nome e/ou senha de um funcionário.
+- **Permissões:** Apenas administradores.
+- **Parâmetros:** Requer o código do funcionário a ser atualizado e os novos dados.
+- **Respostas:** Retorna os detalhes do funcionário atualizados.
+
+#### `DELETE /employees/{employeeCode}`
+- **Descrição:** Remove um funcionário do sistema.
+- **Permissões:** Apenas administradores.
+- **Parâmetros:** Requer o código do funcionário a ser removido.
+- **Respostas:** Retorna uma mensagem indicando sucesso na remoção do funcionário.
+
+### 3. Doador
+
+#### `POST /donors/`
+- **Descrição:** Registra um novo doador no sistema.
+- **Permissões:** Funcionários autenticados.
+- **Parâmetros:** Requer informações do doador, como nome, tipo sanguíneo, etc.
+- **Respostas:** Retorna os detalhes do doador recém-registrado.
+
+#### `GET /donors/`
+- **Descrição:** Lista todos os doadores registrados no sistema.
+- **Permissões:** Funcionários autenticados.
+- **Respostas:** Retorna uma lista de doadores.
+
+#### `GET /donors/{name}`
+- **Descrição:** Busca um doador específico pelo nome.
+- **Permissões:** Funcionários autenticados.
+- **Parâmetros:** Requer o nome do doador.
+- **Respostas:** Retorna os detalhes do doador correspondente.
+
+#### `PATCH /donors/{_id}`
+- **Descrição:** Atualiza os dados de um doador.
+- **Permissões:** Funcionários autenticados.
+- **Parâmetros:** Requer o ID do doador a ser atualizado e os novos dados.
+- **Respostas:** Retorna os detalhes do doador atualizados.
+
+#### `DELETE /donors/{_id}`
+- **Descrição:** Remove um doador do sistema.
+- **Permissões:** Funcionários autenticados.
+- **Parâmetros:** Requer o ID do doador a ser removido.
+- **Respostas:** Retorna uma mensagem indicando sucesso na remoção do doador.
+
+### 4. Doação
+
+#### `POST /donations/{_id}`
+- **Descrição:** Registra uma nova doação no sistema.
+- **Permissões:** Funcionários autenticados.
+- **Parâmetros:** Requer o ID do doador associado à doação.
+- **Respostas:** Retorna os detalhes da doação registrada.
+
+#### `GET /donations/{_id}`
+- **Descrição:** Busca uma doação específica pelo ID.
+- **Permissões:** Funcionários autenticados.
+- **Parâmetros:** Requer o ID da doação.
+- **Respostas:** Retorna os detalhes da doação correspondente.
+
+#### `DELETE /donations/{_id}`
+- **Descrição:** Remove uma doação do sistema.
+- **Permissões:** Funcionários autenticados.
+- **Parâmetros:** Requer o ID da doação a ser removida.
+- **Respostas:** Retorna uma mensagem indicando sucesso na remoção da doação.
+
+### 5. Adicionar Exame
+
+#### `POST /exams/{_id}`
+- **Descrição:** Registra os resultados de exames relacionados às doações.
+- **Permissões:** Funcionários autenticados.
+- **Parâmetros:** Requer o ID da doação associada aos resultados dos exames.
+- **Respostas:** Retorna confirmação da adição dos resultados dos exames.
+
+### 6. Estoque de Sangue
+
+#### `GET /stock`
+- **Descrição:** Visualiza o estoque de sangue atual.
+- **Permissões:** Funcionários autenticados.
+- **Respostas:** Retorna os detalhes do estoque de sangue.
+
 
 Além disso, a documentação fornecida contém informações detalhadas sobre a estrutura dos dados esperados e retornados em cada rota, os parâmetros necessários, as possíveis respostas e os códigos de status HTTP correspondentes.
 
