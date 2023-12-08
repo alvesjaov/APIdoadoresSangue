@@ -1,0 +1,429 @@
+{
+	"info": {
+		"_postman_id": "b0017540-78e3-4c10-a86a-605b4cde7f20",
+		"name": "API doadores de Sangue",
+		"description": "A API para gerenciar doação de sangue é uma interface que permite aos usuários interagir com um sistema de gerenciamento de doações de sangue. A API tem quatro partes principais: **Doador**, **Doação**, **Estoque de Sangue** e **Funcionário**. Cada uma dessas partes tem funções específicas para criar, ler, atualizar e excluir informações sobre os doadores, as doações, o estoque de sangue e os funcionários. A API facilita o controle e a organização das informações sobre o processo de doação de sangue.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "29770741",
+		"_collection_link": "https://apidoadoressangue.postman.co/workspace/API-do%25C3%25A7%25C3%25A3o-de-sague~a680bd1a-f517-447d-80d8-ce3b64f031b7/collection/29770741-b0017540-78e3-4c10-a86a-605b4cde7f20?action=share&source=collection_link&creator=29770741"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"item": [
+				{
+					"name": "/employees/login",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"employeeCode\": 788216,\r\n  \"password\": \"12345678\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "https://apidoadoressangue.vercel.app/employees/login"
+					},
+					"response": []
+				},
+				{
+					"name": "/employees/logout",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{Aministrador}}"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"url": "https://apidoadoressangue.vercel.app/employees/logout"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Funcionário",
+			"item": [
+				{
+					"name": "/employees/",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{Aministrador}}"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Santiago\",\r\n  \"password\": \"12345678\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "https://apidoadoressangue.vercel.app/employees/"
+					},
+					"response": []
+				},
+				{
+					"name": "/employees",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{Aministrador}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "https://apidoadoressangue.vercel.app/employees"
+					},
+					"response": []
+				},
+				{
+					"name": "/employees/{name}",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{Aministrador}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "https://apidoadoressangue.vercel.app/employees/Admin"
+					},
+					"response": []
+				},
+				{
+					"name": "/employees/{employeeCode}",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{Aministrador}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "https://apidoadoressangue.vercel.app/employees/630881"
+					},
+					"response": []
+				},
+				{
+					"name": "/employees/{employeeCode}",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{Aministrador}}"
+							}
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"password\": \"1234teste\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "https://apidoadoressangue.vercel.app/employees/630881"
+					},
+					"response": []
+				},
+				{
+					"name": "/employees/{employeeCode}",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{Aministrador}}"
+							}
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": "https://apidoadoressangue.vercel.app/678453"
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "inherit",
+				"inherit": {}
+			}
+		},
+		{
+			"name": "Doador",
+			"item": [
+				{
+					"name": "/donors/",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{Funcionário}}"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Diego\",\r\n  \"CPF\": \"285.537.460-03\",\r\n  \"birthDate\": \"2005-10-01\",\r\n  \"sex\": \"M\",\r\n  \"address\": \"Rua Perpendicular, 58\",\r\n  \"telephone\": \"(00) 99887-7665\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "https://apidoadoressangue.vercel.app/donors/"
+					},
+					"response": []
+				},
+				{
+					"name": "/donors",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{Funcionário}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "https://apidoadoressangue.vercel.app/donors"
+					},
+					"response": []
+				},
+				{
+					"name": "/donors/{name}",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{Funcionário}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "https://apidoadoressangue.vercel.app/donors/diego"
+					},
+					"response": []
+				},
+				{
+					"name": "/donors/{_id}",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{Funcionário}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "https://apidoadoressangue.vercel.app/donors/6570f9f8801b7416a46008ed"
+					},
+					"response": []
+				},
+				{
+					"name": "/donors/{_id}",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{Funcionário}}"
+							}
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"address\": \"Rua Perpendicular, 5\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "https://apidoadoressangue.vercel.app/donors/6538354ed65b09f2dc1de42a"
+					},
+					"response": []
+				},
+				{
+					"name": "/donors/{_id}",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{Funcionário}}"
+							}
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": "https://apidoadoressangue.vercel.app/donors/653835e5d65b09f2dc1de438"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Doação",
+			"item": [
+				{
+					"name": "/donations/{_id}",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{Funcionário}}"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"url": "https://apidoadoressangue.vercel.app/donations/6538354ed65b09f2dc1de42a"
+					},
+					"response": []
+				},
+				{
+					"name": "/donations/{_id}",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{Funcionário}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "https://apidoadoressangue.vercel.app/donations/6538363ed65b09f2dc1de443"
+					},
+					"response": []
+				},
+				{
+					"name": "/donations/{_id}",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{Funcionário}}"
+							}
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": "https://apidoadoressangue.vercel.app/donations/6538354ed65b09f2dc1de42a/"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Exame",
+			"item": [
+				{
+					"name": "/exams",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{Funcionário}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "https://apidoadoressangue.vercel.app/exams"
+					},
+					"response": []
+				},
+				{
+					"name": "/exams/{_id}",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{Funcionário}}"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"bloodType\": \"A +(Pos)\",\r\n    \"exams\": [\r\n        \"Sífilis\",\r\n        \"Chagas\",\r\n        \"Hepatite B e C\",\r\n        \"HIV\",\r\n        \"HTLV I/II\"\r\n    ],\r\n    \"examsResult\": \"negativo\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "https://apidoadoressangue.vercel.app/exams/6538363ed65b09f2dc1de443"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Estoque de Sangue",
+			"item": [
+				{
+					"name": "/stock",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{Funcionário}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "https://apidoadoressangue.vercel.app/stock"
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "Aministrador",
+			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1MzgzMTBhNDI1N2ZjNzBiMzE3ZDcyMiIsImlzQWRtaW4iOnRydWUsImlhdCI6MTcwMjA3NDUxNywiZXhwIjoxNzAyMDc4MTE3fQ.xDPiUngQ0g1lNl2CS_Y9XBwTJYwjQOfloWwk2J73Kyo",
+			"type": "string"
+		},
+		{
+			"key": "Funcionário",
+			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1NzBmYWQ3ODAxYjc0MTZhNDYwMDkzNCIsImlzQWRtaW4iOmZhbHNlLCJpYXQiOjE3MDIwNzQ1NjIsImV4cCI6MTcwMjA3ODE2Mn0.R69_-VMGUv_exjAlXp-HC0A64PoKQM3bdl0pUh6Sf6Y",
+			"type": "string"
+		}
+	]
+}
