@@ -49,8 +49,6 @@ describe('Auth Controller', () => {
         token: 'mockToken',
       });
     });
-
-    // Add more tests for invalid credentials, errors, etc.
   });
 
   describe('logoutEmployee', () => {
@@ -92,7 +90,5 @@ describe('Auth Controller', () => {
         message: 'Logout realizado com sucesso!',
       });
     });
-
-    // Add more tests for invalid tokens, errors, etc.
   });
 });
