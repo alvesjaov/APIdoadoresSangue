@@ -41,6 +41,10 @@
             "description": "Endpoints relacionados a doação"
         },
         {
+            "name": "Exame",
+            "description": "Endpoints relacionados ao exame"
+        },
+        {
             "name": "Estoque de Sangue",
             "description": "Endpoints relacionados ao estoque de sangue"
         }
@@ -62,11 +66,11 @@
                             "examples": {
                                 "Admin": {
                                     "value": {
-                                        "employeeCode": 877018,
-                                        "password": "1234teste"
+                                        "employeeCode": 438718,
+                                        "password": "12345678"
                                     }
                                 },
-                                "Santiago - funcionário": {
+                                "Funcionário": {
                                     "value": {
                                         "employeeCode": 458304,
                                         "password": "12345678"
@@ -322,6 +326,18 @@
                 ],
                 "summary": "Listar todos os funcionários",
                 "description": "Retorna uma lista com todos os funcionários cadastrados.",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Número da página a ser retornada",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -988,6 +1004,18 @@
                 ],
                 "summary": "Listar todos os doadores",
                 "description": "Retorna uma lista com todos os doadores cadastrados.",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Número da página a ser retornada",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -1087,6 +1115,7 @@
                                 "examples": {
                                     "DonorNotFound": {
                                         "value": {
+                                            "page": 2,
                                             "error": "Nenhum doador encontrado"
                                         }
                                     }
@@ -1777,120 +1806,6 @@
                     }
                 }
             },
-            "patch": {
-                "tags": [
-                    "Doação"
-                ],
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ],
-                "summary": "Registrar exames",
-                "description": "Registra os exames da doação cujo **Id** foi fornecido.",
-                "parameters": [
-                    {
-                        "name": "_id",
-                        "description": "Id da doação",
-                        "required": true,
-                        "in": "path",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/Donor"
-                            },
-                            "example": {
-                                "bloodType": "A +(Pos)",
-                                "exams": [
-                                    "Sífilis",
-                                    "Chagas",
-                                    "Hepatite B e C",
-                                    "HIV",
-                                    "HTLV I/II"
-                                ],
-                                "examsResult": "negativo"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "content": {
-                            "application/json": {
-                                "example": {
-                                    "message": "Tipagem sanguínea e exames adicionados com sucesso"
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "content": {
-                            "application/json": {
-                                "examples": {
-                                    "Unauthorized": {
-                                        "value": {
-                                            "error": "Acesso negado."
-                                        }
-                                    },
-                                    "InvalidToken": {
-                                        "value": {
-                                            "error": "Token inválido ou expirado."
-                                        }
-                                    },
-                                    "EmployeeNotFound": {
-                                        "value": {
-                                            "error": "Funcionário não encontrado"
-                                        }
-                                    },
-                                    "HeaderNotFound": {
-                                        "value": {
-                                            "error": "Cabeçalho de autorização não encontrado."
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "content": {
-                            "application/json": {
-                                "example": {
-                                    "error": "Já existe um exame de sangue para esta doação."
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Not Found",
-                        "content": {
-                            "application/json": {
-                                "example": {
-                                    "error": "Doação não encontrada"
-                                }
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "content": {
-                            "application/json": {
-                                "example": {
-                                    "error": "Ocorreu um erro ao registrar os exames, tente novamente."
-                                }
-                            }
-                        }
-                    }
-                }
-            },
             "delete": {
                 "tags": [
                     "Doação"
@@ -1981,6 +1896,287 @@
                                             "error": "Ocorreu um erro ao deletar a doação com ID 65413fb5ca408341b982babe, tente novamente."
                                         }
                                     }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/exams": {
+            "get": {
+                "tags": [
+                    "Exame"
+                ],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "summary": "Listar exames",
+                "description": "Retorna uma lista com todas as doações que estão com exames pendentes.",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Número da página a ser retornada",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "example": [
+                                    {
+                                        "donorId": "65700b73850a939d297b4c95",
+                                        "donorName": "Diego",
+                                        "donations": [
+                                            {
+                                                "_id": "6570170f7ef09b04a0e58e9c",
+                                                "donationDate": "2023-12-07T22:30:16.114Z",
+                                                "bloodTest": [],
+                                                "nextDonationDate": "2024-02-05T22:30:16.114Z",
+                                                "expiryDate": "2023-12-08T22:30:16.114Z"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "donorId": "65700bad850a939d297b4c9a",
+                                        "donorName": "Maria",
+                                        "donations": [
+                                            {
+                                                "_id": "65700d09850a939d297b4cb4",
+                                                "donationDate": "2023-12-06T05:56:25.628Z",
+                                                "bloodTest": [],
+                                                "nextDonationDate": "2024-02-04T05:56:25.629Z",
+                                                "expiryDate": "2023-12-07T05:56:25.629Z"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "donorId": "65700c11850a939d297b4c9f",
+                                        "donorName": "Caio",
+                                        "donations": [
+                                            {
+                                                "_id": "65700ed5850a939d297b4cb9",
+                                                "donationDate": "2023-12-06T06:04:05.484Z",
+                                                "bloodTest": [],
+                                                "nextDonationDate": "2024-02-04T06:04:05.484Z",
+                                                "expiryDate": "2023-12-07T06:04:05.485Z"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "donorId": "65700c36850a939d297b4ca7",
+                                        "donorName": "Fabio",
+                                        "donations": [
+                                            {
+                                                "_id": "65700ee5850a939d297b4cbe",
+                                                "donationDate": "2023-12-06T06:04:21.656Z",
+                                                "bloodTest": [],
+                                                "nextDonationDate": "2024-02-04T06:04:21.657Z",
+                                                "expiryDate": "2023-12-07T06:04:21.657Z"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "donorId": "65700c3779910ce4fa087a3a",
+                                        "donorName": "Julio xavier",
+                                        "donations": [
+                                            {
+                                                "_id": "65700ef7850a939d297b4cc3",
+                                                "donationDate": "2023-12-06T06:04:39.628Z",
+                                                "bloodTest": [],
+                                                "nextDonationDate": "2024-02-04T06:04:39.628Z",
+                                                "expiryDate": "2023-12-07T06:04:39.628Z"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "Unauthorized": {
+                                        "value": {
+                                            "error": "Acesso negado."
+                                        }
+                                    },
+                                    "InvalidToken": {
+                                        "value": {
+                                            "error": "Token inválido ou expirado."
+                                        }
+                                    },
+                                    "EmployeeNotFound": {
+                                        "value": {
+                                            "error": "Funcionário não encontrado"
+                                        }
+                                    },
+                                    "HeaderNotFound": {
+                                        "value": {
+                                            "error": "Cabeçalho de autorização não encontrado."
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "page": 1,
+                                    "error": "Não há doações com bloodTest pendente"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": "Ocorreu um erro ao buscar doações com bloodTest vazio. Por favor, tente novamente"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/exams/{_id}": {
+            "post": {
+                "tags": [
+                    "Exame"
+                ],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "summary": "Registrar exame",
+                "description": "Registra um novo exame para a doação cujo **Id** foi fornecido.",
+                "parameters": [
+                    {
+                        "name": "_id",
+                        "description": "Id da doação",
+                        "required": true,
+                        "in": "path",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "bloodType": {
+                                    "type": "string"
+                                },
+                                "exams": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": [
+                                            "string"
+                                        ]
+                                    }
+                                },
+                                "examsResult": {
+                                    "type": "string"
+                                }
+                            },
+                            "example": {
+                                "bloodType": "A +(Pos)",
+                                "exams": [
+                                    "Sífilis",
+                                    "Chagas",
+                                    "Hepatite B e C",
+                                    "HIV",
+                                    "HTLV I/II"
+                                ],
+                                "examsResult": "negativo"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "message": "Tipagem sanguínea e exames adicionados com sucesso"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "Unauthorized": {
+                                        "value": {
+                                            "error": "Acesso negado."
+                                        }
+                                    },
+                                    "InvalidToken": {
+                                        "value": {
+                                            "error": "Token inválido ou expirado."
+                                        }
+                                    },
+                                    "EmployeeNotFound": {
+                                        "value": {
+                                            "error": "Funcionário não encontrado"
+                                        }
+                                    },
+                                    "HeaderNotFound": {
+                                        "value": {
+                                            "error": "Cabeçalho de autorização não encontrado."
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": "Já existe um exame de sangue para esta doação."
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": "Doação não encontrada"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": "Ocorreu um erro ao registrar os exames, tente novamente."
                                 }
                             }
                         }
