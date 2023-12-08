@@ -73,10 +73,9 @@ async function readDonationsWithEmptyBloodTest(request, response) {
 
         // Verifica se há doações com bloodTest vazio
         if (donationsWithEmptyBloodTest.length === 0) {
-            // Retorna um array vazio
-            return response.status(200).json([]);
+            // Se não houver, retorna uma mensagem de erro
+            return response.status(404).json({page: page, error: "Não há doações com bloodTest pendente"});
         }
-
         // Retorna as doações com bloodTest vazio e os IDs e nomes dos doadores
         response.status(200).json(donationsWithEmptyBloodTest);
     } catch (error) {

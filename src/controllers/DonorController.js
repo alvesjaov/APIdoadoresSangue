@@ -56,15 +56,15 @@ async function getDonor(request, response) {
 
         if (donorOrName) {
             // Se um id ou nome for fornecido, procura por um doador com esse id ou nome
-            donors = await findDonorByIdOrName(donorOrName).skip(skip).limit(limit);
+            donors = await findDonorByIdOrName(donorOrName)
         } else {
             // Se nenhum id ou nome for fornecido, retorna todos os doadores com paginação
             donors = await Donor.find().skip(skip).limit(limit);
         }
-
+        // Verifica se não há mais doadores nesta página
         if (!donors || donors.length === 0) {
-            return response.status(404).json({ error: 'Nenhum doador encontrado' });
-        }
+            return response.status(404).json({ page: page, error: "Nenhum doador encontrado"});
+          }          
 
         return response.status(200).json(donors); // Retorna os doadores encontrados
     } catch (error) {

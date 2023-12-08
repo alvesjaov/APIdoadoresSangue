@@ -56,15 +56,16 @@ async function readEmployee(request, response) {
 
     if (employeeOrName) {
       // Se um código de funcionário ou nome foi fornecido, procura por esse funcionário com paginação
-      employees = await findEmployeeByCodeOrName(employeeOrName).skip(skip).limit(limit);
+      employees = await findEmployeeByCodeOrName(employeeOrName);
     } else {
       // Se nenhum código de funcionário ou nome foi fornecido, retorna todos os funcionários com paginação
       employees = await Employee.find().skip(skip).limit(limit);
     }
 
+    // Se não encontrar nenhum funcionário, retorna um erro
     if (!employees || employees.length === 0) {
-      return response.status(404).json({ error: 'Funcionário não encontrado.' });
-    }
+      return response.status(404).json({ page: page, error: "Nenhum funcionário encontrado" });
+    }  
 
     return response.status(200).json(employees); // Retorna os funcionários encontrados
   } catch (error) {
