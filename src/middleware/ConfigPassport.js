@@ -11,12 +11,12 @@ async function configurePassport() {
   };
 
   // Configurando a estratégia 'jwt' do passport
-  passport.use('jwt', new JwtStrategy(opts, async (jwt_payload, done) => {
+  passport.use('jwt-admin', new JwtStrategy(opts, async (jwt_payload, done) => {
     try {
       // Procura um funcionário com o ID presente no payload do JWT
       const employee = await Employee.findById(jwt_payload?.id);
       // Se o funcionário for um administrador, retorna o funcionário
-      if (employee?.isAdmin) {
+      if (employee?.isAdmin===true) {
         return done(null, employee);
       } else {
         // Se o funcionário não for um administrador, retorna false
