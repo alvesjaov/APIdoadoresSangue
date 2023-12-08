@@ -85,7 +85,13 @@ As rotas se dividem em:
     - **Atualização de exames**: Permite adicionar os resultados dos exames a uma doação existente.
     - **Exclusão**: Permite remover uma doação do sistema.
 
-5. **Estoque de Sangue**: Esta rota permite a visualização do estoque de sangue atual.
+5. **Adicionar Exame**
+**Descrição:** Esta página permite aos usuários registrar os resultados dos exames relacionados às doações de sangue.
+
+**Funcionalidades:**
+- Associar os resultados dos exames a uma doação existente no sistema.
+
+6. **Estoque de Sangue**: Esta rota permite a visualização do estoque de sangue atual.
 
 Além disso, a documentação fornecida contém informações detalhadas sobre a estrutura dos dados esperados e retornados em cada rota, os parâmetros necessários, as possíveis respostas e os códigos de status HTTP correspondentes.
 
