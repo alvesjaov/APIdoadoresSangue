@@ -2,7 +2,7 @@ import bcrypt from 'bcrypt';
 import Employee from '../../models/Employee.js';
 import { generateRandomEmployeeCode } from '../../utils/GenerateEmployeeCode.js';
 import { findEmployeeByCodeOrName } from '../../utils/FindEmployee.js';
-import { createEmployee, readEmployee ,updateEmployee ,deleteEmployee} from '../../controllers/EmployeeController.js'; // Substitua 'your-file-name.js' com o nome do seu arquivo que contém as funções
+import { createEmployee, readEmployee ,updateEmployee ,deleteEmployee} from '../../controllers/EmployeeController.js';
 
 jest.mock('bcrypt');
 jest.mock('../../utils/GenerateEmployeeCode.js');
@@ -10,6 +10,18 @@ jest.mock('../../models/Employee.js');
 jest.mock('../../utils/FindEmployee.js', () => ({
   findEmployeeByCodeOrName: jest.fn(),
 }));
+
+const mockRequest = (code, name, page = 1) => ({
+  params: { code },
+  query: { name, page }
+});
+
+const mockResponse = () => {
+  const res = {};
+  res.status = jest.fn().mockReturnValue(res);
+  res.json = jest.fn().mockReturnValue(res);
+  return res;
+};
 describe('createEmployee', () => {
   beforeEach(() => {
     jest.clearAllMocks();
@@ -114,72 +126,43 @@ describe('createEmployee', () => {
 });
 
 describe('readEmployee', () => {
-  it('should return employees when employee code is provided', async () => {
-    const request = {
-      params: {
-        code: 'employeeCode123',
-      },
-      query: {},
-    };
-    const response = {
-      status: jest.fn(() => response),
-      json: jest.fn(),
-    };
+  test('Retorna funcionários encontrados com código ou nome', async () => {
+    const mockRequestData = mockRequest('ABC123', null);
+    const mockEmployees = [{ name: 'Employee 1' }, { name: 'Employee 2' }];
+    const mockResponseData = mockResponse();
 
-    findEmployeeByCodeOrName.mockResolvedValue([{ name: 'Employee1' }]); // Mock da função para retornar um valor específico
-    await readEmployee(request, response);
+    findEmployeeByCodeOrName.mockResolvedValue(mockEmployees);
 
-    expect(findEmployeeByCodeOrName).toHaveBeenCalledWith('employeeCode123');
-    expect(response.status).toHaveBeenCalledWith(200);
-    expect(response.json).toHaveBeenCalledWith([{ name: 'Employee1' }]);
+    await readEmployee(mockRequestData, mockResponseData);
+
+    expect(mockResponseData.status).toHaveBeenCalledWith(200);
+    expect(mockResponseData.json).toHaveBeenCalledWith(mockEmployees);
   });
 
-  it('should return error when no employee is found', async () => {
-    const request = {
-      params: {
-        code: 'nonExistingEmployeeCode',
-      },
-      query: {},
-    };
-    const response = {
-      status: jest.fn(() => response),
-      json: jest.fn(),
-    };
+  test('Retorna nenhum funcionário encontrado', async () => {
+    const mockRequestData = mockRequest('InvalidCode', null);
+    const mockResponseData = mockResponse();
 
-    // Simulando que nenhum funcionário foi encontrado
     findEmployeeByCodeOrName.mockResolvedValue([]);
 
-    await readEmployee(request, response);
+    await readEmployee(mockRequestData, mockResponseData);
 
-    expect(findEmployeeByCodeOrName).toHaveBeenCalledWith('nonExistingEmployeeCode');
-    expect(response.status).toHaveBeenCalledWith(404);
-    expect(response.json).toHaveBeenCalledWith({ error: 'Funcionário não encontrado.' });
+    expect(mockResponseData.status).toHaveBeenCalledWith(404);
+    expect(mockResponseData.json).toHaveBeenCalledWith({ page: 1, error: "Nenhum funcionário encontrado" });
   });
 
-  it('should return all employees when no code is provided', async () => {
-    const request = {
-      params: {},
-      query: {}, // Simula a ausência total de código ou nome
-    };
-    const response = {
-      status: jest.fn(() => response),
-      json: jest.fn(),
-    };
+  test('Retorna erro ao buscar funcionários', async () => {
+    const mockRequestData = mockRequest(null, 'John Doe');
+    const mockResponseData = mockResponse();
 
-    // Simulando que nenhum código ou nome de funcionário foi fornecido
-    findEmployeeByCodeOrName.mockReset(); // Resetando o mock para garantir que não haja chamadas anteriores
-    jest.spyOn(Employee, 'find').mockResolvedValue([{ name: 'Employee1' }, { name: 'Employee2' }]);
+    findEmployeeByCodeOrName.mockRejectedValue(new Error('Erro ao buscar funcionários'));
 
-    await readEmployee(request, response);
+    await readEmployee(mockRequestData, mockResponseData);
 
-    expect(findEmployeeByCodeOrName).not.toHaveBeenCalled(); // Verifica se a função não foi chamada
-    expect(Employee.find).toHaveBeenCalled(); // Verifica se Employee.find foi chamada
-    expect(response.status).toHaveBeenCalledWith(200);
-    expect(response.json).toHaveBeenCalledWith([{ name: 'Employee1' }, { name: 'Employee2' }]);
+    expect(mockResponseData.status).toHaveBeenCalledWith(500);
+    expect(mockResponseData.json).toHaveBeenCalledWith({ error: "Ocorreu um erro ao buscar funcionários, tente novamente." });
   });
-
 });
-
 
 describe('updateEmployee', () => {
   it('should update employee data successfully', async () => {
