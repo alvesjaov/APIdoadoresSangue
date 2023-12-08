@@ -3,7 +3,7 @@ import passport from 'passport';
 // Função assíncrona para verificar se o usuário é um administrador
 async function verifyAdmin(req, res, next) {
   // Autenticando o usuário com a estratégia 'jwt'
-  passport.authenticate('jwt', { session: false }, (err, adminEmployee) => {
+  passport.authenticate('jwt-admin', { session: false }, (err, adminEmployee) => {
     // Se houver um erro durante a autenticação, retorna uma mensagem de erro
     if (err) {
       return res.status(500).json({ message: 'Erro interno do servidor. Não foi possível autenticar usando a estratégia jwt.' });
@@ -17,23 +17,19 @@ async function verifyAdmin(req, res, next) {
   })(req, res, next);
 }
 
-// Função assíncrona para verificar se o usuário é um funcionário
-async function verifyEmployee(req, res, next) {
-  // Autenticando o usuário com a estratégia 'jwt-employee'
-  passport.authenticate('jwt-employee', { session: false }, (err, employee) => {
-    // Se houver um erro durante a autenticação, retorna uma mensagem de erro
+// Verifica se o usuário é um administrador ou um funcionário
+async function verifyAdminOrEmployee(req, res, next) {
+  passport.authenticate(['jwt-admin', 'jwt-employee'], { session: false }, (err, user) => {
     if (err) {
-      return res.status(500).json({ message: 'Erro interno do servidor. Não foi possível autenticar usando a estratégia jwt-employee.', error: err.toString() });
+      return res.status(500).json({ message: 'Erro interno do servidor.' });
     }
-    // Se o usuário não for um funcionário, retorna uma mensagem de acesso negado
-    if (!employee) {
+    if (!user) {
       return res.status(401).json({ message: 'Acesso negado.' });
     }
-    // Se tudo estiver ok, anexa o objeto do funcionário ao objeto de solicitação e prossegue para a próxima função no middleware
-    req.employee = employee;
     next();
   })(req, res, next);
 }
 
+
 // Exportando as funções para serem usadas em outros módulos
-export {verifyAdmin, verifyEmployee};
+export { verifyAdmin, verifyAdminOrEmployee };
