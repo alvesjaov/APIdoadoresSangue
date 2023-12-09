@@ -178,4 +178,6 @@ Esta rota é usada para desautenticar um funcionário do sistema. Quando um func
 
 Além disso, a documentação fornecida contém informações detalhadas sobre a estrutura dos dados esperados e retornados em cada rota, os parâmetros necessários, as possíveis respostas e os códigos de status HTTP correspondentes.
 
-Cada rota requer diferentes permissões de acesso, onde algumas estão disponíveis apenas para funcionários administradores (após login), enquanto outras podem ser acessadas por funcionários padrão após a autenticação. Este controle de acesso é gerenciado pelo sistema de autenticação JWT.
+## Testando as rotas
+
+Para testar as rotas de um jeito dinâmico você pode ultilizar plataformas que leiam os verbos HTTP como **Postman**; **Insomnia**; **Swagger**; **Thunder Client**; entre outros. Após escolher a platarforma, importe o arquivo [postmanColection.json](https://github.com/alvesjaov/APIdoadoresSangue/blob/main/postmanColection.json) dentro da área de trabalho da plataforma.
