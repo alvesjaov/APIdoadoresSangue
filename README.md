@@ -180,4 +180,4 @@ Além disso, a documentação fornecida contém informações detalhadas sobre a
 
 ## Testando as rotas
 
-Para testar as rotas de um jeito dinâmico você pode ultilizar plataformas que leiam os verbos HTTP como **Postman**; **Insomnia**; **Swagger**; **Thunder Client**; entre outros. Após escolher a platarforma, importe o arquivo [postmanColection.json](https://github.com/alvesjaov/APIdoadoresSangue/blob/main/postmanColection.json) dentro da área de trabalho da plataforma.
+Para testar as rotas de um jeito dinâmico você pode ultilizar plataformas que leiam os verbos HTTP como **Postman**; **Insomnia**; **Swagger**; **Thunder Client** entre outros. Após escolher a platarforma, importe o arquivo [postmanColection.json](https://github.com/alvesjaov/APIdoadoresSangue/blob/main/postmanColection.json) dentro da área de trabalho da plataforma.
