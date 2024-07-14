@@ -44,27 +44,25 @@ async function createDonor(request, response) {
 
 // Rota para obter doadores (READ)
 async function getDonor(request, response) {
-    const { id } = request.params; // Pega o id dos parâmetros da requisição
-    const { name } = request.query; // Pega o nome dos parâmetros da requisição
-    const page = parseInt(request.query.page) || 1; // Pega o número da página da query, padrão é 1
-    const limit = 5; // Define o limite de itens por página
-    const skip = (page - 1) * limit; // Calcula o número de itens a serem pulados
+    const { id, name } = request.query; // Pega o id e o nome dos parâmetros da requisição
 
     try {
-        let donorOrName = id || name;
-        let donors;
+        let query = {};
 
-        if (donorOrName) {
-            // Se um id ou nome for fornecido, procura por um doador com esse id ou nome
-            donors = await findDonorByIdOrName(donorOrName)
-        } else {
-            // Se nenhum id ou nome for fornecido, retorna todos os doadores com paginação
-            donors = await Donor.find().skip(skip).limit(limit);
+        if (id) {
+            query._id = id;
         }
-        // Verifica se não há mais doadores nesta página
+
+        if (name) {
+            query.name = { $regex: new RegExp(name, 'i') }; // Busca por nome case-insensitive
+        }
+
+        const donors = await Donor.find(query);
+
+        // Verifica se não há doadores correspondentes
         if (!donors || donors.length === 0) {
-            return response.status(404).json({ page: page, error: "Nenhum doador encontrado"});
-          }          
+            return response.status(404).json({ error: "Nenhum doador encontrado"});
+        }
 
         return response.status(200).json(donors); // Retorna os doadores encontrados
     } catch (error) {
@@ -72,6 +70,7 @@ async function getDonor(request, response) {
         response.status(500).json({ error: "Ocorreu um erro ao buscar doadores, tente novamente." });
     }
 }
+
 
 // Rota para atualizar um doador (UPDATE)
 async function updateDonor(request, response) {
